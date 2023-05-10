@@ -1,8 +1,11 @@
 package io.codeberg.spotpix.controllers;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;  
 
 public class DummyCtrlr {
-    //TODO Probably use BufferedImage
+    public BufferedImage getImage(){
+        BufferedImage img=new BufferedImage(100,100,BufferedImage.TYPE_BYTE_BINARY);
+        
+        return img;
+    }   
 }
