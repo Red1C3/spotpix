@@ -1,12 +1,13 @@
 package io.codeberg.spotpix.model;
 
 public class Color {
-    private byte r,g,b;
+    private int argb;
     //TODO LABS fmt
-    public Color(byte r,byte g,byte b){
-        this.r=r;
-        this.g=g;
-        this.b=b;
+    public Color(int argb){
+        this.argb=argb;
         //TODO calculate other formats values
+    }
+    public int getARGB(){
+        return argb;
     }
 }
