@@ -1,13 +1,12 @@
 package io.codeberg.spotpix;
 
-/**
- * Hello world!
- *
- */
+import io.codeberg.spotpix.views.DummyView;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        DummyView frame=new DummyView();
+        frame.setVisible(true);
     }
 }
