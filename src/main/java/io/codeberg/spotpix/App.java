@@ -6,7 +6,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        DummyView frame=new DummyView();
-        frame.setVisible(true);
+        new DummyView();
     }
 }
