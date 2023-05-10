@@ -24,8 +24,9 @@ class DummyCanvas extends JPanel{
 public class DummyView extends JFrame {
     public DummyView(){
         super("Dummy window");
-        add(new DummyCanvas());
-        setSize(600,600);
+        DummyCanvas canvas=new DummyCanvas();
+        add(canvas);
+        setSize(canvas.img.getWidth(this),canvas.img.getHeight(this));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
