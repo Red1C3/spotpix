@@ -7,10 +7,8 @@ import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 
-public class ByteImage implements Image {
+public class ByteImage extends Image {
     private Color[][] pixels;
-    private int height, width;
-    private ColorSpace colorSpace;
 
     public ByteImage(Color[][] pixels, int height, int width, ColorSpace colorSpace) {
         this.pixels = pixels;
@@ -77,7 +75,5 @@ public class ByteImage implements Image {
 
     }
 
-    public boolean isInside(int x,int y){
-        return x > -1 && x < width && y > -1 && y < height;
-    }
+    
 }

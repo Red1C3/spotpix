@@ -7,11 +7,9 @@ import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 
-public class IndexedImage implements Image {
+public class IndexedImage extends Image {
     private Color[] colorMap;
     private int[][] indices;
-    private int height, width;
-    private ColorSpace colorSpace;
 
     public IndexedImage(Color[] colorMap, int[][] indices, int height, int width, ColorSpace colorSpace) {
         this.colorMap = colorMap;
@@ -65,9 +63,7 @@ public class IndexedImage implements Image {
 
         return (Pixel[]) neighbours.toArray();
     }
-    public boolean isInside(int x,int y){
-        return x > -1 && x < width && y > -1 && y < height;
-    }
+    
 
     @Override
     public Pixel getPixel(int x, int y) {
