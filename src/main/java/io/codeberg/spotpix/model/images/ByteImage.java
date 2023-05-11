@@ -1,16 +1,17 @@
 package io.codeberg.spotpix.model.images;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.ColorSpace;
+import io.codeberg.spotpix.model.Pixel;
 
 public class ByteImage implements Image {
     private Color[][] pixels;
     private int height, width;
     private ColorSpace colorSpace;
 
-    // TODO pixels iterator
     public ByteImage(Color[][] pixels, int height, int width, ColorSpace colorSpace) {
         this.pixels = pixels;
         this.height = height;
@@ -44,5 +45,39 @@ public class ByteImage implements Image {
             }
         }
         return bufferedImage;
+    }
+
+    @Override
+    public Pixel[] getNeighbouringPixels(Pixel pixel) {
+        ArrayList<Pixel> neighbours = new ArrayList<>();
+        int x = pixel.getX();
+        int y = pixel.getY();
+
+        for (int i = x - 1; i < x + 2; i++) {
+            for (int j = y - 1; j < y + 2; j++) {
+
+                if (i == x && j == y)
+                    continue;
+
+                if (isInside(i, j)) {
+                    neighbours.add(new Pixel(pixels[i][j], i, j));
+                }
+
+            }
+        }
+
+        return (Pixel[]) neighbours.toArray();
+    }
+
+    @Override
+    public Pixel getPixel(int x, int y) {
+        if(!isInside(x, y))
+            return null;
+        return new Pixel(pixels[x][y], x, y);
+
+    }
+
+    public boolean isInside(int x,int y){
+        return x > -1 && x < width && y > -1 && y < height;
     }
 }
