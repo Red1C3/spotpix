@@ -82,5 +82,27 @@ public class ByteImage extends Image {
         pixels[pixel.getX()][pixel.getY()]=pixel.getColor();
     }
 
+    @Override
+    public ByteImage toByteImage() {
+        return this;
+    }
+
+    @Override
+    public IndexedImage toIndexedImage() {
+        ArrayList<Color> colorMap=new ArrayList<>();
+        colorMap.add(new Color(0xFF000000)); //Fill with black
+
+        int[][] indices=new int[width][height];
+
+        IndexedImage indexedImage=new IndexedImage(colorMap, indices, height, width,colorSpace);
+
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                indexedImage.setPixel(new Pixel(pixels[i][j], i, j));
+            }
+        }
+        return indexedImage;
+    }
+
     
 }

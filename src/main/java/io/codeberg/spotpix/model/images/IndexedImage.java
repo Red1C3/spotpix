@@ -27,6 +27,7 @@ public class IndexedImage extends Image {
         this.colorSpace = ColorSpace.LINEAR;
     }
 
+    @Override
     public ByteImage toByteImage() {
         Color[][] colors = new Color[width][height];
         for (int i = 0; i < width; i++) {
@@ -94,5 +95,10 @@ public class IndexedImage extends Image {
             indices[x][y] = colorMap.size() - 1;
         }
 
+    }
+
+    @Override
+    public IndexedImage toIndexedImage() {
+        return this;
     }
 }

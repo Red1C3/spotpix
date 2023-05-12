@@ -25,7 +25,7 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
-        return img.toBufferedImage();
+        return img.toIndexedImage().toBufferedImage();
     }
 
     public BufferedImage getIndexedImage() {
@@ -57,4 +57,5 @@ public class DummyCtrlr {
         
         return img.toBufferedImage();
     }
+
 }

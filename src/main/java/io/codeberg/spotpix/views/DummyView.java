@@ -12,7 +12,7 @@ class DummyCanvas extends JPanel{
     Image img;
     public DummyCanvas(){
         super();
-        img=(new DummyCtrlr()).getIndexedImage();
+        img=(new DummyCtrlr()).getImage();
 
     }
     @Override
