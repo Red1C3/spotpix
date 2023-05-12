@@ -62,7 +62,7 @@ public class IndexedImage extends Image {
             }
         }
 
-        return (Pixel[]) neighbours.toArray();
+        return  neighbours.toArray(new Pixel[0]);
     }
 
     @Override
