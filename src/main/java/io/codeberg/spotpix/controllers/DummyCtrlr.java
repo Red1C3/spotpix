@@ -13,6 +13,7 @@ import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
+import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
@@ -26,7 +27,7 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
-        return img.toBufferedImage();
+        return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
 
     public BufferedImage getIndexedImage() {

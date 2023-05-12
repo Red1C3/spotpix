@@ -69,7 +69,7 @@ public abstract class Image {
     // setPixel was called on it
     // visited should have the same dims as the pic
     public Pixel[] getRegion(Pixel seed, Comparator comparator, Color startColor,
-            boolean updateStartColor, ColorOp colorOp, boolean[][] visited) {
+            ColorOp colorOp, boolean[][] visited) {
         if (visited == null) {
             visited = new boolean[width][height];
         }
@@ -90,7 +90,7 @@ public abstract class Image {
 
             if (comparator.isEqual(region.get(0).getColor(), pixel.getColor())) {
                 region.add(pixel);
-                if (updateStartColor) { // Update the color that I'm comparing with
+                if (colorOp!=null) { // Update the color that I'm comparing with
                     region.get(0).setColor(colorOp.op(region.get(0).getColor(), pixel.getColor()));
                 }
                 Pixel[] neighbours = getNeighbouringPixels(pixel);
@@ -109,5 +109,11 @@ public abstract class Image {
         for (Pixel pixel : region) {
             setPixel(pixel);
         }
+    }
+    public int getHeight(){
+        return height;
+    }
+    public int getWidth(){
+        return width;
     }
 }
