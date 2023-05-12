@@ -56,7 +56,7 @@ public abstract class Image {
             }
         }
 
-        return (Pixel[]) region.toArray();
+        return region.toArray(new Pixel[0]);
     }
 
     // colorOp can be null if updateStartColor was false
@@ -90,7 +90,7 @@ public abstract class Image {
             }
         }
 
-        return (Pixel[]) region.toArray();
+        return region.toArray(new Pixel[0]);
 
     }
 }
