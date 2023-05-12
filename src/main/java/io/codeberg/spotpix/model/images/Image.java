@@ -61,6 +61,7 @@ public abstract class Image {
     }
 
     // colorOp can be null if updateStartColor was false
+    // First Pixel is reserved, it's in (-1,-1) so it won't cause a problem if setPixel was called on it
     public Pixel[] getRegion(Pixel seed, Comparator comparator, Color startColor,
             boolean updateStartColor, ColorOp colorOp) {
         boolean[][] visited = new boolean[width][height];
@@ -93,6 +94,11 @@ public abstract class Image {
         }
 
         return region.toArray(new Pixel[0]);
+    }
 
+    public void setRegion(Pixel[] region){
+        for (Pixel pixel : region) {
+            setPixel(pixel);
+        }
     }
 }
