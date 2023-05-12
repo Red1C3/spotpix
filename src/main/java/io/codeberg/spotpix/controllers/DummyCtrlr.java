@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.ColorSpace;
+import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
@@ -45,7 +46,15 @@ public class DummyCtrlr {
             }
         }
 
-        return (new IndexedImage(colorMap, indices, 100, 100, ColorSpace.sRGB)).toBufferedImage();
+        IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100, ColorSpace.sRGB));
 
+        Color red=new Color(0xFFFF0000);
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                img.setPixel(new Pixel(red, i, j));
+            }
+        }
+        
+        return img.toBufferedImage();
     }
 }
