@@ -31,8 +31,11 @@ public abstract class Image {
         return x > -1 && x < width && y > -1 && y < height;
     }
 
-    public Pixel[] getRegion(Pixel seed, Comparator comparator) {
-        boolean[][] visited = new boolean[width][height]; // Booleans default value is false
+    // visited should have the same dims as the pic
+    public Pixel[] getRegion(Pixel seed, Comparator comparator, boolean[][] visited) {
+        if (visited == null) {
+            visited = new boolean[width][height];
+        }
         ArrayList<Pixel> region = new ArrayList<>();
         Stack<Pixel> stack = new Stack<>();
         stack.push(seed);
@@ -41,7 +44,8 @@ public abstract class Image {
             Pixel pixel = stack.pop();
             int x = pixel.getX();
             int y = pixel.getY();
-            if(visited[x][y]) continue;
+            if (visited[x][y])
+                continue;
 
             visited[x][y] = true;
 
@@ -61,10 +65,14 @@ public abstract class Image {
     }
 
     // colorOp can be null if updateStartColor was false
-    // First Pixel is reserved, it's in (-1,-1) so it won't cause a problem if setPixel was called on it
+    // First Pixel is reserved, it's in (-1,-1) so it won't cause a problem if
+    // setPixel was called on it
+    // visited should have the same dims as the pic
     public Pixel[] getRegion(Pixel seed, Comparator comparator, Color startColor,
-            boolean updateStartColor, ColorOp colorOp) {
-        boolean[][] visited = new boolean[width][height];
+            boolean updateStartColor, ColorOp colorOp, boolean[][] visited) {
+        if (visited == null) {
+            visited = new boolean[width][height];
+        }
         ArrayList<Pixel> region = new ArrayList<>();
         region.add(new Pixel(startColor, -1, -1));
 
@@ -75,7 +83,8 @@ public abstract class Image {
             Pixel pixel = queue.poll();
             int x = pixel.getX();
             int y = pixel.getY();
-            if(visited[x][y]) continue;
+            if (visited[x][y])
+                continue;
 
             visited[x][y] = true;
 
@@ -96,7 +105,7 @@ public abstract class Image {
         return region.toArray(new Pixel[0]);
     }
 
-    public void setRegion(Pixel[] region){
+    public void setRegion(Pixel[] region) {
         for (Pixel pixel : region) {
             setPixel(pixel);
         }
