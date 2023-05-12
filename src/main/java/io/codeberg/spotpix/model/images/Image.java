@@ -41,6 +41,7 @@ public abstract class Image {
             Pixel pixel = stack.pop();
             int x = pixel.getX();
             int y = pixel.getY();
+            if(visited[x][y]) continue;
 
             visited[x][y] = true;
 
@@ -73,6 +74,7 @@ public abstract class Image {
             Pixel pixel = queue.poll();
             int x = pixel.getX();
             int y = pixel.getY();
+            if(visited[x][y]) continue;
 
             visited[x][y] = true;
 
