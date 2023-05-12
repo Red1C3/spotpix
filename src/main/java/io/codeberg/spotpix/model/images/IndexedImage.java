@@ -71,4 +71,10 @@ public class IndexedImage extends Image {
         Color color=colorMap[indices[x][y]];
         return new Pixel(color, x, y);
     }
+
+    @Override
+    public void setPixel(Pixel pixel) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPixel'");
+    }
 }

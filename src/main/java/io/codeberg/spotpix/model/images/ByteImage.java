@@ -75,5 +75,12 @@ public class ByteImage extends Image {
 
     }
 
+    @Override
+    public void setPixel(Pixel pixel){
+        if(!isInside(pixel.getX(), pixel.getY())) return;
+
+        pixels[pixel.getX()][pixel.getY()]=pixel.getColor();
+    }
+
     
 }

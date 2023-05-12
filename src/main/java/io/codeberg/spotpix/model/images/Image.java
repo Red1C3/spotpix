@@ -18,6 +18,8 @@ public abstract class Image {
 
     public abstract Pixel getPixel(int x, int y);
 
+    public abstract void setPixel(Pixel pixel);
+
     public boolean isInside(int x, int y) {
         return x > -1 && x < width && y > -1 && y < height;
     }
