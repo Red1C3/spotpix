@@ -126,4 +126,35 @@ public class Color {
 
         return Lab;
     }
+
+    public static double[] Lab2XYZ(double L, double a, double b) {
+        double y = (L + 16.0) / 116.0;
+        double x = a / 500.0 + y;
+        double z = y - b / 200.0;
+
+        if (Math.pow(y, 3) > 0.008856) {
+            y = Math.pow(y, 3);
+        } else {
+            y = (y - 16.0 / 116.0) / 7.787;
+        }
+
+        if (Math.pow(x, 3) > 0.008856) {
+            x = Math.pow(x, 3);
+        } else {
+            x = (x - 16.0 / 116.0) / 7.787;
+        }
+
+        if (Math.pow(z, 3) > 0.008856) {
+            z = Math.pow(z, 3);
+        } else {
+            z = (z - 16.0 / 116.0) / 7.787;
+        }
+
+        double[] xyz=new double[3];
+
+        xyz[0]=x*REF_X;
+        xyz[1]=y*REF_Y;
+        xyz[2]=z*REF_Z;
+        return xyz;
+    }
 }
