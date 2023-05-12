@@ -4,9 +4,9 @@ public class Color {
     private int argb;
     private double[] xyz;
     private double[] Lab;
-    public final static double REF_X = 100.0;
+    public final static double REF_X = 94.811; // sRGB reference
     public final static double REF_Y = 100.0;
-    public final static double REF_Z = 100.0;
+    public final static double REF_Z = 107.304;
 
     public Color(int argb) {
         this.argb = argb;
@@ -150,11 +150,46 @@ public class Color {
             z = (z - 16.0 / 116.0) / 7.787;
         }
 
-        double[] xyz=new double[3];
+        double[] xyz = new double[3];
 
-        xyz[0]=x*REF_X;
-        xyz[1]=y*REF_Y;
-        xyz[2]=z*REF_Z;
+        xyz[0] = x * REF_X;
+        xyz[1] = y * REF_Y;
+        xyz[2] = z * REF_Z;
         return xyz;
+    }
+
+    public static int[] XYZ2RGB(double x, double y, double z) {
+        x = x / 100.0;
+        y = y / 100.0;
+        z = z / 100.0;
+
+        double r = x * 3.2406 + y * (-1.5372) + z * (-0.4986);
+        double g = x * (-0.9689) + y * 1.8758 + z * 0.0415;
+        double b = x * 0.0557 + y * (-0.2040) + z * 1.0570;
+
+        if (r > 0.0031308) {
+            r = 1.055 * (Math.pow(r, 1.0 / 2.4)) - 0.055;
+        } else {
+            r = 12.92 * r;
+        }
+
+        if (g > 0.0031308) {
+            g = 1.055 * (Math.pow(g, 1.0 / 2.4)) - 0.055;
+        } else {
+            g = 12.92 * g;
+        }
+
+        if (b > 0.0031308) {
+            b = 1.055 * (Math.pow(b, 1.0 / 2.4)) - 0.055;
+        } else {
+            b = 12.92 * b;
+        }
+
+        int[] rgb = new int[3];
+        rgb[0] = (int) Math.round(r * 255.0);
+        rgb[1] = (int) Math.round(g * 255.0);
+        rgb[2] = (int) Math.round(b * 255.0);
+
+        return rgb;
     }
 }
