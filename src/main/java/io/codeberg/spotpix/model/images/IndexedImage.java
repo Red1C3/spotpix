@@ -4,27 +4,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 
 public class IndexedImage extends Image {
     private ArrayList<Color> colorMap;
     private int[][] indices;
 
-    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width, ColorSpace colorSpace) {
-        this.colorMap = colorMap;
-        this.indices = indices;
-        this.height = height;
-        this.width = width;
-        this.colorSpace = colorSpace;
-    }
-
     public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width) {
         this.colorMap = colorMap;
         this.indices = indices;
         this.height = height;
         this.width = width;
-        this.colorSpace = ColorSpace.LINEAR;
     }
 
     @Override
@@ -35,7 +25,7 @@ public class IndexedImage extends Image {
                 colors[i][j] = colorMap.get(indices[i][j]);
             }
         }
-        return new ByteImage(colors, height, width, colorSpace);
+        return new ByteImage(colors, height, width);
     }
 
     @Override

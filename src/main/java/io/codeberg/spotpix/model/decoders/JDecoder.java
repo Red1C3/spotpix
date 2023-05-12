@@ -8,7 +8,6 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.images.ByteImage;
 import io.codeberg.spotpix.model.images.Image;
 
@@ -35,8 +34,7 @@ public class JDecoder implements Decoder {
             }
         }
 
-        // sRGB cuz getRGB states so
-        return new ByteImage(colors, height, width, ColorSpace.sRGB);
+        return new ByteImage(colors, height, width);
     }
 
 }

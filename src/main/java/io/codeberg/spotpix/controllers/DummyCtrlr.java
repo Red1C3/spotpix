@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
@@ -49,7 +48,7 @@ public class DummyCtrlr {
             }
         }
 
-        IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100, ColorSpace.sRGB));
+        IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100));
 
         return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
     }

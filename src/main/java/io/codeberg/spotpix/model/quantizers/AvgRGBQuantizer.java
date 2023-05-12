@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.Comparator;
@@ -46,8 +45,7 @@ public class AvgRGBQuantizer implements Quantizer {
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width,
-                ColorSpace.sRGB);
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
         return indexedImage;
     }
 
