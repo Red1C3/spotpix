@@ -49,14 +49,12 @@ public abstract class Image {
 
             visited[x][y] = true;
 
-            if (comparator.isEqual(seed.getColor(), pixel.getColor())) {
-                region.add(pixel);
-                Pixel[] neighbours = getNeighbouringPixels(pixel);
+            region.add(pixel);
+            Pixel[] neighbours = getNeighbouringPixels(pixel);
 
-                for (Pixel p : neighbours) {
-                    if (!visited[p.getX()][p.getY()]) {
-                        stack.push(p);
-                    }
+            for (Pixel p : neighbours) {
+                if (!visited[p.getX()][p.getY()] && comparator.isEqual(seed.getColor(), p.getColor())) {
+                    stack.push(p);
                 }
             }
         }
@@ -88,16 +86,15 @@ public abstract class Image {
 
             visited[x][y] = true;
 
-            if (comparator.isEqual(region.get(0).getColor(), pixel.getColor())) {
-                region.add(pixel);
-                if (colorOp!=null) { // Update the color that I'm comparing with
-                    region.get(0).setColor(colorOp.op(region.get(0).getColor(), pixel.getColor()));
-                }
-                Pixel[] neighbours = getNeighbouringPixels(pixel);
-                for (Pixel p : neighbours) {
-                    if (!visited[p.getX()][p.getY()]) {
-                        queue.addLast(p);
-                    }
+            region.add(pixel);
+            if (colorOp != null) { // Update the color that I'm comparing with
+                region.get(0).setColor(colorOp.op(region.get(0).getColor(), pixel.getColor()));
+            }
+            Pixel[] neighbours = getNeighbouringPixels(pixel);
+            for (Pixel p : neighbours) {
+                if (!visited[p.getX()][p.getY()]
+                        && comparator.isEqual(region.get(0).getColor(), p.getColor())) {
+                    queue.addLast(p);
                 }
             }
         }
@@ -110,10 +107,12 @@ public abstract class Image {
             setPixel(pixel);
         }
     }
-    public int getHeight(){
+
+    public int getHeight() {
         return height;
     }
-    public int getWidth(){
+
+    public int getWidth() {
         return width;
     }
 }

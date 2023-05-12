@@ -23,8 +23,11 @@ public class AvgRGBQuantizer implements Quantizer {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                regions.add(image.getRegion(image.getPixel(i, j), comparator, image.getPixel(i, j).getColor(), colorOp,
-                        visited));
+                Pixel[] region = image.getRegion(image.getPixel(i, j), comparator, image.getPixel(i, j).getColor(),
+                        colorOp,
+                        visited);
+                if (region.length > 1)
+                    regions.add(region);
             }
         }
 
@@ -36,7 +39,8 @@ public class AvgRGBQuantizer implements Quantizer {
             for (Pixel pixel : regions.get(i)) {
                 int x = pixel.getX();
                 int y = pixel.getY();
-                if(x==-1 && y==-1) continue;
+                if (x == -1 && y == -1)
+                    continue;
 
                 indices[x][y] = i;
             }
@@ -48,15 +52,15 @@ public class AvgRGBQuantizer implements Quantizer {
     }
 
     private Color avgRGB(Pixel[] region) {
-        return region[0].getColor();
+        return region[1].getColor();
         // int sumR = 0;
         // int sumG = 0;
         // int sumB = 0;
 
         // for (Pixel pixel : region) {
-        //     sumR += pixel.getColor().getRed();
-        //     sumG += pixel.getColor().getGreen();
-        //     sumB += pixel.getColor().getBlue();
+        // sumR += pixel.getColor().getRed();
+        // sumG += pixel.getColor().getGreen();
+        // sumB += pixel.getColor().getBlue();
         // }
 
         // sumR /= region.length;
