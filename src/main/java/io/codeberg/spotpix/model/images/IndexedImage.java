@@ -8,10 +8,10 @@ import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 
 public class IndexedImage extends Image {
-    private Color[] colorMap;
+    private ArrayList<Color> colorMap;
     private int[][] indices;
 
-    public IndexedImage(Color[] colorMap, int[][] indices, int height, int width, ColorSpace colorSpace) {
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width, ColorSpace colorSpace) {
         this.colorMap = colorMap;
         this.indices = indices;
         this.height = height;
@@ -19,7 +19,7 @@ public class IndexedImage extends Image {
         this.colorSpace = colorSpace;
     }
 
-    public IndexedImage(Color[] colorMap, int[][] indices, int height, int width) {
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width) {
         this.colorMap = colorMap;
         this.indices = indices;
         this.height = height;
@@ -31,7 +31,7 @@ public class IndexedImage extends Image {
         Color[][] colors = new Color[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                colors[i][j] = colorMap[indices[i][j]];
+                colors[i][j] = colorMap.get(indices[i][j]);
             }
         }
         return new ByteImage(colors, height, width, colorSpace);
@@ -55,7 +55,7 @@ public class IndexedImage extends Image {
                     continue;
 
                 if (isInside(i, j)) {
-                    neighbours.add(new Pixel(colorMap[indices[i][j]], i, j));
+                    neighbours.add(new Pixel(colorMap.get(indices[i][j]), i, j));
                 }
 
             }
@@ -63,18 +63,36 @@ public class IndexedImage extends Image {
 
         return (Pixel[]) neighbours.toArray();
     }
-    
 
     @Override
     public Pixel getPixel(int x, int y) {
-        if(!isInside(x, y)) return null;
-        Color color=colorMap[indices[x][y]];
+        if (!isInside(x, y))
+            return null;
+        Color color = colorMap.get(indices[x][y]);
         return new Pixel(color, x, y);
     }
 
     @Override
     public void setPixel(Pixel pixel) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setPixel'");
+        int x = pixel.getX();
+        int y = pixel.getY();
+
+        if (!isInside(x, y))
+            return;
+
+        int i = -1;
+        for (int it = 0; it < colorMap.size(); it++) {
+            if (colorMap.get(it).equals(pixel.getColor())) {
+                i = it;
+                break;
+            }
+        }
+        if (i != -1) {
+            indices[x][y] = i;
+        } else {
+            colorMap.add(pixel.getColor());
+            indices[x][y] = colorMap.size() - 1;
+        }
+
     }
 }
