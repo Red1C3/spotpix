@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
+import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
@@ -27,7 +28,7 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
-        return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
+        return (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null).toBufferedImage();
     }
 
     public BufferedImage getIndexedImage() {

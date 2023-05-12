@@ -52,22 +52,21 @@ public class AvgRGBQuantizer implements Quantizer {
     }
 
     private Color avgRGB(Pixel[] region) {
-        return region[1].getColor();
-        // int sumR = 0;
-        // int sumG = 0;
-        // int sumB = 0;
+        int sumR = 0;
+        int sumG = 0;
+        int sumB = 0;
 
-        // for (Pixel pixel : region) {
-        // sumR += pixel.getColor().getRed();
-        // sumG += pixel.getColor().getGreen();
-        // sumB += pixel.getColor().getBlue();
-        // }
+        for (Pixel pixel : region) {
+        sumR += pixel.getColor().getRed();
+        sumG += pixel.getColor().getGreen();
+        sumB += pixel.getColor().getBlue();
+        }
 
-        // sumR /= region.length;
-        // sumG /= region.length;
-        // sumB /= region.length;
+        sumR /= region.length;
+        sumG /= region.length;
+        sumB /= region.length;
 
-        // return new Color(255, sumR, sumG, sumB);
+        return new Color(255, sumR, sumG, sumB);
     }
 
 }
