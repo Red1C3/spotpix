@@ -2,7 +2,6 @@ package io.codeberg.spotpix.model.encoders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 

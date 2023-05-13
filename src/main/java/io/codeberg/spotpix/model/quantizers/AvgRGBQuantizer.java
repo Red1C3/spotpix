@@ -1,7 +1,6 @@
 package io.codeberg.spotpix.model.quantizers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Pixel;
