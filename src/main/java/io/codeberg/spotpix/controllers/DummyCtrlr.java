@@ -15,6 +15,7 @@ import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
+import io.codeberg.spotpix.model.quantizers.KMeanQuantizer;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
