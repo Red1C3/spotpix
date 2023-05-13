@@ -3,20 +3,18 @@ package io.codeberg.spotpix.controllers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.Pixel;
-import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
-import io.codeberg.spotpix.model.quantizers.KMeanQuantizer;
+import io.codeberg.spotpix.model.quantizers.KMeanQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.KMeanQuantizerRGB;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
