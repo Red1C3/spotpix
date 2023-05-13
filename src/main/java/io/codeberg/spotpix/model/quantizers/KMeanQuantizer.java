@@ -13,6 +13,8 @@ import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 
 public class KMeanQuantizer implements Quantizer {
+    int K = 64;
+
     Random rand = new Random();
     
     ArrayList<Color> centroids  = new ArrayList<>();
@@ -25,7 +27,7 @@ public class KMeanQuantizer implements Quantizer {
         int width = image.getWidth();
 
         int tx=0,ty=0;
-        while (centroids.size()<64) {
+        while (centroids.size()<K) {
             centroids.add(image.getPixel(tx, ty).getColor());
             kMean.add(new ArrayList<KColor>());
             tx+=rand.nextInt(width);
@@ -96,13 +98,29 @@ public class KMeanQuantizer implements Quantizer {
     }
 
     private void reCalcCeteroids() {
+        ArrayList<KColor> lastFullCluster=null;
         for (int i = 0; i < centroids.size(); i++) {
+            ArrayList<KColor> cluster = kMean.get(i);
+            int n = cluster.size();
+            if(n==0){
+                if(lastFullCluster==null){
+                    for (int j = i; j < centroids.size(); j++) {
+                        ArrayList<KColor> currCluster = kMean.get(j);
+                        if(currCluster.size()>0){
+                            lastFullCluster=currCluster;
+                            break;
+                        }
+                    }
+                }
+                centroids.set(i,setEmptyCentroids(lastFullCluster));
+                kMean.set(i, new ArrayList<KColor>());
+                continue;
+            }
             int sumR = 0;
             int sumG = 0;
             int sumB = 0;
             int sumA = 0;
             
-            ArrayList<KColor> cluster = kMean.get(i);
             for (KColor color : cluster) {
             sumR += color.getRed();
             sumG += color.getGreen();
@@ -110,7 +128,6 @@ public class KMeanQuantizer implements Quantizer {
             sumA += color.getAlpha();
             }
             
-            int n = cluster.size();
 
             sumR /= n;
             sumG /= n;
@@ -119,9 +136,26 @@ public class KMeanQuantizer implements Quantizer {
             
             centroids.set(i,new Color(sumA, sumR, sumG, sumB));
             kMean.set(i, new ArrayList<KColor>());
+            lastFullCluster=cluster;
         }
 
 
+    }
+
+    private Color setEmptyCentroids(ArrayList<KColor> currCluster){
+        KColor randColor=currCluster.get(rand.nextInt(currCluster.size()));
+        int r=getRand(randColor.getRed());
+        int g=getRand(randColor.getGreen());
+        int b=getRand(randColor.getBlue());
+        int a=getRand(randColor.getAlpha());
+        return new Color(a, r, g, b);
+    }
+
+    private int getRand(int base){
+        int returned=base+rand.nextInt(3);
+        if(returned>=256)
+            returned-=6;
+        return returned;
     }
 
     private double channelDif(double c1,double c2, double alphas){
