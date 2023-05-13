@@ -1,14 +1,10 @@
 package io.codeberg.spotpix.model.quantizers;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
-import java.util.Vector;
 
 import io.codeberg.spotpix.model.KColor;
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.Comparator;
@@ -66,8 +62,7 @@ public class KMeanQuantizer implements Quantizer {
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(centroids, indices, height, width,
-                ColorSpace.sRGB);
+        IndexedImage indexedImage = new IndexedImage(centroids, indices, height, width);
         return indexedImage;
     }
 
