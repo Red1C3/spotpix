@@ -29,7 +29,8 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
-        return (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null).toBufferedImage();
+        // return (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null).toBufferedImage();
+        return (new KMeanQuantizer()).quantize(img, null, null).toBufferedImage();
     }
 
     public BufferedImage getIndexedImage() {
@@ -52,7 +53,8 @@ public class DummyCtrlr {
 
         IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100, ColorSpace.sRGB));
 
-        return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
+        // return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
+        return (new KMeanQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
 
 }
