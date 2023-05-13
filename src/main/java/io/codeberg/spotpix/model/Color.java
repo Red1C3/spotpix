@@ -1,9 +1,9 @@
 package io.codeberg.spotpix.model;
 
 public class Color {
-    private int argb;
-    private double[] xyz;
-    private double[] Lab;
+    protected int argb;
+    protected double[] xyz;
+    protected double[] Lab;
     public final static double REF_X = 94.811; // sRGB reference
     public final static double REF_Y = 100.0;
     public final static double REF_Z = 107.304;
