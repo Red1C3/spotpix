@@ -163,7 +163,7 @@ public class KMeanQuantizer implements Quantizer {
         return Math.max(black*black, white*white);
     }
 
-    private double calcDistance(Color color, Color c2) {
+    private double calcDistanceRGB(Color color, Color c2) {
         double sum = 0;
 
         double alphas = (c2.getAlpha()/255)-(color.getAlpha()/255);
@@ -174,4 +174,17 @@ public class KMeanQuantizer implements Quantizer {
         return sum;
     }
 
+    private double calcDistance(Color color, Color c2) {
+        double sum = 0;
+        double[] c1LAB=color.getLAB();
+        double[] c2LAB=c2.getLAB();
+
+        sum+=(c1LAB[0]-c2LAB[0])*(c1LAB[0]-c2LAB[0]);
+        sum+=(c1LAB[1]-c2LAB[1])*(c1LAB[1]-c2LAB[1]);
+        sum+=(c1LAB[2]-c2LAB[2])*(c1LAB[2]-c2LAB[2]);
+
+        sum = Math.sqrt(sum);
+
+        return sum;
+    }
 }
