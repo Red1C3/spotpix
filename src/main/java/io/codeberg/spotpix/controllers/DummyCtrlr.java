@@ -33,12 +33,7 @@ public class DummyCtrlr {
 
         byte[] output=(new JEncoder()).encode(quantized);
 
-        try {
-            Files.write(Paths.get("./Assets/quantized.png"), output);
-        } catch (IOException e) {
-            System.out.println("Failed to print quantized image to a file");
-            e.printStackTrace();
-        }
+        saveToDrive("./Assets/quantized.png", output);
 
         return quantized.toBufferedImage();
     }
@@ -65,5 +60,12 @@ public class DummyCtrlr {
 
         return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
-
+    public void saveToDrive(String path,byte[] img){
+        try {
+            Files.write(Paths.get(path), img);
+        } catch (IOException e) {
+            System.out.println("Failed to print quantized image to a file");
+            e.printStackTrace();
+        }
+    }
 }
