@@ -8,7 +8,6 @@ import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.Comparator;
-import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 
@@ -40,10 +39,7 @@ public abstract class KMeanQuantizer implements Quantizer {
             ty%=height;
         }
 
-
-        boolean[][] visited = new boolean[width][height];
-
-        Pixel[] pixels = image.getRegion(image.getPixel(0, 0),new ManRGBComparator(255*3),visited);
+        Pixel[] pixels = image.getFlattenPixels();
         for (Pixel pixel : pixels) {
             if(allColors.contains(pixel.getColor()) || pixel.getX()<0 || pixel.getY()<0)
                 continue;
