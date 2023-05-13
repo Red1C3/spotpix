@@ -25,6 +25,17 @@ public abstract class Image {
 
     public abstract IndexedImage toIndexedImage();
 
+    public Pixel[][] getPixels() {
+        Pixel[][] pixels = new Pixel[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                pixels[i][j] = getPixel(i, j);
+            }
+        }
+        return pixels;
+    }
+
     public boolean isInside(int x, int y) {
         return x > -1 && x < width && y > -1 && y < height;
     }
