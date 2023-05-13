@@ -29,7 +29,7 @@ public class DummyCtrlr {
         }
         Image img = (new JDecoder()).decode(bytes);
         // Image quantized= (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null);
-        Image quantized= (new KMeanQuantizer()).quantize(img, null, null);
+        Image quantized= (new KMeanQuantizerLAB(2)).quantize(img, null, null);
 
         byte[] output=(new JEncoder()).encode(quantized);
 
@@ -64,7 +64,7 @@ public class DummyCtrlr {
         IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100));
 
         // return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
-        return (new KMeanQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
+        return (new KMeanQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
 
 }
