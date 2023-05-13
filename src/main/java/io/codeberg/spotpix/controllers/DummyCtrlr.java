@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
+import io.codeberg.spotpix.model.encoders.Encoder;
 import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
@@ -31,14 +32,8 @@ public class DummyCtrlr {
         // Image quantized= (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null);
         Image quantized= (new KMeanQuantizerLAB(2)).quantize(img, null, null);
 
-        byte[] output=(new JEncoder()).encode(quantized);
 
-        try {
-            Files.write(Paths.get("./Assets/quantized.png"), output);
-        } catch (IOException e) {
-            System.out.println("Failed to print quantized image to a file");
-            e.printStackTrace();
-        }
+        saveToDrive("./Assets/quantized.png", quantized,new JEncoder());
 
         return quantized.toBufferedImage();
     }
@@ -65,6 +60,15 @@ public class DummyCtrlr {
 
         // return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
         return (new KMeanQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
+    }
+    public void saveToDrive(String path,Image img,Encoder encoder){
+        byte[] output=encoder.encode(img);
+        try {
+            Files.write(Paths.get(path), output);
+        } catch (IOException e) {
+            System.out.println("Failed to print quantized image to a file");
+            e.printStackTrace();
+        }
     }
 
 }
