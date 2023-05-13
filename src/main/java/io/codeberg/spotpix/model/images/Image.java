@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.ColorSpace;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.Comparator;
 
 public abstract class Image {
     protected int width, height;
-    protected ColorSpace colorSpace;
 
     public abstract BufferedImage toBufferedImage();
 
