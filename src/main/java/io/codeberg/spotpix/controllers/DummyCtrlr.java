@@ -3,6 +3,7 @@ package io.codeberg.spotpix.controllers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
+import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
@@ -27,7 +29,18 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
-        return (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null).toBufferedImage();
+        Image quantized= (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null);
+
+        byte[] output=(new JEncoder()).encode(quantized);
+
+        try {
+            Files.write(Paths.get("./Assets/quantized.png"), output);
+        } catch (IOException e) {
+            System.out.println("Failed to print quantized image to a file");
+            e.printStackTrace();
+        }
+
+        return quantized.toBufferedImage();
     }
 
     public BufferedImage getIndexedImage() {

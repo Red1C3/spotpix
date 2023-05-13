@@ -19,6 +19,7 @@ public class JDecoder implements Decoder {
         BufferedImage bufferedImage = null;
         try {
             bufferedImage = ImageIO.read(byteStream);
+            byteStream.close();
         } catch (IOException e) {
             // Not even IOing
         }
