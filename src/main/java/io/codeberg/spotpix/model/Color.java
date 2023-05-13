@@ -27,6 +27,9 @@ public class Color {
     public int getARGB() {
         return argb;
     }
+    public double[] getLAB(){
+        return Lab;
+    }
 
     @Override
     public boolean equals(Object obj) {
