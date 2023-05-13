@@ -106,4 +106,7 @@ public class IndexedImage extends Image {
     public ArrayList<Color> getColorMap() {
         return colorMap;
     }
+    public int[][] getIndices(){
+        return indices;
+    }
 }
