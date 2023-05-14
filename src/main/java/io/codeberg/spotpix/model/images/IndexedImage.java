@@ -18,6 +18,14 @@ public class IndexedImage extends Image {
         this.width = width;
     }
 
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width,int[] quantizationMap) {
+        this.colorMap = colorMap;
+        this.indices = indices;
+        this.height = height;
+        this.width = width;
+        this.quantizationMap=quantizationMap;
+    }
+
     @Override
     public ByteImage toByteImage() {
         Color[][] colors = new Color[width][height];

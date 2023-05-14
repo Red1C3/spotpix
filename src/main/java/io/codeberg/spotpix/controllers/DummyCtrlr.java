@@ -86,8 +86,24 @@ public class DummyCtrlr {
 
         byte[] fltBytes=(new FLTEncoder()).encode(img);
         Image img0=(new FLTDecoder()).decode(fltBytes);
+        saveToDrive("./Assets/firstFLTimage.flt", img0, new FLTEncoder());
 
         return img0.toBufferedImage();
+    }
+
+    public BufferedImage fromFLT(){
+        String pathToImg="./Assets/firstFLTimage.flt";
+        byte[] bytes=null;
+        try {
+            bytes = Files.readAllBytes(Paths.get(pathToImg));
+        } catch (IOException e) {
+            System.out.printf("Failed to read image bytes at %s", pathToImg);
+            e.printStackTrace();
+            return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
+        }
+
+        Image img=(new FLTDecoder()).decode(bytes);
+        return img.toBufferedImage();
     }
 
 }

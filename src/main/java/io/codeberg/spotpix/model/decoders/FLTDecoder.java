@@ -71,9 +71,9 @@ public class FLTDecoder implements Decoder {
 
         ArrayList<Color> colorMap = new ArrayList<>(colorMapLength);
         for (int i = 0; i < colorMapLength; i++) {
-            int red = (int) (buffer.get()& 0xffffffffL);
-            int green = (int) (buffer.get()& 0xffffffffL);
-            int blue = (int) (buffer.get()& 0xffffffffL);
+            int red = buffer.get();
+            int green = buffer.get();
+            int blue = buffer.get();
             colorMap.add(new Color(255, red, green, blue));
         }
 
@@ -82,8 +82,7 @@ public class FLTDecoder implements Decoder {
             for (int i = 0; i < colorMapLength; i++) {
                 quantizationMap[i] = buffer.getInt();
             }
-
-            // TODO return an indexed image with quantization array
+            return new IndexedImage(colorMap, indices, height, width, quantizationMap);
         }
 
         return new IndexedImage(colorMap, indices, height, width);
