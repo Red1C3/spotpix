@@ -57,16 +57,15 @@ public class FLTDecoder implements Decoder {
             for (int j = 0; j < height; j++) {
                 switch (indexType) {
                     case BYTE_TYPE:
-                        indices[i][j] = (int) (buffer.get());
+                        indices[i][j] = toUnsignedInt(buffer.get());
                         break;
                     case SHORT_TYPE:
-                        indices[i][j] = (int) (buffer.getShort());
+                        indices[i][j] = toUnsignedInt(buffer.getShort());
                         break;
                     case INT_TYPE:
-                        indices[i][j] = (int) (buffer.getInt());
+                        indices[i][j] = buffer.getInt();
                         break;
                 }
-                if(indices[i][j]<0){System.out.println("WTF");}
             }
         }
 
@@ -76,7 +75,6 @@ public class FLTDecoder implements Decoder {
             int green = (int) (buffer.get()& 0xffffffffL);
             int blue = (int) (buffer.get()& 0xffffffffL);
             colorMap.add(new Color(255, red, green, blue));
-            if(red<0) System.out.println("WTF2");
         }
 
         if (quantized) {
@@ -91,4 +89,12 @@ public class FLTDecoder implements Decoder {
         return new IndexedImage(colorMap, indices, height, width);
     }
 
+    private int toUnsignedInt(short i){
+        int x= (i&0xFFFF);
+        return x;
+    }
+    private int toUnsignedInt(byte i){
+        int x=(i&0xFF);
+        return x;
+    }
 }
