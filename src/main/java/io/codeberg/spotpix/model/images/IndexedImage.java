@@ -9,12 +9,21 @@ import io.codeberg.spotpix.model.Pixel;
 public class IndexedImage extends Image {
     private ArrayList<Color> colorMap;
     private int[][] indices;
+    private int[] quantizationMap;
 
     public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width) {
         this.colorMap = colorMap;
         this.indices = indices;
         this.height = height;
         this.width = width;
+    }
+
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width,int[] quantizationMap) {
+        this.colorMap = colorMap;
+        this.indices = indices;
+        this.height = height;
+        this.width = width;
+        this.quantizationMap=quantizationMap;
     }
 
     @Override
@@ -52,7 +61,7 @@ public class IndexedImage extends Image {
             }
         }
 
-        return  neighbours.toArray(new Pixel[0]);
+        return neighbours.toArray(new Pixel[0]);
     }
 
     @Override
@@ -90,5 +99,22 @@ public class IndexedImage extends Image {
     @Override
     public IndexedImage toIndexedImage() {
         return this;
+    }
+
+    public boolean isQuantized() {
+        if (quantizationMap != null)
+            return true;
+        return false;
+    }
+
+    public int[] getQuantizedMap() {
+        return quantizationMap;
+    }
+
+    public ArrayList<Color> getColorMap() {
+        return colorMap;
+    }
+    public int[][] getIndices(){
+        return indices;
     }
 }

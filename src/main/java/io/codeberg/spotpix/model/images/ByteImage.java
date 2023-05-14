@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Pixel;
+import io.codeberg.spotpix.model.comparators.RGBComparator;
 
 public class ByteImage extends Image {
     private Color[][] pixels;
@@ -71,18 +72,36 @@ public class ByteImage extends Image {
 
     @Override
     public IndexedImage toIndexedImage() {
-        ArrayList<Color> colorMap=new ArrayList<>();
-        colorMap.add(new Color(0xFF000000)); //Fill with black
+        ArrayList<Pixel[]> regions = new ArrayList<>();
+        int height = getHeight();
+        int width = getWidth();
 
-        int[][] indices=new int[width][height];
+        boolean[][] visited = new boolean[width][height];
 
-        IndexedImage indexedImage=new IndexedImage(colorMap, indices, height, width);
-
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                indexedImage.setPixel(new Pixel(pixels[i][j], i, j));
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Pixel[] region = getRegion(getPixel(i, j), new RGBComparator(), visited);
+                if (region.length > 0)
+                    regions.add(region);
             }
         }
+
+        ArrayList<Color> colorMap = new ArrayList<>(regions.size());
+        int[][] indices = new int[width][height];
+
+        for (int i = 0; i < regions.size(); i++) {
+            colorMap.add(regions.get(i)[0].getColor());
+            for (Pixel pixel : regions.get(i)) {
+                int x = pixel.getX();
+                int y = pixel.getY();
+                if (x == -1 && y == -1)
+                    continue;
+
+                indices[x][y] = i;
+            }
+        }
+
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
         return indexedImage;
     }
 
