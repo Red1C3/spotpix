@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
-import io.codeberg.spotpix.model.comparators.Comparator;
+import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 
 public class AvgRGBQuantizer implements Quantizer {
 
     @Override
-    public Image quantize(Image image, Comparator comparator, ColorOp colorOp) {
+    public Image quantize(Image image, EqComparator comparator, ColorOp colorOp) {
         ArrayList<Pixel[]> regions = new ArrayList<>();
         int height = image.getHeight();
         int width = image.getWidth();

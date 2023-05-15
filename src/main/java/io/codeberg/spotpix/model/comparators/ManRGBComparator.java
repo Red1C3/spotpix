@@ -2,7 +2,7 @@ package io.codeberg.spotpix.model.comparators;
 
 import io.codeberg.spotpix.model.Color;
 
-public class ManRGBComparator implements Comparator {
+public class ManRGBComparator implements EqComparator {
     private int threshold;
 
     public ManRGBComparator(int threshold) {

@@ -8,7 +8,7 @@ import java.util.Stack;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
-import io.codeberg.spotpix.model.comparators.Comparator;
+import io.codeberg.spotpix.model.comparators.EqComparator;
 
 public abstract class Image {
     protected int width, height;
@@ -52,7 +52,7 @@ public abstract class Image {
     }
 
     // visited should have the same dims as the pic
-    public Pixel[] getRegion(Pixel seed, Comparator comparator, boolean[][] visited) {
+    public Pixel[] getRegion(Pixel seed, EqComparator comparator, boolean[][] visited) {
         if (visited == null) {
             visited = new boolean[width][height];
         }
@@ -86,7 +86,7 @@ public abstract class Image {
     // First Pixel is reserved, it's in (-1,-1) so it won't cause a problem if
     // setPixel was called on it
     // visited should have the same dims as the pic
-    public Pixel[] getRegion(Pixel seed, Comparator comparator, Color startColor,
+    public Pixel[] getRegion(Pixel seed, EqComparator comparator, Color startColor,
             ColorOp colorOp, boolean[][] visited) {
         if (visited == null) {
             visited = new boolean[width][height];
