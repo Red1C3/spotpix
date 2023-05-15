@@ -24,10 +24,27 @@ public class Color {
         this.Lab = XYZ2Lab(xyz[0], xyz[1], xyz[2]);
     }
 
+    public Color(double L, double a, double b) {
+        Lab = new double[3];
+        Lab[0] = L;
+        Lab[1] = a;
+        Lab[2] = b;
+
+        xyz = Lab2XYZ(L, a, b);
+        int[] rgb = XYZ2RGB(xyz[0], xyz[1], xyz[2]);
+
+        argb = 0;
+        argb |= 0xFF000000; //Alpha = 255
+        argb |= ((rgb[0] << 16) & 0xFF0000);
+        argb |= ((rgb[1] << 8) & 0xFF00);
+        argb |= (rgb[2] & 0xFF);
+    }
+
     public int getARGB() {
         return argb;
     }
-    public double[] getLAB(){
+
+    public double[] getLAB() {
         return Lab;
     }
 
