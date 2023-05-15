@@ -17,6 +17,7 @@ import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 import io.codeberg.spotpix.model.quantizers.KMeanQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.KMeanQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.MedianCutQuantizer;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
@@ -31,7 +32,8 @@ public class DummyCtrlr {
         }
         Image img = (new JDecoder()).decode(bytes);
         // Image quantized= (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null);
-        Image quantized= (new KMeanQuantizerLAB(2)).quantize(img, null, null);
+        // Image quantized= (new KMeanQuantizerLAB(64)).quantize(img, null, null);
+        Image quantized= (new MedianCutQuantizer(64)).quantize(img, null, null);
 
 
         saveToDrive("./Assets/quantized.png", quantized,new JEncoder());
@@ -60,7 +62,8 @@ public class DummyCtrlr {
         IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100));
 
         // return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
-        return (new KMeanQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
+        // return (new KMeanQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
+        return (new MedianCutQuantizer(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
     public void saveToDrive(String path,Image img,Encoder encoder){
         byte[] output=encoder.encode(img);
