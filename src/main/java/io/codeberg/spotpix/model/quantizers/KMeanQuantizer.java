@@ -158,5 +158,5 @@ public abstract class KMeanQuantizer implements Quantizer {
         return returned;
     }
 
-    protected abstract double calcDistance(Color color, Color c2);
+    protected abstract double calcDistance(Color c1, Color c2);
 }
