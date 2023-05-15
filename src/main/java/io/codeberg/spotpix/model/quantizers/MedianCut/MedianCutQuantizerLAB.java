@@ -1,4 +1,4 @@
-package io.codeberg.spotpix.model.quantizers;
+package io.codeberg.spotpix.model.quantizers.MedianCut;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class MedianCutQuantizerLAB extends MedianCutQuantizer {
     }
 
     @Override
-    protected double calcDistance(Color c1, Color c2) {
+    public double calcDistance(Color c1, Color c2) {
         return Distances.calcDistanceLAB(c1, c2);
     }
 

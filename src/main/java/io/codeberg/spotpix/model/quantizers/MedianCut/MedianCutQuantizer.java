@@ -1,16 +1,16 @@
-package io.codeberg.spotpix.model.quantizers;
+package io.codeberg.spotpix.model.quantizers.MedianCut;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import io.codeberg.spotpix.model.Color;
+import io.codeberg.spotpix.model.Distances;
 import io.codeberg.spotpix.model.KColor;
 import io.codeberg.spotpix.model.Pixel;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
+import io.codeberg.spotpix.model.quantizers.Quantizer;
 
 public abstract class MedianCutQuantizer implements Quantizer {
     int K;
@@ -37,6 +37,8 @@ public abstract class MedianCutQuantizer implements Quantizer {
         splitIntoBuckets(allColors, K);
 
         int[][] indices = new int[width][height];
+        int[] quantizationMap = new int[colorMap.size()];
+
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -44,29 +46,15 @@ public abstract class MedianCutQuantizer implements Quantizer {
                 int x = pixel.getX();
                 int y = pixel.getY();
 
-                indices[x][y] = getIndex(pixel);
+                int index = Distances.getClosestColorId(pixel,colorMap,this);
+                indices[x][y] = index;
+                quantizationMap[index] += 1;
             }
         }
 
         IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
         return indexedImage;
     }
-
-    private int getIndex(Pixel pixel) {
-        Color color = pixel.getColor();
-        double minDist = Integer.MAX_VALUE;
-        int id = -1;
-        for (int i = 0; i < colorMap.size(); i++) {
-            Color c = colorMap.get(i);
-            double distance = calcDistance(color, c);
-            if (distance < minDist) {
-                minDist = distance;
-                id = i;
-            }
-        }
-        return id;
-    }
-
     
     protected void medianCutQuantizer(ArrayList<KColor> colors) {
         int sumR = 0;
@@ -93,6 +81,4 @@ public abstract class MedianCutQuantizer implements Quantizer {
     protected abstract void splitIntoBuckets(ArrayList<KColor> colors, int depth);
 
     protected abstract int getRange(ArrayList<KColor> colors);
-
-    protected abstract double calcDistance(Color c1, Color c2);
 }

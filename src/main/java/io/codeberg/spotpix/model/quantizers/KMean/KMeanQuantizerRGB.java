@@ -1,4 +1,4 @@
-package io.codeberg.spotpix.model.quantizers;
+package io.codeberg.spotpix.model.quantizers.KMean;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Distances;
@@ -9,7 +9,7 @@ public class KMeanQuantizerRGB extends KMeanQuantizer {
     }
 
     @Override
-    protected double calcDistance(Color c1, Color c2) {
+    public double calcDistance(Color c1, Color c2) {
         return Distances.calcDistanceRGB(c1, c2);
     }
 }

@@ -1,4 +1,4 @@
-package io.codeberg.spotpix.model.quantizers;
+package io.codeberg.spotpix.model.quantizers.MedianCut;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +47,7 @@ public class MedianCutQuantizerRGB extends MedianCutQuantizer {
     }
 
     @Override
-    protected int getRange(ArrayList<KColor> colors) {
+    public int getRange(ArrayList<KColor> colors) {
 
         int rM = Integer.MIN_VALUE, rm = Integer.MAX_VALUE;
         int gM = Integer.MIN_VALUE, gm = Integer.MAX_VALUE;
@@ -83,7 +83,7 @@ public class MedianCutQuantizerRGB extends MedianCutQuantizer {
     }
 
     @Override
-    protected double calcDistance(Color c1, Color c2) {
+    public double calcDistance(Color c1, Color c2) {
         return Distances.calcDistanceRGB(c1, c2);
     }
 
