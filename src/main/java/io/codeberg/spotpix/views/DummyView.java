@@ -12,7 +12,7 @@ class DummyCanvas extends JPanel{
     Image img;
     public DummyCanvas(){
         super();
-        img=(new DummyCtrlr()).fromFLT();
+        img=(new DummyCtrlr()).testFLT();
 
     }
     @Override
