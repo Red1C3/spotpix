@@ -17,10 +17,10 @@ import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
-import io.codeberg.spotpix.model.quantizers.KMeanQuantizerLAB;
-import io.codeberg.spotpix.model.quantizers.KMeanQuantizerRGB;
-import io.codeberg.spotpix.model.quantizers.MedianCutQuantizerLAB;
-import io.codeberg.spotpix.model.quantizers.MedianCutQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerRGB;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
