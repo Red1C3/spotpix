@@ -68,4 +68,9 @@ public class AvgRGBQuantizer implements Quantizer {
         return new Color(255, sumR, sumG, sumB);
     }
 
+    @Override
+    public double calcDistance(Color c1, Color c2) {
+        throw new UnsupportedOperationException("Unimplemented method 'calcDistance'");
+    }
+
 }
