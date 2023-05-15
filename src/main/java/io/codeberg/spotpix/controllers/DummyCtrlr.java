@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
+import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 import io.codeberg.spotpix.model.comparators.RGBComparator;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.encoders.Encoder;
