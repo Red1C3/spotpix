@@ -25,6 +25,10 @@ public class FLTEncoder implements Encoder {
         IndexedImage indexedImage = image.toIndexedImage();
 
         boolean quantized = indexedImage.isQuantized();
+        if(!quantized){
+            indexedImage.calculateQuantizationMap();
+            quantized=true;
+        }
 
         ArrayList<Color> colorMap = indexedImage.getColorMap();
         int[][] indices = indexedImage.getIndices();
@@ -68,7 +72,7 @@ public class FLTEncoder implements Encoder {
         if (quantized) {
             b.put(QUANTIZED);
         } else {
-            b.put(NON_QUANTIZED);
+            b.put(NON_QUANTIZED); //Won't reach here in practice
         }
 
         b.put(type);

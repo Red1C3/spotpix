@@ -31,6 +31,7 @@ public class AvgRGBQuantizer implements Quantizer {
         }
 
         ArrayList<Color> colorMap = new ArrayList<>(regions.size());
+        int[] quantizationMap=new int[regions.size()];
         int[][] indices = new int[width][height];
 
         for (int i = 0; i < regions.size(); i++) {
@@ -42,10 +43,11 @@ public class AvgRGBQuantizer implements Quantizer {
                     continue;
 
                 indices[x][y] = i;
+                quantizationMap[i]++;
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width,quantizationMap);
         return indexedImage;
     }
 

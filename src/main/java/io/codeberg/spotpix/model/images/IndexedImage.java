@@ -117,4 +117,14 @@ public class IndexedImage extends Image {
     public int[][] getIndices(){
         return indices;
     }
+    public void calculateQuantizationMap(){
+        quantizationMap=new int[colorMap.size()];
+
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                int index=indices[i][j];
+                quantizationMap[index]+=1;
+            }
+        }
+    }
 }
