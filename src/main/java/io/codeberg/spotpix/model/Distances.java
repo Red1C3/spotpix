@@ -1,5 +1,9 @@
 package io.codeberg.spotpix.model;
 
+import java.util.ArrayList;
+
+import io.codeberg.spotpix.model.quantizers.Quantizer;
+
 public class Distances {
     public static double channelDif(double c1, double c2, double alphas) {
         double black = c1 - c2, white = black + alphas;
@@ -29,5 +33,20 @@ public class Distances {
         sum = Math.sqrt(sum);
 
         return sum;
+    }
+
+    public static int getClosestColorId(Pixel pixel,ArrayList<Color> colorMap, Quantizer quantizer) {
+        Color color = pixel.getColor();
+        double minDist = Integer.MAX_VALUE;
+        int id = -1;
+        for (int i = 0; i < colorMap.size(); i++) {
+            Color c = colorMap.get(i);
+            double distance = quantizer.calcDistance(color, c);
+            if (distance < minDist) {
+                minDist = distance;
+                id = i;
+            }
+        }
+        return id;
     }
 }
