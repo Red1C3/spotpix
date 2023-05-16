@@ -9,6 +9,7 @@ public class ViewerRoot extends JFrame {
 
     public ViewerRoot() {
         super(TITLE);
+        setJMenuBar(new ViewerMenuBar());
         setSize(INITIAL_WIDTH, INITAIL_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
