@@ -15,7 +15,7 @@ public class FLTDecoder implements Decoder {
     // DATA: INDEX_TYPE_INDICES_ARRAY_WIDTH_MAJOR BYTE_RGB_COLOR_MAP
     // INT_QUANTIZE_AMOUNT
 
-    private static final byte MAGIC_NUMBER = 0x69;
+    public static final byte MAGIC_NUMBER = 0x69;
     private static final byte NON_QUANTIZED = 0x0;
     private static final byte QUANTIZED = 0x1;
     private static final byte BYTE_TYPE = 0x1;
