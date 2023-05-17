@@ -15,6 +15,8 @@ import io.codeberg.spotpix.model.images.Image;
 public class ViewerMenuBar extends JMenuBar implements Action{
     private static final String FILE_STR="File";
     private static final String OPEN_STR="Open";
+    private static final String EDIT_STR="Edit";
+    private static final String QUANTIZE_STR="Quantize";
     private static final int IMAGE_VIEW_PANEL_INDEX=1;
 
 
