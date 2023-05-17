@@ -1,10 +1,12 @@
 package io.codeberg.spotpix.views;
 
 import java.awt.Container;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.Action;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,26 +24,36 @@ public class ViewerMenuBar extends JMenuBar implements Action{
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open;
+    private JMenuItem open,quantize;
 
     public ViewerMenuBar(ViewerRoot viewerRoot){
         this.viewerRoot=viewerRoot;
         imageViewPanel=(ImageViewPanel) viewerRoot.splitPane.getComponent(IMAGE_VIEW_PANEL_INDEX);
         JMenu file=new JMenu(FILE_STR);
+        JMenu edit=new JMenu(EDIT_STR);
         
 
         open=new JMenuItem(OPEN_STR);
+        quantize=new JMenuItem(QUANTIZE_STR);
+        
         open.addActionListener(this);
+        quantize.addActionListener(this);
 
 
 
         file.add(open);
         add(file);
+
+        edit.add(quantize);
+        add(edit);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==open){
             openAction();
+        }
+        if(e.getSource()==quantize){
+            quantizeAction();
         }
     }
     @Override
@@ -61,5 +73,8 @@ public class ViewerMenuBar extends JMenuBar implements Action{
             File file=imageChooser.getSelectedFile();
             imageViewPanel.openImage(file.getAbsolutePath());
         }
+    }
+    private void quantizeAction(){
+        QuantizationDialog quantizationDialog=new QuantizationDialog(viewerRoot);
     }
 }
