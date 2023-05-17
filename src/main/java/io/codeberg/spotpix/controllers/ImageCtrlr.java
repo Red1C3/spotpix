@@ -1,5 +1,6 @@
 package io.codeberg.spotpix.controllers;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,5 +26,15 @@ public class ImageCtrlr {
         } else {
             image = (new JDecoder()).decode(bytes);
         }
+    }
+    public BufferedImage getBufferedImage(){
+        return image.toBufferedImage();
+    }
+    public int getHeight(){
+        return image.getHeight();
+    }
+
+    public int getWidth(){
+        return image.getWidth();
     }
 }
