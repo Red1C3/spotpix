@@ -31,8 +31,9 @@ public class QuantizationDialog extends JDialog {
     private final static String MEDIAN_CUT_STR = "Median Cut";
     private final static String AVG_STR = "Average Color";
 
-    private JPanel medianCutPanel, avgPanel;
+    private JPanel  avgPanel;
     private KMeanPanel kMeanPanel;
+    private MedianCutPanel medianCutPanel;
 
     public QuantizationDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Quantization", ModalityType.APPLICATION_MODAL);
@@ -55,8 +56,7 @@ public class QuantizationDialog extends JDialog {
 
     private void setupPanels() {
         kMeanPanel = new KMeanPanel(this);
-
-        medianCutPanel = new JPanel();
+        medianCutPanel = new MedianCutPanel(this);
         avgPanel = new JPanel();
     }
 }
@@ -172,9 +172,9 @@ class MedianCutPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
             if (rgbButton.isSelected()) {
-                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.RGB);
+                ImageViewPanel.instance().medianCutQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
-                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.LAB);
+                ImageViewPanel.instance().medianCutQuantize(colorsCount, ColorSystem.LAB);
             }
             quantizationDialog.dispose();
         }

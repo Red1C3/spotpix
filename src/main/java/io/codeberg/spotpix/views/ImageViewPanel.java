@@ -49,4 +49,8 @@ public class ImageViewPanel extends JPanel {
         imageCtrlr.kMeanQuantize(colorsCount, colorSystem);
         repaint();
     }
+    public void medianCutQuantize(int colorsCount,ColorSystem colorSystem){
+        imageCtrlr.medianCutQuantize(colorsCount, colorSystem);
+        repaint();
+    }
 }

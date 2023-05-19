@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.decoders.FLTDecoder;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerRGB;
 public class ImageCtrlr {
     private Image image;
 
@@ -45,6 +48,15 @@ public class ImageCtrlr {
             image=quantizer.quantize(image, null, null);
         }else if (colorSystem==ColorSystem.LAB){
             Quantizer quantizer=new KMeanQuantizerLAB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }
+    }
+    public void medianCutQuantize(int colorsCount,ColorSystem colorSystem){
+        if(colorSystem==ColorSystem.RGB){
+            Quantizer quantizer= new MedianCutQuantizerRGB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }else if (colorSystem==ColorSystem.LAB){
+            Quantizer quantizer= new MedianCutQuantizerLAB(colorsCount);
             image=quantizer.quantize(image, null, null);
         }
     }
