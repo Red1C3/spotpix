@@ -7,6 +7,8 @@ import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ColorSystem;
 import io.codeberg.spotpix.controllers.ImageCtrlr;
+import io.codeberg.spotpix.model.colorOps.ColorOp;
+import io.codeberg.spotpix.model.comparators.EqComparator;
 
 public class ImageViewPanel extends JPanel {
     private static ImageViewPanel imageViewPanel;
@@ -51,6 +53,10 @@ public class ImageViewPanel extends JPanel {
     }
     public void medianCutQuantize(int colorsCount,ColorSystem colorSystem){
         imageCtrlr.medianCutQuantize(colorsCount, colorSystem);
+        repaint();
+    }
+    public void avgQuantize(ColorSystem colorSystem,EqComparator comparator,ColorOp colorOp){
+        imageCtrlr.avgQuantize(colorSystem, comparator, colorOp);
         repaint();
     }
 }

@@ -19,19 +19,23 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ColorSystem;
+import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 
 public class QuantizationDialog extends JDialog {
     private final static String K_MEAN_STR = "K-Means";
     private final static String MEDIAN_CUT_STR = "Median Cut";
     private final static String AVG_STR = "Average Color";
 
-    private JPanel  avgPanel;
+    private AvgPanel  avgPanel;
     private KMeanPanel kMeanPanel;
     private MedianCutPanel medianCutPanel;
 
@@ -57,7 +61,7 @@ public class QuantizationDialog extends JDialog {
     private void setupPanels() {
         kMeanPanel = new KMeanPanel(this);
         medianCutPanel = new MedianCutPanel(this);
-        avgPanel = new JPanel();
+        avgPanel = new AvgPanel(this);
     }
 }
 
@@ -178,5 +182,65 @@ class MedianCutPanel extends JPanel implements ActionListener {
             }
             quantizationDialog.dispose();
         }
+    }
+}
+
+class AvgPanel extends JPanel implements ActionListener, ChangeListener {
+    private final static String ENTER_THRESHOLD_STR="Threshold:";
+    private final JLabel thresholdLabel;
+    private final JSlider thresholdSlider;
+    private final ButtonGroup colorSystem;
+    private final JRadioButton rgbButton, labButton;
+    private final JButton quantizeButton, cancelButton;
+    private final QuantizationDialog quantizationDialog;
+
+    public AvgPanel(QuantizationDialog quantizationDialog) {
+        super();
+        this.quantizationDialog = quantizationDialog;
+        setLayout(new GridLayout(3, 2));
+
+        thresholdLabel=new JLabel(ENTER_THRESHOLD_STR+"70");
+        add(thresholdLabel);
+
+        thresholdSlider=new JSlider(JSlider.HORIZONTAL, 0, 256*3, 70);
+        thresholdSlider.addChangeListener(this);
+        
+        add(thresholdSlider);
+
+        colorSystem = new ButtonGroup();
+        rgbButton = new JRadioButton("RGB", true);
+        labButton = new JRadioButton("Lab");
+
+        colorSystem.add(rgbButton);
+        colorSystem.add(labButton);
+        //add(rgbButton); 
+        //add(labButton); not supported YET
+
+        quantizeButton = new JButton("Quantize");
+        cancelButton = new JButton("Cancel");
+        quantizeButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+        add(quantizeButton);
+        add(cancelButton);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cancelButton) {
+            quantizationDialog.dispose();
+        } else if (e.getSource() == quantizeButton) {
+            int threshold=thresholdSlider.getValue();
+            if (rgbButton.isSelected()) {
+                ImageViewPanel.instance().avgQuantize(ColorSystem.RGB, new ManRGBComparator(threshold), null);
+            }
+            quantizationDialog.dispose();
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        int val=thresholdSlider.getValue();
+        thresholdLabel.setText(ENTER_THRESHOLD_STR+val);
     }
 }

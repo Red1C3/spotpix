@@ -6,9 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import io.codeberg.spotpix.model.Color;
+import io.codeberg.spotpix.model.colorOps.ColorOp;
+import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.decoders.FLTDecoder;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
+import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
@@ -59,5 +62,12 @@ public class ImageCtrlr {
             Quantizer quantizer= new MedianCutQuantizerLAB(colorsCount);
             image=quantizer.quantize(image, null, null);
         }
+    }
+    public void avgQuantize(ColorSystem colorSystem,EqComparator comparator,ColorOp colorOp){
+        if(colorSystem==ColorSystem.RGB){
+            Quantizer quantizer=new AvgRGBQuantizer();
+            image=quantizer.quantize(image, comparator, colorOp);
+        }
+        //No other systems are supported yet
     }
 }
