@@ -82,7 +82,66 @@ class KMeanPanel extends JPanel implements ActionListener {
         formatter.setMinimum(0);
         formatter.setMaximum(Integer.MAX_VALUE);
         formatter.setAllowsInvalid(false);
-        // If you want the value to be committed on each keystroke instead of focus lost
+        formatter.setCommitsOnValidEdit(true);
+        colorsCount = new JFormattedTextField(formatter);
+
+        add(colorsCount);
+
+        colorSystem = new ButtonGroup();
+        rgbButton = new JRadioButton("RGB", true);
+        labButton = new JRadioButton("Lab");
+
+        colorSystem.add(rgbButton);
+        colorSystem.add(labButton);
+        add(rgbButton);
+        add(labButton);
+
+        quantizeButton = new JButton("Quantize");
+        cancelButton = new JButton("Cancel");
+        quantizeButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+        add(quantizeButton);
+        add(cancelButton);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cancelButton) {
+            quantizationDialog.dispose();
+        } else if (e.getSource() == quantizeButton) {
+            int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            if (rgbButton.isSelected()) {
+                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.RGB);
+            } else if (labButton.isSelected()) {
+                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.LAB);
+            }
+            quantizationDialog.dispose();
+        }
+    }
+}
+
+class MedianCutPanel extends JPanel implements ActionListener {
+    private final static String ENTER_COLOR_STR = "The number of colors:";
+    private final JFormattedTextField colorsCount;
+    private final ButtonGroup colorSystem;
+    private final JRadioButton rgbButton, labButton;
+    private final JButton quantizeButton, cancelButton;
+    private final QuantizationDialog quantizationDialog;
+
+    public MedianCutPanel(QuantizationDialog quantizationDialog) {
+        super();
+        this.quantizationDialog = quantizationDialog;
+        setLayout(new GridLayout(3, 2));
+
+        add(new JLabel(ENTER_COLOR_STR));
+
+        NumberFormat format = NumberFormat.getInstance();
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setMaximum(Integer.MAX_VALUE);
+        formatter.setAllowsInvalid(false);
         formatter.setCommitsOnValidEdit(true);
         colorsCount = new JFormattedTextField(formatter);
 
