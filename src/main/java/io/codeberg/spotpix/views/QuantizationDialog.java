@@ -22,6 +22,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
+import javax.swing.text.html.ImageView;
+
+import io.codeberg.spotpix.controllers.ColorSystem;
 
 public class QuantizationDialog extends JDialog {
     private final static String K_MEAN_STR = "K-Means";
@@ -45,9 +48,9 @@ public class QuantizationDialog extends JDialog {
         tabbedPane.add(avgPanel, AVG_STR);
 
         add(tabbedPane, BorderLayout.CENTER);
-        setSize(300,100);
+        setSize(300, 100);
         setVisible(true);
-        
+
     }
 
     private void setupPanels() {
@@ -62,13 +65,13 @@ class KMeanPanel extends JPanel implements ActionListener {
     private final static String ENTER_COLOR_STR = "The number of colors:";
     private final JFormattedTextField colorsCount;
     private final ButtonGroup colorSystem;
-    private final JRadioButton rgbButton,labButton;
-    private final JButton quantizeButton,cancelButton;
+    private final JRadioButton rgbButton, labButton;
+    private final JButton quantizeButton, cancelButton;
     private final QuantizationDialog quantizationDialog;
 
     public KMeanPanel(QuantizationDialog quantizationDialog) {
         super();
-        this.quantizationDialog=quantizationDialog;
+        this.quantizationDialog = quantizationDialog;
         setLayout(new GridLayout(3, 2));
 
         add(new JLabel(ENTER_COLOR_STR));
@@ -86,7 +89,7 @@ class KMeanPanel extends JPanel implements ActionListener {
         add(colorsCount);
 
         colorSystem = new ButtonGroup();
-        rgbButton = new JRadioButton("RGB",true);
+        rgbButton = new JRadioButton("RGB", true);
         labButton = new JRadioButton("Lab");
 
         colorSystem.add(rgbButton);
@@ -94,8 +97,8 @@ class KMeanPanel extends JPanel implements ActionListener {
         add(rgbButton);
         add(labButton);
 
-        quantizeButton=new JButton("Quantize");
-        cancelButton=new JButton("Cancel");
+        quantizeButton = new JButton("Quantize");
+        cancelButton = new JButton("Cancel");
         quantizeButton.addActionListener(this);
         cancelButton.addActionListener(this);
         add(quantizeButton);
@@ -105,7 +108,15 @@ class KMeanPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==cancelButton){
+        if (e.getSource() == cancelButton) {
+            quantizationDialog.dispose();
+        } else if (e.getSource() == quantizeButton) {
+            int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            if (rgbButton.isSelected()) {
+                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.RGB);
+            } else if (labButton.isSelected()) {
+                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.LAB);
+            }
             quantizationDialog.dispose();
         }
     }

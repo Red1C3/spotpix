@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 import javax.swing.text.html.ImageView;
 
+import io.codeberg.spotpix.controllers.ColorSystem;
 import io.codeberg.spotpix.controllers.ImageCtrlr;
 
 public class ImageViewPanel extends JPanel {
@@ -42,6 +43,10 @@ public class ImageViewPanel extends JPanel {
 
     public void openImage(String path) {
         imageCtrlr = new ImageCtrlr(path);
+        repaint();
+    }
+    public void kMeanQuantize(int colorsCount,ColorSystem colorSystem){
+        imageCtrlr.kMeanQuantize(colorsCount, colorSystem);
         repaint();
     }
 }
