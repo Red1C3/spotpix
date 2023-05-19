@@ -3,11 +3,19 @@ package io.codeberg.spotpix.views;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.JPanel;
+import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ImageCtrlr;
 
 public class ImageViewPanel extends JPanel {
+    private static ImageViewPanel imageViewPanel;
+
     private ImageCtrlr imageCtrlr;
+    private ImageViewPanel(){super();}
+    public static ImageViewPanel instance(){
+        if(imageViewPanel==null) imageViewPanel=new ImageViewPanel();
+        return imageViewPanel;
+    }
 
     @Override
     public void paint(Graphics g) {

@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import io.codeberg.spotpix.model.decoders.FLTDecoder;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.images.Image;
-
+import io.codeberg.spotpix.model.quantizers.Quantizer;
+import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
 public class ImageCtrlr {
     private Image image;
 
@@ -36,5 +38,14 @@ public class ImageCtrlr {
 
     public int getWidth(){
         return image.getWidth();
+    }
+    public void kMeanQuantize(int colorsCount,ColorSystem colorSystem){
+        if(colorSystem==ColorSystem.RGB){
+            Quantizer quantizer=new KMeanQuantizerRGB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }else if (colorSystem==ColorSystem.LAB){
+            Quantizer quantizer=new KMeanQuantizerLAB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }
     }
 }

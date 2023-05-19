@@ -14,7 +14,7 @@ public class ViewerRoot extends JFrame {
     public ViewerRoot() {
         super(TITLE);
 
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JPanel(), new ImageViewPanel());
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JPanel(), ImageViewPanel.instance());
         add(splitPane);
         setJMenuBar(new ViewerMenuBar(this));
 
