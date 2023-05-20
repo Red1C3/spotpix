@@ -19,12 +19,13 @@ public class ViewerMenuBar extends JMenuBar implements Action{
     private static final String OPEN_STR="Open";
     private static final String EDIT_STR="Edit";
     private static final String QUANTIZE_STR="Quantize";
+    private static final String SAVE_STR="Save as";
     private static final int IMAGE_VIEW_PANEL_INDEX=1;
 
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open,quantize;
+    private JMenuItem open,quantize,save;
 
     public ViewerMenuBar(ViewerRoot viewerRoot){
         this.viewerRoot=viewerRoot;
@@ -35,13 +36,16 @@ public class ViewerMenuBar extends JMenuBar implements Action{
 
         open=new JMenuItem(OPEN_STR);
         quantize=new JMenuItem(QUANTIZE_STR);
+        save=new JMenuItem(SAVE_STR);
         
         open.addActionListener(this);
         quantize.addActionListener(this);
+        save.addActionListener(this);
 
 
 
         file.add(open);
+        file.add(save);
         add(file);
 
         edit.add(quantize);
@@ -54,6 +58,9 @@ public class ViewerMenuBar extends JMenuBar implements Action{
         }
         if(e.getSource()==quantize){
             quantizeAction();
+        }
+        if(e.getSource()==save){
+            saveAction();
         }
     }
     @Override
@@ -76,5 +83,8 @@ public class ViewerMenuBar extends JMenuBar implements Action{
     }
     private void quantizeAction(){
         QuantizationDialog quantizationDialog=new QuantizationDialog(viewerRoot);
+    }
+    private void saveAction(){
+
     }
 }
