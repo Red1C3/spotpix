@@ -21,6 +21,8 @@ import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
 import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerRGB;
 
 public class DummyCtrlr {
     public BufferedImage getImage() {
@@ -34,9 +36,12 @@ public class DummyCtrlr {
             return new BufferedImage(0, 0, BufferedImage.TYPE_3BYTE_BGR);
         }
         Image img = (new JDecoder()).decode(bytes);
+
+        int K=64;
         // Image quantized= (new AvgRGBQuantizer()).quantize(img, new ManRGBComparator(70), null);
-        // Image quantized= (new KMeanQuantizerLAB(64)).quantize(img, null, null);
-        Image quantized= (new MedianCutQuantizerLAB(64)).quantize(img, null, null);
+        // Image quantized= (new KMeanQuantizerLAB(K)).quantize(img, null, null);
+        // Image quantized= (new MedianCutQuantizerLAB(K)).quantize(img, null, null);
+        Image quantized= (new OctreeQuantizerLAB(K)).quantize(img, null, null);
 
 
         saveToDrive("./Assets/quantized.png", quantized,new JEncoder());
@@ -64,9 +69,12 @@ public class DummyCtrlr {
 
         IndexedImage img = (new IndexedImage(colorMap, indices, 100, 100));
 
+        int K=64;
+
         // return (new AvgRGBQuantizer()).quantize(img, new RGBComparator(), null).toBufferedImage();
-        // return (new KMeanQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
-        return (new MedianCutQuantizerLAB(64)).quantize(img, new RGBComparator(), null).toBufferedImage();
+        // return (new KMeanQuantizerLAB(K)).quantize(img, new RGBComparator(), null).toBufferedImage();
+        // return (new MedianCutQuantizerLAB(K)).quantize(img, new RGBComparator(), null).toBufferedImage();
+        return (new OctreeQuantizerLAB(K)).quantize(img, new RGBComparator(), null).toBufferedImage();
     }
     public void saveToDrive(String path,Image img,Encoder encoder){
         byte[] output=encoder.encode(img);
