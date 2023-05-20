@@ -59,4 +59,8 @@ public class ImageViewPanel extends JPanel {
         imageCtrlr.avgQuantize(colorSystem, comparator, colorOp);
         repaint();
     }
+    public void octreeQuantize(int colorsCount,ColorSystem colorSystem){
+        imageCtrlr.octreeQuantize(colorsCount, colorSystem);
+        repaint();
+    }
 }

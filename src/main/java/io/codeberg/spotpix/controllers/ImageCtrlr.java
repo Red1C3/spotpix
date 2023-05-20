@@ -17,6 +17,8 @@ import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerRGB;
 import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerLAB;
 import io.codeberg.spotpix.model.quantizers.MedianCut.MedianCutQuantizerRGB;
+import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerLAB;
+import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerRGB;
 public class ImageCtrlr {
     private Image image;
 
@@ -69,5 +71,14 @@ public class ImageCtrlr {
             image=quantizer.quantize(image, comparator, colorOp);
         }
         //No other systems are supported yet
+    }
+    public void octreeQuantize(int colorsCount,ColorSystem colorSystem){
+        if(colorSystem==ColorSystem.RGB){
+            Quantizer quantizer=new OctreeQuantizerRGB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }else if (colorSystem==ColorSystem.LAB){
+            Quantizer quantizer=new OctreeQuantizerLAB(colorsCount);
+            image=quantizer.quantize(image, null, null);
+        }
     }
 }
