@@ -1,4 +1,4 @@
-package io.codeberg.spotpix.model.quantizers;
+package io.codeberg.spotpix.model.quantizers.Octree;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +12,9 @@ import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
+import io.codeberg.spotpix.model.quantizers.Quantizer;
 
-public class OctreeQuantizer implements Quantizer {
+public abstract class OctreeQuantizer implements Quantizer {
     int treeDepth;
     int K;
     Node root;
@@ -71,11 +72,6 @@ public class OctreeQuantizer implements Quantizer {
 
         IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
         return indexedImage;
-    }
-
-    @Override
-    public double calcDistance(Color c1, Color c2) {
-        return Distances.calcDistanceRGB(c1, c2);
     }
 
     public void creatColorMap(){
@@ -184,6 +180,8 @@ public class OctreeQuantizer implements Quantizer {
         leafs.removeAll(del);
         return numberOfFilledLeafs>=K;
     }
+
+    public abstract double calcDistance(Color c1, Color c2);
 
     private static class leafComparator implements Comparator<Node> {
         @Override
