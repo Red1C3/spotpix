@@ -10,6 +10,7 @@ import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.decoders.FLTDecoder;
 import io.codeberg.spotpix.model.decoders.JDecoder;
+import io.codeberg.spotpix.model.encoders.FLTEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
@@ -79,6 +80,16 @@ public class ImageCtrlr {
         }else if (colorSystem==ColorSystem.LAB){
             Quantizer quantizer=new OctreeQuantizerLAB(colorsCount);
             image=quantizer.quantize(image, null, null);
+        }
+    }
+    public void saveImage(String path,ImageFormat format){
+        if(format==ImageFormat.FLT){
+            byte[] bytes=(new FLTEncoder()).encode(image);
+            try{
+                Files.write(Paths.get(path), bytes);
+            }catch(IOException ioException){
+                ioException.printStackTrace();
+            }
         }
     }
 }
