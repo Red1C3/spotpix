@@ -2,7 +2,6 @@ package io.codeberg.spotpix.views;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -11,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,6 +28,7 @@ import javax.swing.text.NumberFormatter;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ColorSystem;
+import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 
 public class QuantizationDialog extends JDialog {
@@ -66,6 +67,15 @@ public class QuantizationDialog extends JDialog {
         medianCutPanel = new MedianCutPanel(this);
         avgPanel = new AvgPanel(this);
         octreePanel = new OctreePanel(this);
+    }
+
+    @Override
+    public void dispose(){
+        super.dispose();
+        ArrayList<Color> colors=ImageViewPanel.instance().getColorMap();
+        if(colors!=null){
+            PalletView.instance().createPallet(colors);
+        }
     }
 }
 
@@ -304,7 +314,6 @@ class OctreePanel extends JPanel implements ActionListener {
             } else if (labButton.isSelected()) {
                 ImageViewPanel.instance().octreeQuantize(colorsCount, ColorSystem.LAB);
             }
-            PalletView.instance().createPallet(ImageViewPanel.instance().getColorMap());
 
             quantizationDialog.dispose();
         }
