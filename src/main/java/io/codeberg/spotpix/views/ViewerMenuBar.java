@@ -12,6 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import io.codeberg.spotpix.controllers.ImageFormat;
 import io.codeberg.spotpix.model.images.Image;
 
 public class ViewerMenuBar extends JMenuBar implements Action {
@@ -89,10 +90,16 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void saveAction() {
-        JFileChooser fileChooser = new ImageChooser();
+        JFileChooser fileChooser = new ImageSaver();
         int response = fileChooser.showSaveDialog(this);
         if(response==ImageChooser.APPROVE_OPTION){
-
+            String path=fileChooser.getSelectedFile().getAbsolutePath();
+            String ext=getExtension(path);
+            if(ext.equals(PNG_FMT)){
+                imageViewPanel.saveImage(path, ImageFormat.PNG);
+            }else if(ext.equals(FLT_FMT)){
+                imageViewPanel.saveImage(path, ImageFormat.FLT);
+            }
         }
     }
 

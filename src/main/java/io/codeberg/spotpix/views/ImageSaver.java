@@ -8,8 +8,8 @@ public class ImageSaver extends JFileChooser {
     public ImageSaver() {
         super();
         FileFilter filter = new FileNameExtensionFilter(
-                "Images (jpg, png, flt)",
-                "jpg", "png", "flt");
+                "Images (png, flt)",
+                 "png", "flt");
         setFileFilter(filter);
         setCurrentDirectory(getCurrentDirectory());
     }

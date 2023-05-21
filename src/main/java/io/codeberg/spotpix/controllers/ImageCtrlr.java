@@ -11,6 +11,7 @@ import io.codeberg.spotpix.model.comparators.EqComparator;
 import io.codeberg.spotpix.model.decoders.FLTDecoder;
 import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.encoders.FLTEncoder;
+import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
@@ -87,8 +88,15 @@ public class ImageCtrlr {
             byte[] bytes=(new FLTEncoder()).encode(image);
             try{
                 Files.write(Paths.get(path), bytes);
-            }catch(IOException ioException){
-                ioException.printStackTrace();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }else{
+            byte[] bytes=(new JEncoder()).encode(image);
+            try{
+                Files.write(Paths.get(path),bytes);
+            }catch(IOException e){
+                e.printStackTrace();
             }
         }
     }
