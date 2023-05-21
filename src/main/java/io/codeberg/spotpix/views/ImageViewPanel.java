@@ -71,6 +71,7 @@ public class ImageViewPanel extends JPanel {
         imageCtrlr.saveImage(path, format);
     }
     public ArrayList<Color> getColorMap(){
+        if(imageCtrlr==null) return null;
         return imageCtrlr.getColorMap();
     }
 }
