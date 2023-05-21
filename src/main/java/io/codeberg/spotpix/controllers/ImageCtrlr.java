@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
@@ -13,6 +14,7 @@ import io.codeberg.spotpix.model.decoders.JDecoder;
 import io.codeberg.spotpix.model.encoders.FLTEncoder;
 import io.codeberg.spotpix.model.encoders.JEncoder;
 import io.codeberg.spotpix.model.images.Image;
+import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.AvgRGBQuantizer;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
 import io.codeberg.spotpix.model.quantizers.KMean.KMeanQuantizerLAB;
@@ -99,5 +101,11 @@ public class ImageCtrlr {
                 e.printStackTrace();
             }
         }
+    }
+    public ArrayList<Color> getColorMap(){
+        if(image instanceof IndexedImage){
+            return ((IndexedImage)image).getColorMap();
+        }
+        return null;
     }
 }

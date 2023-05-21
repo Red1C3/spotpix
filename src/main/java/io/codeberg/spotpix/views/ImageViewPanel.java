@@ -2,12 +2,15 @@ package io.codeberg.spotpix.views;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ColorSystem;
 import io.codeberg.spotpix.controllers.ImageCtrlr;
 import io.codeberg.spotpix.controllers.ImageFormat;
+import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
 
@@ -66,5 +69,8 @@ public class ImageViewPanel extends JPanel {
     }
     public void saveImage(String path,ImageFormat format){
         imageCtrlr.saveImage(path, format);
+    }
+    public ArrayList<Color> getColorMap(){
+        return imageCtrlr.getColorMap();
     }
 }

@@ -304,6 +304,8 @@ class OctreePanel extends JPanel implements ActionListener {
             } else if (labButton.isSelected()) {
                 ImageViewPanel.instance().octreeQuantize(colorsCount, ColorSystem.LAB);
             }
+            PalletView.instance().createPallet(ImageViewPanel.instance().getColorMap());
+
             quantizationDialog.dispose();
         }
     }
