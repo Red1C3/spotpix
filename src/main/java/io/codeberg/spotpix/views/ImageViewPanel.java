@@ -74,4 +74,8 @@ public class ImageViewPanel extends JPanel {
         if(imageCtrlr==null) return null;
         return imageCtrlr.getColorMap();
     }
+    public int[] getQuantizationMap(){
+        if(imageCtrlr==null) return null;
+        return imageCtrlr.getQuantizationMap();
+    }
 }

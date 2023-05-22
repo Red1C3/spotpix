@@ -108,4 +108,13 @@ public class ImageCtrlr {
         }
         return null;
     }
+    public int[] getQuantizationMap(){
+        if(image instanceof IndexedImage){
+            IndexedImage indexedImage=(IndexedImage) image;
+            if(indexedImage.isQuantized()){
+                return indexedImage.getQuantizedMap();
+            }
+        }
+        return null;
+    }
 }
