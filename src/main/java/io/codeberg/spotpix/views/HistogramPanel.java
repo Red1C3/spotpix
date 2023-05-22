@@ -35,7 +35,7 @@ public class HistogramPanel extends ChartPanel {
     public void createHistogram(int[] quantizationMap,final ArrayList<Color> colorMap) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < quantizationMap.length; i++) {
-            dataset.addValue(quantizationMap[i], Integer.toString(i), "Color");
+            dataset.addValue(quantizationMap[i], Integer.toString(i), "");
         }
         chart = ChartFactory.createBarChart("Color Histogram", "Color", "Occurances",
                 dataset, PlotOrientation.HORIZONTAL, false, false, false);

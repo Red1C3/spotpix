@@ -1,5 +1,8 @@
 package io.codeberg.spotpix.views;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -13,8 +16,11 @@ public class ViewerRoot extends JFrame {
 
     public ViewerRoot() {
         super(TITLE);
-
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, HistogramPanel.instance(), ImageViewPanel.instance());
+        JPanel histoPallet = new JPanel(new GridLayout(2, 1));
+        histoPallet.add(PalletView.instance());
+        histoPallet.add(HistogramPanel.instance());
+        histoPallet.setPreferredSize(new Dimension(150, HEIGHT));
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histoPallet, ImageViewPanel.instance());
         add(splitPane);
         setJMenuBar(new ViewerMenuBar(this));
 
