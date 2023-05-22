@@ -34,7 +34,7 @@ public class Color {
         int[] rgb = XYZ2RGB(xyz[0], xyz[1], xyz[2]);
 
         argb = 0;
-        argb |= 0xFF000000; //Alpha = 255
+        argb |= 0xFF000000; // Alpha = 255
         argb |= ((rgb[0] << 16) & 0xFF0000);
         argb |= ((rgb[1] << 8) & 0xFF00);
         argb |= (rgb[2] & 0xFF);
@@ -57,7 +57,7 @@ public class Color {
     }
 
     public int getAlpha() {
-        return (argb & 0xFF000000) >> 24;
+        return (((argb & 0xFF000000) >> 24) & 0xFF);
     }
 
     public int getRed() {
