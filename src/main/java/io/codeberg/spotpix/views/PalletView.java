@@ -29,6 +29,10 @@ public class PalletView extends JPanel {
         repaint();
     }
 
+    public void reset() {
+        bufferedImage = null;
+    }
+
     @Override
     public void paint(Graphics g) {
         if (bufferedImage != null) {

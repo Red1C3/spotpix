@@ -32,7 +32,7 @@ public class HistogramPanel extends ChartPanel {
         super(chart);
     }
 
-    public void createHistogram(int[] quantizationMap,final ArrayList<Color> colorMap) {
+    public void createHistogram(int[] quantizationMap, final ArrayList<Color> colorMap) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < quantizationMap.length; i++) {
             dataset.addValue(quantizationMap[i], Integer.toString(i), "");
@@ -50,5 +50,9 @@ public class HistogramPanel extends ChartPanel {
         chart.getCategoryPlot().setRenderer(0, itemRenderer);
         setChart(chart);
         repaint();
+    }
+
+    public void reset() {
+        setChart(null);
     }
 }

@@ -18,9 +18,14 @@ public class ImageViewPanel extends JPanel {
     private static ImageViewPanel imageViewPanel;
 
     private ImageCtrlr imageCtrlr;
-    private ImageViewPanel(){super();}
-    public static ImageViewPanel instance(){
-        if(imageViewPanel==null) imageViewPanel=new ImageViewPanel();
+
+    private ImageViewPanel() {
+        super();
+    }
+
+    public static ImageViewPanel instance() {
+        if (imageViewPanel == null)
+            imageViewPanel = new ImageViewPanel();
         return imageViewPanel;
     }
 
@@ -49,33 +54,55 @@ public class ImageViewPanel extends JPanel {
 
     public void openImage(String path) {
         imageCtrlr = new ImageCtrlr(path);
+        int[] quantizationMap = imageCtrlr.getQuantizationMap();
+        ArrayList<Color> colors = imageCtrlr.getColorMap();
+        if (colors != null) {
+            PalletView.instance().createPallet(colors);
+            if (quantizationMap != null) {
+                HistogramPanel.instance().createHistogram(quantizationMap, colors);
+            }else{
+                HistogramPanel.instance().reset();
+            }
+        }else{
+            PalletView.instance().reset();
+            HistogramPanel.instance().reset();
+        }
         repaint();
     }
-    public void kMeanQuantize(int colorsCount,ColorSystem colorSystem){
+
+    public void kMeanQuantize(int colorsCount, ColorSystem colorSystem) {
         imageCtrlr.kMeanQuantize(colorsCount, colorSystem);
         repaint();
     }
-    public void medianCutQuantize(int colorsCount,ColorSystem colorSystem){
+
+    public void medianCutQuantize(int colorsCount, ColorSystem colorSystem) {
         imageCtrlr.medianCutQuantize(colorsCount, colorSystem);
         repaint();
     }
-    public void avgQuantize(ColorSystem colorSystem,EqComparator comparator,ColorOp colorOp){
+
+    public void avgQuantize(ColorSystem colorSystem, EqComparator comparator, ColorOp colorOp) {
         imageCtrlr.avgQuantize(colorSystem, comparator, colorOp);
         repaint();
     }
-    public void octreeQuantize(int colorsCount,ColorSystem colorSystem){
+
+    public void octreeQuantize(int colorsCount, ColorSystem colorSystem) {
         imageCtrlr.octreeQuantize(colorsCount, colorSystem);
         repaint();
     }
-    public void saveImage(String path,ImageFormat format){
+
+    public void saveImage(String path, ImageFormat format) {
         imageCtrlr.saveImage(path, format);
     }
-    public ArrayList<Color> getColorMap(){
-        if(imageCtrlr==null) return null;
+
+    public ArrayList<Color> getColorMap() {
+        if (imageCtrlr == null)
+            return null;
         return imageCtrlr.getColorMap();
     }
-    public int[] getQuantizationMap(){
-        if(imageCtrlr==null) return null;
+
+    public int[] getQuantizationMap() {
+        if (imageCtrlr == null)
+            return null;
         return imageCtrlr.getQuantizationMap();
     }
 }

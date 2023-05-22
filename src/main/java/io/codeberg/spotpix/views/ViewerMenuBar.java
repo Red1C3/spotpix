@@ -83,6 +83,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
             File file = imageChooser.getSelectedFile();
             imageViewPanel.openImage(file.getAbsolutePath());
         }
+        viewerRoot.repaint();
     }
 
     private void quantizeAction() {
