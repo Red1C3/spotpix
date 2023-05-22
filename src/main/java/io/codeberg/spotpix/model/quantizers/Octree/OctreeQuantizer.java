@@ -23,7 +23,7 @@ public abstract class OctreeQuantizer implements Quantizer {
     ArrayList<Node> leafs = new ArrayList<>();
 
     public OctreeQuantizer(int k) {
-        treeDepth = (int) Math.ceil(Math.log10(k) / Math.log10(8))+1; 
+        treeDepth = (int) Math.ceil(Math.log10(k) / Math.log10(8)) + 1;
         K = k;
     }
 
@@ -40,7 +40,7 @@ public abstract class OctreeQuantizer implements Quantizer {
                 allColors.add(new KColor(pixel.getColor()));
         }
         root = getRoot();
-        initTree(root,treeDepth);
+        initTree(root, treeDepth);
         for (KColor color : allColors) {
             root.addColor(color);
         }
@@ -48,7 +48,7 @@ public abstract class OctreeQuantizer implements Quantizer {
             leaf.calcNColor();
         }
 
-        while(!hasKColor()){
+        while (!hasKColor()) {
             getMaxNode().expand();
         }
 
@@ -57,32 +57,31 @@ public abstract class OctreeQuantizer implements Quantizer {
         int[][] indices = new int[width][height];
         int[] quantizationMap = new int[colorMap.size()];
 
-
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Pixel pixel = image.getPixel(i, j);
                 int x = pixel.getX();
                 int y = pixel.getY();
 
-                int index = Distances.getClosestColorId(pixel,colorMap,this);
+                int index = Distances.getClosestColorId(pixel, colorMap, this);
                 indices[x][y] = index;
                 quantizationMap[index] += 1;
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width, quantizationMap);
         return indexedImage;
     }
 
-    public void creatColorMap(){
-        Collections.sort(leafs,new leafComparator());
+    public void creatColorMap() {
+        Collections.sort(leafs, new leafComparator());
         for (int i = 0; i < K; i++) {
             ArrayList<KColor> colors = leafs.get(i).colors;
             int sumR = 0;
             int sumG = 0;
             int sumB = 0;
             int sumA = 0;
-            
+
             for (KColor color : colors) {
                 sumR += color.getRed();
                 sumG += color.getGreen();
@@ -90,14 +89,14 @@ public abstract class OctreeQuantizer implements Quantizer {
                 sumA += color.getAlpha();
                 color.clusterIndex = colorMap.size();
             }
-            
+
             sumR /= colors.size();
             sumG /= colors.size();
             sumB /= colors.size();
             sumA /= colors.size();
 
             Color curr = new Color(sumA, sumR, sumG, sumB);
-            if(!colorMap.contains(curr))
+            if (!colorMap.contains(curr))
                 colorMap.add(curr);
         }
     }
@@ -128,57 +127,55 @@ public abstract class OctreeQuantizer implements Quantizer {
         return root;
     }
 
-    public void initTree(Node node,int treeDepth) {
-        if(treeDepth<=0){
+    public void initTree(Node node, int treeDepth) {
+        if (treeDepth <= 0) {
             leafs.add(node);
             return;
         }
         for (int i = 0; i < 8; i++) {
-            if(node.child==null)
-                node.child=new Node[8];
+            if (node.child == null)
+                node.child = new Node[8];
             Node c = new Node(i, node);
             node.setChild(i, c);
-            initTree(c, treeDepth-1);
+            initTree(c, treeDepth - 1);
         }
     }
 
-    public Node getMaxNode(){
-        ArrayList<Node> del=new ArrayList<>();
-        Node maxNode=leafs.get(0);
+    public Node getMaxNode() {
+        ArrayList<Node> del = new ArrayList<>();
+        Node maxNode = leafs.get(0);
         for (int i = 0; i < leafs.size(); i++) {
             Node leaf = leafs.get(i);
-            if(leaf.nColors<=0){
+            if (leaf.nColors <= 0) {
                 leaf.prune();
-                if(!del.contains(leaf))
+                if (!del.contains(leaf))
                     del.add(leaf);
-            }
-            else if(leaf.nColors>maxNode.nColors && leaf.child==null)
-                maxNode=leaf;
+            } else if (leaf.nColors > maxNode.nColors && leaf.child == null)
+                maxNode = leaf;
         }
         leafs.removeAll(del);
         return maxNode;
     }
 
-    public Boolean hasKColor(){
-        if(leafs.size()<K)
+    public Boolean hasKColor() {
+        if (leafs.size() < K)
             return false;
         ArrayList<Node> curr = new ArrayList<Node>();
         ArrayList<Node> del = new ArrayList<Node>();
-        int numberOfFilledLeafs=0;
+        int numberOfFilledLeafs = 0;
         for (int i = 0; i < leafs.size(); i++) {
             Node leaf = leafs.get(i);
-            if(leaf.nColors<=0){
+            if (leaf.nColors <= 0) {
                 leaf.prune();
-                if(!del.contains(leaf))
+                if (!del.contains(leaf))
                     del.add(leaf);
-            }
-            else if(!curr.contains(leaf)){
+            } else if (!curr.contains(leaf)) {
                 curr.add(leaf);
                 numberOfFilledLeafs++;
             }
         }
         leafs.removeAll(del);
-        return numberOfFilledLeafs>=K;
+        return numberOfFilledLeafs >= K;
     }
 
     public abstract double calcDistance(Color c1, Color c2);
@@ -190,45 +187,47 @@ public abstract class OctreeQuantizer implements Quantizer {
         }
     }
 
-    private class Node{
+    private class Node {
         Color midColor;
-        // index is 3bit num which's MSB is 1 if blue is gt par_blue and LSB is 1 if red is gt par_red and so on
+        // index is 3bit num which's MSB is 1 if blue is gt par_blue and LSB is 1 if red
+        // is gt par_red and so on
         int index;
         Node parent;
         Node[] child;
         ArrayList<KColor> colors;
         int nColors;
-        
-        public Node(Color start,Color end){
-            int a = (int)Math.ceil((end.getAlpha()-start.getAlpha())/2.0);
-            int r = (int)Math.ceil((end.getRed()-start.getRed())/2.0);
-            int g = (int)Math.ceil((end.getBlue()-start.getBlue())/2.0);
-            int b = (int)Math.ceil((end.getGreen()-start.getGreen())/2.0);
+
+        public Node(Color start, Color end) {
+            int a = (int) Math.ceil((end.getAlpha() - start.getAlpha()) / 2.0);
+            int r = (int) Math.ceil((end.getRed() - start.getRed()) / 2.0);
+            int g = (int) Math.ceil((end.getBlue() - start.getBlue()) / 2.0);
+            int b = (int) Math.ceil((end.getGreen() - start.getGreen()) / 2.0);
             midColor = new Color(a, r, g, b);
             parent = null;
-            index=-1;
+            index = -1;
             child = null;
             colors = new ArrayList<KColor>();
         }
 
-        public Node(int i,Node p){
-            int offsetR=(int)Math.ceil(p.midColor.getRed()/2.0)*((i&1)>=1?+1:-1);
-            int offsetG=(int)Math.ceil(p.midColor.getGreen()/2.0)*((i&2)>=1?+1:-1);
-            int offsetB=(int)Math.ceil(p.midColor.getBlue()/2.0)*((i&4)>=1?+1:-1);
-            midColor = new Color(p.midColor.getAlpha(),p.midColor.getRed() + offsetR,p.midColor.getGreen() + offsetG,p.midColor.getBlue() + offsetB);
+        public Node(int i, Node p) {
+            int offsetR = (int) Math.ceil(p.midColor.getRed() / 2.0) * ((i & 1) >= 1 ? +1 : -1);
+            int offsetG = (int) Math.ceil(p.midColor.getGreen() / 2.0) * ((i & 2) >= 1 ? +1 : -1);
+            int offsetB = (int) Math.ceil(p.midColor.getBlue() / 2.0) * ((i & 4) >= 1 ? +1 : -1);
+            midColor = new Color(p.midColor.getAlpha(), p.midColor.getRed() + offsetR, p.midColor.getGreen() + offsetG,
+                    p.midColor.getBlue() + offsetB);
             parent = p;
             index = i;
             child = null;
             colors = new ArrayList<KColor>();
         }
 
-        public void setChild(int i,Node node){
-            child[i]=node;
+        public void setChild(int i, Node node) {
+            child[i] = node;
             return;
         }
 
-        public void addColor(KColor color){
-            if(child==null){
+        public void addColor(KColor color) {
+            if (child == null) {
                 colors.add(color);
                 return;
             }
@@ -236,30 +235,30 @@ public abstract class OctreeQuantizer implements Quantizer {
             child[childIndex].addColor(color);
         }
 
-        public int calcNColor(){
-            nColors=colors.size();
-            if(child!=null){
+        public int calcNColor() {
+            nColors = colors.size();
+            if (child != null) {
                 for (int i = 0; i < 8; i++) {
-                    if(child[i]==null)
+                    if (child[i] == null)
                         continue;
-                    int childNColors=child[i].calcNColor();
-                    if(nColors>0)
-                        nColors+=childNColors;
+                    int childNColors = child[i].calcNColor();
+                    if (nColors > 0)
+                        nColors += childNColors;
                 }
             }
             return nColors;
         }
 
-        public void prune(){
-            if (parent==null)
+        public void prune() {
+            if (parent == null)
                 return;
-            parent.colors=this.colors;
-            parent.child[index]=null;
+            parent.colors = this.colors;
+            parent.child[index] = null;
             colors.clear();
             parent.calcNColor();
         }
 
-        public void expand(){
+        public void expand() {
             child = new Node[8];
             for (int i = 0; i < 8; i++) {
                 Node c = new Node(i, this);
@@ -273,10 +272,10 @@ public abstract class OctreeQuantizer implements Quantizer {
             calcNColor();
         }
 
-        private int getChildIndex(KColor color){
-            int index  = 1*(color.getRed() > midColor.getRed()? 1 : 0);
-            index += 2*(color.getGreen() > midColor.getGreen()? 1 : 0);
-            index += 4*(color.getBlue() > midColor.getBlue()? 1 : 0);
+        private int getChildIndex(KColor color) {
+            int index = 1 * (color.getRed() > midColor.getRed() ? 1 : 0);
+            index += 2 * (color.getGreen() > midColor.getGreen() ? 1 : 0);
+            index += 4 * (color.getBlue() > midColor.getBlue() ? 1 : 0);
             return index;
         }
     }
