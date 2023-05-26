@@ -1,6 +1,7 @@
 package io.codeberg.spotpix.model.decoders;
 
 import java.nio.ByteBuffer;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
@@ -23,13 +24,13 @@ public class FLTDecoder implements Decoder {
     private static final byte INT_TYPE = 0x4;
 
     @Override
-    public Image decode(byte[] bytes) {
+    public Image decode(byte[] bytes,FileTime fileTime) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
 
         byte magicNumber = buffer.get();
         if (magicNumber != MAGIC_NUMBER) {
             System.out.println("Magic numbers does not match");
-            return new ByteImage(null, 0, 0);
+            return new ByteImage(null, 0, 0,0,null);
         }
 
         byte quantizedByte = buffer.get();
@@ -41,7 +42,7 @@ public class FLTDecoder implements Decoder {
             quantized = false;
         } else {
             System.out.println("quantization flag unknown");
-            return new ByteImage(null, 0, 0);
+            return new ByteImage(null, 0, 0,0,null);
         }
 
         byte indexType = buffer.get();
@@ -82,10 +83,10 @@ public class FLTDecoder implements Decoder {
             for (int i = 0; i < colorMapLength; i++) {
                 quantizationMap[i] = buffer.getInt();
             }
-            return new IndexedImage(colorMap, indices, height, width, quantizationMap);
+            return new IndexedImage(colorMap, indices, height, width, quantizationMap,bytes.length,fileTime);
         }
 
-        return new IndexedImage(colorMap, indices, height, width);
+        return new IndexedImage(colorMap, indices, height, width,bytes.length,fileTime);
     }
 
     private int toUnsignedInt(short i){

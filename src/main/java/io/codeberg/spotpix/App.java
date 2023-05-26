@@ -1,6 +1,5 @@
 package io.codeberg.spotpix;
 
-import io.codeberg.spotpix.views.DummyView;
 import io.codeberg.spotpix.views.ViewerRoot;
 
 public class App 

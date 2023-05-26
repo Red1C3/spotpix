@@ -1,6 +1,7 @@
 package io.codeberg.spotpix.model.images;
 
 import java.awt.image.BufferedImage;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -12,6 +13,8 @@ import io.codeberg.spotpix.model.comparators.EqComparator;
 
 public abstract class Image {
     protected int width, height;
+    protected FileTime fileTime;
+    protected int fileSize;
 
     public abstract BufferedImage toBufferedImage();
 
@@ -25,6 +28,13 @@ public abstract class Image {
 
     public abstract IndexedImage toIndexedImage();
 
+    public Image(int width, int height, int fileSize, FileTime fileTime) {
+        this.width = width;
+        this.height = height;
+        this.fileSize = fileSize;
+        this.fileTime = fileTime;
+    }
+
     public Pixel[][] getPixels() {
         Pixel[][] pixels = new Pixel[width][height];
 
@@ -37,11 +47,11 @@ public abstract class Image {
     }
 
     public Pixel[] getFlattenPixels() {
-        Pixel[] pixels = new Pixel[width*height];
+        Pixel[] pixels = new Pixel[width * height];
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                pixels[i + width* j] = getPixel(i, j);
+                pixels[i + width * j] = getPixel(i, j);
             }
         }
         return pixels;
@@ -134,5 +144,11 @@ public abstract class Image {
 
     public int getWidth() {
         return width;
+    }
+    public int getFileSize(){
+        return fileSize;
+    }
+    public FileTime getFileTime(){
+        return fileTime;
     }
 }

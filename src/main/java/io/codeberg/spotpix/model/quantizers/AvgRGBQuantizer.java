@@ -46,7 +46,7 @@ public class AvgRGBQuantizer implements Quantizer {
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width,quantizationMap);
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width,quantizationMap,image.getFileSize(),image.getFileTime());
         return indexedImage;
     }
 

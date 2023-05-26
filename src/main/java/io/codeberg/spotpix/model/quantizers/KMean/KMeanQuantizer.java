@@ -71,7 +71,7 @@ public abstract class KMeanQuantizer implements Quantizer {
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(centroids, indices, height, width, quantizationMap);
+        IndexedImage indexedImage = new IndexedImage(centroids, indices, height, width, quantizationMap,image.getFileSize(),image.getFileTime());
         return indexedImage;
     }
 

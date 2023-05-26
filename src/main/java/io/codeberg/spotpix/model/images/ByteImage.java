@@ -1,6 +1,7 @@
 package io.codeberg.spotpix.model.images;
 
 import java.awt.image.BufferedImage;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
@@ -10,10 +11,9 @@ import io.codeberg.spotpix.model.comparators.RGBComparator;
 public class ByteImage extends Image {
     private Color[][] pixels;
 
-    public ByteImage(Color[][] pixels, int height, int width) {
+    public ByteImage(Color[][] pixels, int height, int width,int fileSize,FileTime fileTime) {
+        super(width, height, fileSize, fileTime);
         this.pixels = pixels;
-        this.height = height;
-        this.width = width;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ByteImage extends Image {
             }
         }
 
-        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width);
+        IndexedImage indexedImage = new IndexedImage(colorMap, indices, height, width,fileSize,fileTime);
         return indexedImage;
     }
 

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.attribute.FileTime;
 
 import javax.imageio.ImageIO;
 
@@ -14,7 +15,7 @@ import io.codeberg.spotpix.model.images.Image;
 public class JDecoder implements Decoder {
 
     @Override
-    public Image decode(byte[] bytes) {
+    public Image decode(byte[] bytes,FileTime fileTime) {
         InputStream byteStream = new ByteArrayInputStream(bytes);
         BufferedImage bufferedImage = null;
         try {
@@ -34,8 +35,7 @@ public class JDecoder implements Decoder {
                 colors[i][j] = new Color(argb);
             }
         }
-
-        return new ByteImage(colors, height, width);
+        return new ByteImage(colors, height, width,bytes.length,fileTime);
     }
 
 }

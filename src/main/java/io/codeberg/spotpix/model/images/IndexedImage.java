@@ -1,6 +1,7 @@
 package io.codeberg.spotpix.model.images;
 
 import java.awt.image.BufferedImage;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 
 import io.codeberg.spotpix.model.Color;
@@ -11,19 +12,21 @@ public class IndexedImage extends Image {
     private int[][] indices;
     private int[] quantizationMap;
 
-    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width) {
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width, int fileSize,
+            FileTime fileTime) {
+        super(width, height, fileSize, fileTime);
         this.colorMap = colorMap;
         this.indices = indices;
-        this.height = height;
-        this.width = width;
     }
 
-    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width,int[] quantizationMap) {
+    public IndexedImage(ArrayList<Color> colorMap, int[][] indices, int height, int width, int[] quantizationMap,
+            int fileSize, FileTime fileTime) {
+        super(width, height, fileSize, fileTime);
         this.colorMap = colorMap;
         this.indices = indices;
         this.height = height;
         this.width = width;
-        this.quantizationMap=quantizationMap;
+        this.quantizationMap = quantizationMap;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class IndexedImage extends Image {
                 colors[i][j] = colorMap.get(indices[i][j]);
             }
         }
-        return new ByteImage(colors, height, width);
+        return new ByteImage(colors, height, width, fileSize, fileTime);
     }
 
     @Override
@@ -114,16 +117,18 @@ public class IndexedImage extends Image {
     public ArrayList<Color> getColorMap() {
         return colorMap;
     }
-    public int[][] getIndices(){
+
+    public int[][] getIndices() {
         return indices;
     }
-    public void calculateQuantizationMap(){
-        quantizationMap=new int[colorMap.size()];
 
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                int index=indices[i][j];
-                quantizationMap[index]+=1;
+    public void calculateQuantizationMap() {
+        quantizationMap = new int[colorMap.size()];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int index = indices[i][j];
+                quantizationMap[index] += 1;
             }
         }
     }
