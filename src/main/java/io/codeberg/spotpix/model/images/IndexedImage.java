@@ -127,4 +127,40 @@ public class IndexedImage extends Image {
             }
         }
     }
+    public int[] getRedChannel(){
+        int[] channel=new int[256];
+        if(quantizationMap==null){
+            calculateQuantizationMap();
+        }
+        for(int i=0;i<colorMap.size();i++){
+            int red=colorMap.get(i).getRed();
+            channel[red]=+quantizationMap[i];
+        }
+
+        return channel;
+    }
+    public int[] getGreenChannel(){
+        int[] channel=new int[256];
+        if(quantizationMap==null){
+            calculateQuantizationMap();
+        }
+        for(int i=0;i<colorMap.size();i++){
+            int green=colorMap.get(i).getGreen();
+            channel[green]=+quantizationMap[i];
+        }
+
+        return channel;
+    }
+    public int[] getBlueChannel(){
+        int[] channel=new int[256];
+        if(quantizationMap==null){
+            calculateQuantizationMap();
+        }
+        for(int i=0;i<colorMap.size();i++){
+            int blue=colorMap.get(i).getBlue();
+            channel[blue]=+quantizationMap[i];
+        }
+
+        return channel;
+    }
 }
