@@ -62,11 +62,11 @@ public class ImageViewPanel extends JPanel {
                 HistogramPanel.createHistogram(quantizationMap, colors);
             }
             // else{
-            //     HistogramPanel.instance().reset();
+            // HistogramPanel.instance().reset();
             // }
-        }else{
+        } else {
             PalletView.instance().reset();
-            //HistogramPanel.instance().reset();
+            // HistogramPanel.instance().reset();
         }
         repaint();
     }
@@ -106,9 +106,22 @@ public class ImageViewPanel extends JPanel {
             return null;
         return imageCtrlr.getQuantizationMap();
     }
-    public int[] getRedChannel(){
-        if(imageCtrlr==null)
-        return null;
+
+    public int[] getRedChannel() {
+        if (imageCtrlr == null)
+            return null;
         return imageCtrlr.getRedChannel();
+    }
+
+    public int[] getGreenChannel() {
+        if (imageCtrlr == null)
+            return null;
+        return imageCtrlr.getGreenChannel();
+    }
+
+    public int[] getBlueChannel() {
+        if (imageCtrlr == null)
+            return null;
+        return imageCtrlr.getBlueChannel();
     }
 }
