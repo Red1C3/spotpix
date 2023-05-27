@@ -106,4 +106,9 @@ public class ImageViewPanel extends JPanel {
             return null;
         return imageCtrlr.getQuantizationMap();
     }
+    public int[] getRedChannel(){
+        if(imageCtrlr==null)
+        return null;
+        return imageCtrlr.getRedChannel();
+    }
 }

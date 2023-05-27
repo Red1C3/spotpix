@@ -70,14 +70,16 @@ public class QuantizationDialog extends JDialog {
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         super.dispose();
-        ArrayList<Color> colors=ImageViewPanel.instance().getColorMap();
-        int[] quantizationMap=ImageViewPanel.instance().getQuantizationMap();
-        if(colors!=null){
+        ArrayList<Color> colors = ImageViewPanel.instance().getColorMap();
+        int[] quantizationMap = ImageViewPanel.instance().getQuantizationMap();
+        if (colors != null) {
             PalletView.instance().createPallet(colors);
-            if(quantizationMap!=null){
+            if (quantizationMap != null) {
                 HistogramPanel.createHistogram(quantizationMap, colors);
+                ViewerRoot.instance().histogramPanels[0].setRGBHistogramPanel("RGB",
+                        ImageViewPanel.instance().getRedChannel());
             }
         }
     }
