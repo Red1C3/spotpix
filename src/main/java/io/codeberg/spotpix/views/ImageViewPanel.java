@@ -59,13 +59,14 @@ public class ImageViewPanel extends JPanel {
         if (colors != null) {
             PalletView.instance().createPallet(colors);
             if (quantizationMap != null) {
-                HistogramPanel.instance().createHistogram(quantizationMap, colors);
-            }else{
-                HistogramPanel.instance().reset();
+                HistogramPanel.createHistogram(quantizationMap, colors);
             }
+            // else{
+            //     HistogramPanel.instance().reset();
+            // }
         }else{
             PalletView.instance().reset();
-            HistogramPanel.instance().reset();
+            //HistogramPanel.instance().reset();
         }
         repaint();
     }

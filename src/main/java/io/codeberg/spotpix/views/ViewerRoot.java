@@ -18,7 +18,7 @@ public class ViewerRoot extends JFrame {
         super(TITLE);
         JPanel histoPallet = new JPanel(new GridLayout(2, 1));
         histoPallet.add(PalletView.instance());
-        histoPallet.add(HistogramPanel.instance());
+        //histoPallet.add(HistogramPanel.instance());
         histoPallet.setPreferredSize(new Dimension(150, HEIGHT));
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histoPallet, ImageViewPanel.instance());
         add(splitPane);

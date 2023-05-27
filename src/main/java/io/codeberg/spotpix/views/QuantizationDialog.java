@@ -77,7 +77,7 @@ public class QuantizationDialog extends JDialog {
         if(colors!=null){
             PalletView.instance().createPallet(colors);
             if(quantizationMap!=null){
-                HistogramPanel.instance().createHistogram(quantizationMap, colors);
+                HistogramPanel.createHistogram(quantizationMap, colors);
             }
         }
     }
