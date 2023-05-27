@@ -78,7 +78,7 @@ public class QuantizationDialog extends JDialog {
             PalletView.instance().createPallet(colors);
             if (quantizationMap != null) {
                 HistogramPanel.createHistogram(quantizationMap, colors);
-                ViewerRoot.instance().histogramPanels[0].setRGBHistogramPanel("RGB",
+                ViewerRoot.instance().histogramPanels[0].setRGBHistogramPanel("Red",
                         ImageViewPanel.instance().getRedChannel());
             }
         }
