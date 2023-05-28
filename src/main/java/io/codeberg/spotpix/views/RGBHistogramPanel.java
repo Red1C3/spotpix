@@ -29,7 +29,7 @@ public class RGBHistogramPanel extends ChartPanel {
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         CategoryAxis axis = plot.getDomainAxis();
         axis.setTickLabelsVisible(false);
-        CategoryItemRenderer renderer = new LineAndShapeRenderer() {
+        CategoryItemRenderer renderer = new LineAndShapeRenderer(true,false) {
             @Override
             public Paint getItemPaint(final int row, final int column) {
                 switch (channelName.toLowerCase()) {
