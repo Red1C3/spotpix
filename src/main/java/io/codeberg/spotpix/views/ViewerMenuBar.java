@@ -96,7 +96,9 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void viewRGBHistogram() {
-        //TODO
+        RGBHistogramPanel.createRGBHistogramPanel("Red", ImageViewPanel.instance().getRedChannel());
+        RGBHistogramPanel.createRGBHistogramPanel("Green", ImageViewPanel.instance().getGreenChannel());
+        RGBHistogramPanel.createRGBHistogramPanel("Blue", ImageViewPanel.instance().getBlueChannel());
     }
 
     private void viewAllColorsHistogram() {

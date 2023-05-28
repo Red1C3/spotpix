@@ -2,6 +2,8 @@ package io.codeberg.spotpix.views;
 
 import java.awt.Paint;
 
+import javax.swing.JFrame;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -15,11 +17,13 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
 public class RGBHistogramPanel extends ChartPanel {
-    public RGBHistogramPanel(JFreeChart chart) {
+    private RGBHistogramPanel(JFreeChart chart) {
         super(chart);
     }
 
-    public void setRGBHistogramPanel(final String channelName, int[] channel) {
+    public static void createRGBHistogramPanel(final String channelName, int[] channel) {
+        JFrame rgbFrame=new JFrame("RGB Histogram");
+        rgbFrame.setSize(500, 200);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < channel.length; i++) {
             dataset.addValue(channel[i], "", Integer.toString(i));
@@ -45,7 +49,9 @@ public class RGBHistogramPanel extends ChartPanel {
         };
         chart.getCategoryPlot().setRenderer(0, renderer);
 
-        setChart(chart);
+        RGBHistogramPanel panel=new RGBHistogramPanel(chart);
+        rgbFrame.add(panel);
+        rgbFrame.setVisible(true);
     }
 
 }
