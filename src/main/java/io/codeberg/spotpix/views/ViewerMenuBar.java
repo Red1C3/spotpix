@@ -92,7 +92,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void viewColorPallet() {
-        //TODO
+        PalletView.createPallet(ImageViewPanel.instance().getColorMap());
     }
 
     private void viewRGBHistogram() {
