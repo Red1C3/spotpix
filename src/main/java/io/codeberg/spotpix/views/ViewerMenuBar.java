@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.Action;
 import javax.swing.JDialog;
@@ -11,8 +12,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ImageFormat;
+import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
 
 public class ViewerMenuBar extends JMenuBar implements Action {
@@ -21,27 +24,37 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String EDIT_STR = "Edit";
     private static final String QUANTIZE_STR = "Quantize";
     private static final String SAVE_STR = "Save as";
-    private static final String PNG_FMT="png";
-    private static final String FLT_FMT="flt";
-    private static final int IMAGE_VIEW_PANEL_INDEX = 1;
+    private static final String VIEW_STR = "View";
+    private static final String ALL_CLR_HISTO_STR = "All Colors Histogram";
+    private static final String RGB_HISTO_STR = "RGB Channel Histogram";
+    private static final String PALLET_STRING = "Color Pallet";
+    private static final String PNG_FMT = "png";
+    private static final String FLT_FMT = "flt";
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open, quantize, save;
+    private JMenuItem open, quantize, save, allColorHistogram, rgbHistogram, palletView;
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
         imageViewPanel = ImageViewPanel.instance();
         JMenu file = new JMenu(FILE_STR);
         JMenu edit = new JMenu(EDIT_STR);
+        JMenu view = new JMenu(VIEW_STR);
 
         open = new JMenuItem(OPEN_STR);
         quantize = new JMenuItem(QUANTIZE_STR);
         save = new JMenuItem(SAVE_STR);
+        allColorHistogram = new JMenuItem(ALL_CLR_HISTO_STR);
+        rgbHistogram = new JMenuItem(RGB_HISTO_STR);
+        palletView = new JMenuItem(PALLET_STRING);
 
         open.addActionListener(this);
         quantize.addActionListener(this);
         save.addActionListener(this);
+        allColorHistogram.addActionListener(this);
+        rgbHistogram.addActionListener(this);
+        palletView.addActionListener(this);
 
         file.add(open);
         file.add(save);
@@ -49,6 +62,11 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
         edit.add(quantize);
         add(edit);
+
+        view.add(allColorHistogram);
+        view.add(rgbHistogram);
+        view.add(palletView);
+        add(view);
     }
 
     @Override
@@ -62,6 +80,29 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if (e.getSource() == save) {
             saveAction();
         }
+        if(e.getSource()==allColorHistogram){
+            viewAllColorsHistogram();
+        }
+        if(e.getSource()==rgbHistogram){
+            viewRGBHistogram();
+        }
+        if(e.getSource()==palletView){
+            viewColorPallet();
+        }
+    }
+
+    private void viewColorPallet() {
+        //TODO
+    }
+
+    private void viewRGBHistogram() {
+        //TODO
+    }
+
+    private void viewAllColorsHistogram() {
+        int[] quantizationMap=ImageViewPanel.instance().getQuantizationMap();
+        ArrayList<Color> colorMap=ImageViewPanel.instance().getColorMap();
+        HistogramPanel.createHistogram(quantizationMap, colorMap);
     }
 
     @Override
@@ -93,12 +134,12 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private void saveAction() {
         JFileChooser fileChooser = new ImageSaver();
         int response = fileChooser.showSaveDialog(this);
-        if(response==ImageChooser.APPROVE_OPTION){
-            String path=fileChooser.getSelectedFile().getAbsolutePath();
-            String ext=getExtension(path);
-            if(ext.equals(PNG_FMT)){
+        if (response == ImageChooser.APPROVE_OPTION) {
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            String ext = getExtension(path);
+            if (ext.equals(PNG_FMT)) {
                 imageViewPanel.saveImage(path, ImageFormat.PNG);
-            }else if(ext.equals(FLT_FMT)){
+            } else if (ext.equals(FLT_FMT)) {
                 imageViewPanel.saveImage(path, ImageFormat.FLT);
             }
         }
