@@ -31,7 +31,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
-        imageViewPanel = (ImageViewPanel) viewerRoot.splitPane.getComponent(IMAGE_VIEW_PANEL_INDEX);
+        imageViewPanel = ImageViewPanel.instance();
         JMenu file = new JMenu(FILE_STR);
         JMenu edit = new JMenu(EDIT_STR);
 

@@ -68,25 +68,6 @@ public class QuantizationDialog extends JDialog {
         avgPanel = new AvgPanel(this);
         octreePanel = new OctreePanel(this);
     }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-        ArrayList<Color> colors = ImageViewPanel.instance().getColorMap();
-        int[] quantizationMap = ImageViewPanel.instance().getQuantizationMap();
-        if (colors != null) {
-            PalletView.instance().createPallet(colors);
-            if (quantizationMap != null) {
-                HistogramPanel.createHistogram(quantizationMap, colors);
-                ViewerRoot.instance().histogramPanels[0].setRGBHistogramPanel("Red",
-                        ImageViewPanel.instance().getRedChannel());
-                ViewerRoot.instance().histogramPanels[1].setRGBHistogramPanel("Green",
-                        ImageViewPanel.instance().getGreenChannel());
-                ViewerRoot.instance().histogramPanels[2].setRGBHistogramPanel("Blue",
-                        ImageViewPanel.instance().getBlueChannel());
-            }
-        }
-    }
 }
 
 class KMeanPanel extends JPanel implements ActionListener {
