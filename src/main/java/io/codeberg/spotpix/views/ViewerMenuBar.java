@@ -20,6 +20,7 @@ import io.codeberg.spotpix.model.images.Image;
 
 public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String FILE_STR = "File";
+    private static final String SEARCH_STR="Search";
     private static final String OPEN_STR = "Open";
     private static final String EDIT_STR = "Edit";
     private static final String QUANTIZE_STR = "Quantize";
@@ -33,7 +34,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open, quantize, save, allColorHistogram, rgbHistogram, palletView;
+    private JMenuItem open, quantize, save, allColorHistogram, rgbHistogram, palletView,search;
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
@@ -48,6 +49,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         allColorHistogram = new JMenuItem(ALL_CLR_HISTO_STR);
         rgbHistogram = new JMenuItem(RGB_HISTO_STR);
         palletView = new JMenuItem(PALLET_STRING);
+        search=new JMenuItem(SEARCH_STR);
 
         open.addActionListener(this);
         quantize.addActionListener(this);
@@ -55,9 +57,11 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         allColorHistogram.addActionListener(this);
         rgbHistogram.addActionListener(this);
         palletView.addActionListener(this);
+        search.addActionListener(this);
 
         file.add(open);
         file.add(save);
+        file.add(search);
         add(file);
 
         edit.add(quantize);
@@ -89,6 +93,12 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if(e.getSource()==palletView){
             viewColorPallet();
         }
+        if(e.getSource()==search){
+            searchAction();
+        }
+    }
+    private void searchAction(){
+        new SearchDialog();
     }
 
     private void viewColorPallet() {
