@@ -17,6 +17,7 @@ public class SearchDialog extends JDialog implements ActionListener{
 
     private JPanel colorPanel;
     private JTextField pathField;
+    private JButton pathButton,searchButton;
     public SearchDialog(){
         super(ViewerRoot.instance(),"Search",ModalityType.APPLICATION_MODAL);
 
@@ -26,18 +27,25 @@ public class SearchDialog extends JDialog implements ActionListener{
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
         pathField=new JTextField();
-        JButton pathButton=new JButton();
+        pathButton=new JButton("Navigate");
         pathButton.addActionListener(this);
         JPanel pathPanel=new JPanel();
         pathPanel.setLayout(new BorderLayout());
         pathPanel.add(pathField,BorderLayout.CENTER);
         pathPanel.add(pathButton,BorderLayout.EAST);
+
+        searchButton=new JButton("Search");
+        searchButton.addActionListener(this);
+        JPanel southPanel=new JPanel();
+        southPanel.add(searchButton);
+
         setupPanels();
 
         tabbedPane.add(colorPanel,COLOR_SRCH_STR);
         add(tabbedPane,BorderLayout.CENTER);
         add(pathPanel,BorderLayout.NORTH);
-        setSize(300, 100);
+        add(southPanel,BorderLayout.SOUTH);
+        setSize(300, 300);
         setVisible(true);
     }
 
