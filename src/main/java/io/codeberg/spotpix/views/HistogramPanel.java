@@ -1,6 +1,9 @@
 package io.codeberg.spotpix.views;
 
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+
 import java.awt.Graphics;
 import java.awt.Paint;
 
@@ -19,25 +22,21 @@ import org.jfree.data.statistics.SimpleHistogramDataset;
 import io.codeberg.spotpix.model.Color;
 
 public class HistogramPanel extends ChartPanel {
-    private static HistogramPanel histogramPanel;
-    private JFreeChart chart;
 
-    public static HistogramPanel instance() {
-        if (histogramPanel == null)
-            histogramPanel = new HistogramPanel(null);
-        return histogramPanel;
-    }
+    
 
     private HistogramPanel(JFreeChart chart) {
         super(chart);
     }
 
-    public void createHistogram(int[] quantizationMap, final ArrayList<Color> colorMap) {
+    public static void createHistogram(int[] quantizationMap, final ArrayList<Color> colorMap) {
+        JFrame histogramFrame=new JFrame("Color Histogram");
+        histogramFrame.setSize(500, 500);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < quantizationMap.length; i++) {
             dataset.addValue(quantizationMap[i], Integer.toString(i), "");
         }
-        chart = ChartFactory.createBarChart("Color Histogram", "Color", "Occurances",
+        JFreeChart chart = ChartFactory.createBarChart("Color Histogram", "Color", "Occurances",
                 dataset, PlotOrientation.HORIZONTAL, false, false, false);
 
         CategoryItemRenderer itemRenderer = new BarRenderer() {
@@ -48,8 +47,9 @@ public class HistogramPanel extends ChartPanel {
             }
         };
         chart.getCategoryPlot().setRenderer(0, itemRenderer);
-        setChart(chart);
-        repaint();
+        HistogramPanel histogramPanel=new HistogramPanel(chart);
+        histogramFrame.add(histogramPanel);
+        histogramFrame.setVisible(true);
     }
 
     public void reset() {

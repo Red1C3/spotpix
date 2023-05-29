@@ -54,19 +54,6 @@ public class ImageViewPanel extends JPanel {
 
     public void openImage(String path) {
         imageCtrlr = new ImageCtrlr(path);
-        int[] quantizationMap = imageCtrlr.getQuantizationMap();
-        ArrayList<Color> colors = imageCtrlr.getColorMap();
-        if (colors != null) {
-            PalletView.instance().createPallet(colors);
-            if (quantizationMap != null) {
-                HistogramPanel.instance().createHistogram(quantizationMap, colors);
-            }else{
-                HistogramPanel.instance().reset();
-            }
-        }else{
-            PalletView.instance().reset();
-            HistogramPanel.instance().reset();
-        }
         repaint();
     }
 
@@ -104,5 +91,23 @@ public class ImageViewPanel extends JPanel {
         if (imageCtrlr == null)
             return null;
         return imageCtrlr.getQuantizationMap();
+    }
+
+    public int[] getRedChannel() {
+        if (imageCtrlr == null)
+            return null;
+        return imageCtrlr.getRedChannel();
+    }
+
+    public int[] getGreenChannel() {
+        if (imageCtrlr == null)
+            return null;
+        return imageCtrlr.getGreenChannel();
+    }
+
+    public int[] getBlueChannel() {
+        if (imageCtrlr == null)
+            return null;
+        return imageCtrlr.getBlueChannel();
     }
 }

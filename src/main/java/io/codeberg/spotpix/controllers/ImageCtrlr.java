@@ -130,4 +130,28 @@ public class ImageCtrlr {
         }
         return null;
     }
+
+    public int[] getRedChannel() {
+        if (image instanceof IndexedImage) {
+            IndexedImage indexedImage = (IndexedImage) image;
+            return indexedImage.getRedChannel();
+        }
+        return null;
+    }
+
+    public int[] getGreenChannel() {
+        if (image instanceof IndexedImage) {
+            IndexedImage indexedImage = (IndexedImage) image;
+            return indexedImage.getGreenChannel();
+        }
+        return null;
+    }
+
+    public int[] getBlueChannel() {
+        if (image instanceof IndexedImage) {
+            IndexedImage indexedImage = (IndexedImage) image;
+            return indexedImage.getBlueChannel();
+        }
+        return null;
+    }
 }
