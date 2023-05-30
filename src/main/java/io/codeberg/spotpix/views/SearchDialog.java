@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -79,8 +80,10 @@ class ColorPanel extends JPanel {
         super();
         comboBox = new JComboBox<Color>(); // find out how to render labels in combobox
         comboBox.setRenderer(new ColorRenderer());
-        Color red = new Color(255, 255, 0, 0);
-        comboBox.addItem(red);
+        ArrayList<Color> colorMap=ImageViewPanel.instance().getColorMap();
+        for(int i=0;i<colorMap.size();i++){
+            comboBox.addItem(colorMap.get(i));
+        }       
         add(comboBox);
     }
 }
