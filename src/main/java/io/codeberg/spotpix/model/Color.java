@@ -212,4 +212,9 @@ public class Color {
 
         return rgb;
     }
+
+    @Override
+    public String toString() {
+        return "(" + getRed() + "," + getGreen() + "," + getBlue() + ")";
+    }
 }
