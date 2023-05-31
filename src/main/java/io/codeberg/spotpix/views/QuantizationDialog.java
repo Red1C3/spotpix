@@ -36,6 +36,7 @@ public class QuantizationDialog extends JDialog {
     private final static String MEDIAN_CUT_STR = "Median Cut";
     private final static String OCTREE_STR = "Octree";
     private final static String AVG_STR = "Average Color";
+    private final ImageViewPanel imageViewPanel;
 
     private AvgPanel avgPanel;
     private KMeanPanel kMeanPanel;
@@ -44,6 +45,7 @@ public class QuantizationDialog extends JDialog {
 
     public QuantizationDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Quantization", ModalityType.APPLICATION_MODAL);
+        imageViewPanel = viewerRoot.getImageViewPanel();
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
@@ -67,6 +69,10 @@ public class QuantizationDialog extends JDialog {
         medianCutPanel = new MedianCutPanel(this);
         avgPanel = new AvgPanel(this);
         octreePanel = new OctreePanel(this);
+    }
+
+    public ImageViewPanel getImageViewPanel() {
+        return imageViewPanel;
     }
 }
 
@@ -121,9 +127,9 @@ class KMeanPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
             if (rgbButton.isSelected()) {
-                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.RGB);
+                quantizationDialog.getImageViewPanel().kMeanQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
-                ImageViewPanel.instance().kMeanQuantize(colorsCount, ColorSystem.LAB);
+                quantizationDialog.getImageViewPanel().kMeanQuantize(colorsCount, ColorSystem.LAB);
             }
             quantizationDialog.dispose();
         }
@@ -181,9 +187,9 @@ class MedianCutPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
             if (rgbButton.isSelected()) {
-                ImageViewPanel.instance().medianCutQuantize(colorsCount, ColorSystem.RGB);
+                quantizationDialog.getImageViewPanel().medianCutQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
-                ImageViewPanel.instance().medianCutQuantize(colorsCount, ColorSystem.LAB);
+                quantizationDialog.getImageViewPanel().medianCutQuantize(colorsCount, ColorSystem.LAB);
             }
             quantizationDialog.dispose();
         }
@@ -237,7 +243,7 @@ class AvgPanel extends JPanel implements ActionListener, ChangeListener {
         } else if (e.getSource() == quantizeButton) {
             int threshold = thresholdSlider.getValue();
             if (rgbButton.isSelected()) {
-                ImageViewPanel.instance().avgQuantize(ColorSystem.RGB, new ManRGBComparator(threshold), null);
+                quantizationDialog.getImageViewPanel().avgQuantize(ColorSystem.RGB, new ManRGBComparator(threshold), null);
             }
             quantizationDialog.dispose();
         }
@@ -301,9 +307,9 @@ class OctreePanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
             if (rgbButton.isSelected()) {
-                ImageViewPanel.instance().octreeQuantize(colorsCount, ColorSystem.RGB);
+                quantizationDialog.getImageViewPanel().octreeQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
-                ImageViewPanel.instance().octreeQuantize(colorsCount, ColorSystem.LAB);
+                quantizationDialog.getImageViewPanel().octreeQuantize(colorsCount, ColorSystem.LAB);
             }
 
             quantizationDialog.dispose();

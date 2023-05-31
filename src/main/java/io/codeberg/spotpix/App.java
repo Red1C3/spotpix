@@ -11,7 +11,7 @@ public class App {
         } else if (args.length == 1) {
             String imgPath = args[0];
             ViewerRoot viewerRoot=new ViewerRoot();
-            ImageViewPanel.instance().openImage(imgPath);
+            viewerRoot.getImageViewPanel().openImage(imgPath);
             viewerRoot.repaint();
         }
     }

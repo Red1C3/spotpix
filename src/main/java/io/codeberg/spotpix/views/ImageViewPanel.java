@@ -15,18 +15,10 @@ import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
 
 public class ImageViewPanel extends JPanel {
-    private static ImageViewPanel imageViewPanel;
-
     private ImageCtrlr imageCtrlr;
 
-    private ImageViewPanel() {
+    public ImageViewPanel() {
         super();
-    }
-
-    public static ImageViewPanel instance() {
-        if (imageViewPanel == null)
-            imageViewPanel = new ImageViewPanel();
-        return imageViewPanel;
     }
 
     @Override

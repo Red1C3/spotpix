@@ -13,6 +13,7 @@ public class PalletView extends JPanel {
     private BufferedImage bufferedImage;
 
     private PalletView() {
+        super();
     }
 
     public static void createPallet(ArrayList<Color> colorMap) {

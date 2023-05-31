@@ -37,7 +37,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
-        imageViewPanel = ImageViewPanel.instance();
+        imageViewPanel = viewerRoot.getImageViewPanel();
         JMenu file = new JMenu(FILE_STR);
         JMenu edit = new JMenu(EDIT_STR);
         JMenu view = new JMenu(VIEW_STR);
@@ -92,19 +92,19 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void viewColorPallet() {
-        PalletView.createPallet(ImageViewPanel.instance().getColorMap());
+        PalletView.createPallet(imageViewPanel.getColorMap());
     }
 
     private void viewRGBHistogram() {
-        RGBHistogramPanel redPanel=RGBHistogramPanel.createRGBHistogramPanel("Red", ImageViewPanel.instance().getRedChannel());
-        RGBHistogramPanel greenPanel=RGBHistogramPanel.createRGBHistogramPanel("Green", ImageViewPanel.instance().getGreenChannel());
-        RGBHistogramPanel bluePanel=RGBHistogramPanel.createRGBHistogramPanel("Blue", ImageViewPanel.instance().getBlueChannel());
+        RGBHistogramPanel redPanel=RGBHistogramPanel.createRGBHistogramPanel("Red", imageViewPanel.getRedChannel());
+        RGBHistogramPanel greenPanel=RGBHistogramPanel.createRGBHistogramPanel("Green", imageViewPanel.getGreenChannel());
+        RGBHistogramPanel bluePanel=RGBHistogramPanel.createRGBHistogramPanel("Blue", imageViewPanel.getBlueChannel());
         RGBHistogramPanel.createRGBPanel(redPanel, greenPanel, bluePanel);
     }
 
     private void viewAllColorsHistogram() {
-        int[] quantizationMap=ImageViewPanel.instance().getQuantizationMap();
-        ArrayList<Color> colorMap=ImageViewPanel.instance().getColorMap();
+        int[] quantizationMap=imageViewPanel.getQuantizationMap();
+        ArrayList<Color> colorMap=imageViewPanel.getColorMap();
         HistogramPanel.createHistogram(quantizationMap, colorMap);
     }
 
