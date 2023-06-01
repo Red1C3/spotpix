@@ -1,7 +1,6 @@
 package io.codeberg.spotpix.views;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,6 +12,7 @@ import io.codeberg.spotpix.controllers.ImageFormat;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
+import io.codeberg.spotpix.model.images.Image;
 
 public class ImageViewPanel extends JPanel {
     private ImageCtrlr imageCtrlr;
@@ -46,6 +46,11 @@ public class ImageViewPanel extends JPanel {
 
     public void openImage(String path) {
         imageCtrlr = new ImageCtrlr(path);
+        repaint();
+    }
+
+    public void openImage(Image image){
+        imageCtrlr=new ImageCtrlr(image);
         repaint();
     }
 

@@ -1,5 +1,6 @@
 package io.codeberg.spotpix;
 
+import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.views.DummyView;
 import io.codeberg.spotpix.views.ImageViewPanel;
 import io.codeberg.spotpix.views.ViewerRoot;
@@ -14,5 +15,11 @@ public class App {
             viewerRoot.getImageViewPanel().openImage(imgPath);
             viewerRoot.repaint();
         }
+    }
+
+    public static void main(Image image){
+        ViewerRoot viewerRoot=new ViewerRoot();
+        viewerRoot.getImageViewPanel().openImage(image);
+        viewerRoot.repaint();
     }
 }
