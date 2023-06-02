@@ -127,7 +127,7 @@ class KMeanPanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
-            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
             }
@@ -191,7 +191,7 @@ class MedianCutPanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
-            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
             }
@@ -219,10 +219,10 @@ class AvgPanel extends JPanel implements ActionListener, ChangeListener {
         this.quantizationDialog = quantizationDialog;
         setLayout(new GridLayout(3, 2));
 
-        thresholdLabel = new JLabel(ENTER_THRESHOLD_STR + "70");
+        thresholdLabel = new JLabel(ENTER_THRESHOLD_STR + "30");
         add(thresholdLabel);
 
-        thresholdSlider = new JSlider(JSlider.HORIZONTAL, 0, 256 * 3, 70);
+        thresholdSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 30); // 256*3
         thresholdSlider.addChangeListener(this);
 
         add(thresholdSlider);
@@ -252,7 +252,9 @@ class AvgPanel extends JPanel implements ActionListener, ChangeListener {
         } else if (e.getSource() == quantizeButton) {
             int threshold = thresholdSlider.getValue();
             if (rgbButton.isSelected()) {
-                quantizationDialog.getImageViewPanel().avgQuantize(ColorSystem.RGB, new ManRGBComparator(threshold), null);
+                threshold = (int) ((((float) threshold) / 100.0f) * 256.0f * 3.0f);
+                quantizationDialog.getImageViewPanel().avgQuantize(ColorSystem.RGB, new ManRGBComparator(threshold),
+                        null);
             }
             quantizationDialog.dispose();
         }
@@ -315,7 +317,7 @@ class OctreePanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
-            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
             }
