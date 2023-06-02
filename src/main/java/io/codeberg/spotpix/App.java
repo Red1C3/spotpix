@@ -1,7 +1,6 @@
 package io.codeberg.spotpix;
 
 import io.codeberg.spotpix.model.images.Image;
-import io.codeberg.spotpix.views.DummyView;
 import io.codeberg.spotpix.views.ImageViewPanel;
 import io.codeberg.spotpix.views.ViewerRoot;
 

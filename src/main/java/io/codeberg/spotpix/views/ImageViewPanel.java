@@ -3,6 +3,7 @@ package io.codeberg.spotpix.views;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.text.html.ImageView;
 
@@ -45,7 +46,11 @@ public class ImageViewPanel extends JPanel {
     }
 
     public void openImage(String path) {
-        imageCtrlr = new ImageCtrlr(path);
+        try {
+            imageCtrlr = new ImageCtrlr(path);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
         repaint();
     }
 

@@ -3,6 +3,7 @@ package io.codeberg.spotpix.controllers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -28,14 +29,10 @@ import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerRGB;
 public class ImageCtrlr {
     private Image image;
 
-    public ImageCtrlr(String path) {
+    public ImageCtrlr(String path) throws Exception {
         byte[] bytes = null;
-        try {
-            bytes = Files.readAllBytes(Paths.get(path));
-        } catch (IOException e) {
-            System.out.printf("Failed to read image bytes at %s", path);
-            e.printStackTrace();
-        }
+
+        bytes = Files.readAllBytes(Paths.get(path));
 
         if (bytes[0] == FLTDecoder.MAGIC_NUMBER) {
             image = (new FLTDecoder()).decode(bytes);
@@ -44,8 +41,8 @@ public class ImageCtrlr {
         }
     }
 
-    public ImageCtrlr(Image image){
-        this.image=image;
+    public ImageCtrlr(Image image) {
+        this.image = image;
     }
 
     public BufferedImage getBufferedImage() {
@@ -61,7 +58,7 @@ public class ImageCtrlr {
     }
 
     public void kMeanQuantize(int colorsCount, ColorSystem colorSystem) {
-        Image quantizedImage=null;
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new KMeanQuantizerRGB(colorsCount);
             quantizedImage = quantizer.quantize(image, null, null);
@@ -73,7 +70,7 @@ public class ImageCtrlr {
     }
 
     public void medianCutQuantize(int colorsCount, ColorSystem colorSystem) {
-        Image quantizedImage=null;
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new MedianCutQuantizerRGB(colorsCount);
             quantizedImage = quantizer.quantize(image, null, null);
@@ -85,7 +82,7 @@ public class ImageCtrlr {
     }
 
     public void avgQuantize(ColorSystem colorSystem, EqComparator comparator, ColorOp colorOp) {
-        Image quantizedImage=null;
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new AvgRGBQuantizer();
             quantizedImage = quantizer.quantize(image, comparator, colorOp);
@@ -95,7 +92,7 @@ public class ImageCtrlr {
     }
 
     public void octreeQuantize(int colorsCount, ColorSystem colorSystem) {
-        Image quantizedImage=null;
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new OctreeQuantizerRGB(colorsCount);
             quantizedImage = quantizer.quantize(image, null, null);
