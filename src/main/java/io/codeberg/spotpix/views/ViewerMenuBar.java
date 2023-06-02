@@ -149,6 +149,8 @@ public class ViewerMenuBar extends JMenuBar implements Action {
                 imageViewPanel.saveImage(path, ImageFormat.PNG);
             } else if (ext.equals(FLT_FMT)) {
                 imageViewPanel.saveImage(path, ImageFormat.FLT);
+            }else{
+                JOptionPane.showMessageDialog(viewerRoot, "Unsupported format, aborting...");
             }
         }
     }
