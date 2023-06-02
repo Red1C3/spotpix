@@ -132,7 +132,11 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void quantizeAction() {
-        QuantizationDialog quantizationDialog = new QuantizationDialog(viewerRoot);
+        if(!imageViewPanel.hasImage()){
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        new QuantizationDialog(viewerRoot);
     }
 
     private void saveAction() {
