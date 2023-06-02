@@ -17,7 +17,7 @@ public class PalletView extends JPanel {
     }
 
     public static void createPallet(ArrayList<Color> colorMap) {
-        JFrame palletFrame=new JFrame("Color Pallet");
+        JFrame palletFrame=new JFrame("Color Palette");
         palletFrame.setSize(100, 500);
         PalletView palletView=new PalletView();
         palletView.bufferedImage = new BufferedImage(1, colorMap.size(), BufferedImage.TYPE_INT_ARGB);
