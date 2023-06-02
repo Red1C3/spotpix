@@ -127,6 +127,10 @@ class KMeanPanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+                return;
+            }
             if (rgbButton.isSelected()) {
                 quantizationDialog.getImageViewPanel().kMeanQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
@@ -311,6 +315,10 @@ class OctreePanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+                return;
+            }
             if (rgbButton.isSelected()) {
                 quantizationDialog.getImageViewPanel().octreeQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
