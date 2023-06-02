@@ -81,31 +81,45 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if (e.getSource() == save) {
             saveAction();
         }
-        if(e.getSource()==allColorHistogram){
+        if (e.getSource() == allColorHistogram) {
             viewAllColorsHistogram();
         }
-        if(e.getSource()==rgbHistogram){
+        if (e.getSource() == rgbHistogram) {
             viewRGBHistogram();
         }
-        if(e.getSource()==palletView){
+        if (e.getSource() == palletView) {
             viewColorPallet();
         }
     }
 
     private void viewColorPallet() {
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
         PalletView.createPallet(imageViewPanel.getColorMap());
     }
 
     private void viewRGBHistogram() {
-        RGBHistogramPanel redPanel=RGBHistogramPanel.createRGBHistogramPanel("Red", imageViewPanel.getRedChannel());
-        RGBHistogramPanel greenPanel=RGBHistogramPanel.createRGBHistogramPanel("Green", imageViewPanel.getGreenChannel());
-        RGBHistogramPanel bluePanel=RGBHistogramPanel.createRGBHistogramPanel("Blue", imageViewPanel.getBlueChannel());
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        RGBHistogramPanel redPanel = RGBHistogramPanel.createRGBHistogramPanel("Red", imageViewPanel.getRedChannel());
+        RGBHistogramPanel greenPanel = RGBHistogramPanel.createRGBHistogramPanel("Green",
+                imageViewPanel.getGreenChannel());
+        RGBHistogramPanel bluePanel = RGBHistogramPanel.createRGBHistogramPanel("Blue",
+                imageViewPanel.getBlueChannel());
         RGBHistogramPanel.createRGBPanel(redPanel, greenPanel, bluePanel);
     }
 
     private void viewAllColorsHistogram() {
-        int[] quantizationMap=imageViewPanel.getQuantizationMap();
-        ArrayList<Color> colorMap=imageViewPanel.getColorMap();
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        int[] quantizationMap = imageViewPanel.getQuantizationMap();
+        ArrayList<Color> colorMap = imageViewPanel.getColorMap();
         HistogramPanel.createHistogram(quantizationMap, colorMap);
     }
 
@@ -132,7 +146,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void quantizeAction() {
-        if(!imageViewPanel.hasImage()){
+        if (!imageViewPanel.hasImage()) {
             JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
             return;
         }
@@ -140,7 +154,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void saveAction() {
-        if(!imageViewPanel.hasImage()){
+        if (!imageViewPanel.hasImage()) {
             JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
             return;
         }
@@ -153,7 +167,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
                 imageViewPanel.saveImage(path, ImageFormat.PNG);
             } else if (ext.equals(FLT_FMT)) {
                 imageViewPanel.saveImage(path, ImageFormat.FLT);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(viewerRoot, "Unsupported format, aborting...");
             }
         }
