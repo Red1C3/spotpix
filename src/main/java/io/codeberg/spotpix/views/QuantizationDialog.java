@@ -61,6 +61,7 @@ public class QuantizationDialog extends JDialog {
 
         add(tabbedPane, BorderLayout.CENTER);
         setSize(300, 100);
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }

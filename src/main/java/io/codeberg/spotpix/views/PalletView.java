@@ -25,6 +25,7 @@ public class PalletView extends JPanel {
             palletView.bufferedImage.setRGB(0, i, colorMap.get(i).getARGB());
         }
         palletFrame.add(palletView);
+        palletFrame.setLocationRelativeTo(null);
         palletFrame.setVisible(true);
     }
 

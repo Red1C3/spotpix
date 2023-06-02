@@ -58,6 +58,7 @@ public class RGBHistogramPanel extends ChartPanel {
         rgbFrame.add(r);
         rgbFrame.add(g);
         rgbFrame.add(b);
+        rgbFrame.setLocationRelativeTo(null);
         rgbFrame.setVisible(true);
     }
 

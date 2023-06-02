@@ -24,6 +24,7 @@ public class ViewerRoot extends JFrame {
         setSize(INITIAL_WIDTH, INITAIL_HEIGHT);
         if (exitOnClose)
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
