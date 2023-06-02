@@ -126,7 +126,13 @@ class KMeanPanel extends JPanel implements ActionListener {
         if (e.getSource() == cancelButton) {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
-            int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            int colorsCount = 0;
+            try {
+                colorsCount = Integer.parseInt(this.colorsCount.getText());
+            } catch (NumberFormatException numberFormatException) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
+                return;
+            }
             if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
@@ -190,7 +196,13 @@ class MedianCutPanel extends JPanel implements ActionListener {
         if (e.getSource() == cancelButton) {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
-            int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            int colorsCount = 0;
+            try {
+                colorsCount = Integer.parseInt(this.colorsCount.getText());
+            } catch (NumberFormatException numberFormatException) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
+                return;
+            }
             if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
@@ -316,7 +328,13 @@ class OctreePanel extends JPanel implements ActionListener {
         if (e.getSource() == cancelButton) {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
-            int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            int colorsCount = 0;
+            try {
+                colorsCount = Integer.parseInt(this.colorsCount.getText());
+            } catch (NumberFormatException numberFormatException) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
+                return;
+            }
             if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
                 return;
