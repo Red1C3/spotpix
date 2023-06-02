@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ImageFormat;
@@ -135,6 +136,10 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void saveAction() {
+        if(!imageViewPanel.hasImage()){
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
         JFileChooser fileChooser = new ImageSaver();
         int response = fileChooser.showSaveDialog(this);
         if (response == ImageChooser.APPROVE_OPTION) {

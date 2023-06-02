@@ -107,4 +107,7 @@ public class ImageViewPanel extends JPanel {
             return null;
         return imageCtrlr.getBlueChannel();
     }
+    public boolean hasImage(){
+        return imageCtrlr!=null;
+    }
 }
