@@ -52,7 +52,7 @@ public class RGBHistogramPanel extends ChartPanel {
     }
 
     public static void createRGBPanel(RGBHistogramPanel r, RGBHistogramPanel g, RGBHistogramPanel b) {
-        JFrame rgbFrame = new JFrame("RGB Histogram");
+        JFrame rgbFrame = new JFrame("RGB Histograms");
         rgbFrame.setSize(500, 600);
         rgbFrame.setLayout(new GridLayout(3,1));
         rgbFrame.add(r);

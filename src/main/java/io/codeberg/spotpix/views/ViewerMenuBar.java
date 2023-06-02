@@ -27,7 +27,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String SAVE_STR = "Save as";
     private static final String VIEW_STR = "View";
     private static final String ALL_CLR_HISTO_STR = "All Colors Histogram";
-    private static final String RGB_HISTO_STR = "RGB Channel Histogram";
+    private static final String RGB_HISTO_STR = "RGB Channels Histograms";
     private static final String PALLET_STRING = "Color Palette";
     private static final String PNG_FMT = "png";
     private static final String FLT_FMT = "flt";
