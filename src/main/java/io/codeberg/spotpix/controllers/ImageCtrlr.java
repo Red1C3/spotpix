@@ -122,43 +122,35 @@ public class ImageCtrlr {
     }
 
     public ArrayList<Color> getColorMap() {
-        if (image instanceof IndexedImage) {
-            return ((IndexedImage) image).getColorMap();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
+        return indexedImage.getColorMap();
     }
 
     public int[] getQuantizationMap() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            if (indexedImage.isQuantized()) {
-                return indexedImage.getQuantizedMap();
-            }
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        if(!indexedImage.isQuantized()){
+            indexedImage.calculateQuantizationMap();
         }
-        return null;
+        return indexedImage.getQuantizedMap();
     }
 
     public int[] getRedChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getRedChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getRedChannel();
     }
 
     public int[] getGreenChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getGreenChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getGreenChannel();
     }
 
     public int[] getBlueChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getBlueChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getBlueChannel();
     }
 }

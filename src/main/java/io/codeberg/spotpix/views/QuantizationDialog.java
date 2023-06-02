@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -186,6 +187,10 @@ class MedianCutPanel extends JPanel implements ActionListener {
             quantizationDialog.dispose();
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = Integer.parseInt(this.colorsCount.getText());
+            if(colorsCount>quantizationDialog.getImageViewPanel().getColorMap().size()){
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+                return;
+            }
             if (rgbButton.isSelected()) {
                 quantizationDialog.getImageViewPanel().medianCutQuantize(colorsCount, ColorSystem.RGB);
             } else if (labButton.isSelected()) {
