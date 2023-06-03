@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -38,6 +39,7 @@ public class QuantizationDialog extends JDialog {
     private final static String OCTREE_STR = "Octree";
     private final static String AVG_STR = "Average Color";
     private final ImageViewPanel imageViewPanel;
+    private static NumberFormatter formatter;
 
     private AvgPanel avgPanel;
     private KMeanPanel kMeanPanel;
@@ -49,6 +51,14 @@ public class QuantizationDialog extends JDialog {
         imageViewPanel = viewerRoot.getImageViewPanel();
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
+
+        NumberFormat format = NumberFormat.getInstance();
+        formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setMaximum(Integer.MAX_VALUE);
+        formatter.setAllowsInvalid(false);
+        formatter.setCommitsOnValidEdit(true);
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
@@ -76,6 +86,10 @@ public class QuantizationDialog extends JDialog {
     public ImageViewPanel getImageViewPanel() {
         return imageViewPanel;
     }
+
+    public static NumberFormatter getFormatter() {
+        return formatter;
+    }
 }
 
 class KMeanPanel extends JPanel implements ActionListener {
@@ -93,14 +107,7 @@ class KMeanPanel extends JPanel implements ActionListener {
 
         add(new JLabel(ENTER_COLOR_STR));
 
-        NumberFormat format = NumberFormat.getInstance();
-        NumberFormatter formatter = new NumberFormatter(format);
-        formatter.setValueClass(Integer.class);
-        formatter.setMinimum(0);
-        formatter.setMaximum(Integer.MAX_VALUE);
-        formatter.setAllowsInvalid(false);
-        formatter.setCommitsOnValidEdit(true);
-        colorsCount = new JFormattedTextField(formatter);
+        colorsCount = new JFormattedTextField(QuantizationDialog.getFormatter());
 
         add(colorsCount);
 
@@ -129,13 +136,13 @@ class KMeanPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = 0;
             try {
-                colorsCount = Integer.parseInt(this.colorsCount.getText());
-            } catch (NumberFormatException numberFormatException) {
+                colorsCount = (int) QuantizationDialog.getFormatter().stringToValue(this.colorsCount.getText());
+            } catch (NumberFormatException | ParseException numberFormatException) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
                 return;
             }
-            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
-                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size() || colorsCount == 0) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is invalid");
                 return;
             }
             if (rgbButton.isSelected()) {
@@ -163,14 +170,7 @@ class MedianCutPanel extends JPanel implements ActionListener {
 
         add(new JLabel(ENTER_COLOR_STR));
 
-        NumberFormat format = NumberFormat.getInstance();
-        NumberFormatter formatter = new NumberFormatter(format);
-        formatter.setValueClass(Integer.class);
-        formatter.setMinimum(0);
-        formatter.setMaximum(Integer.MAX_VALUE);
-        formatter.setAllowsInvalid(false);
-        formatter.setCommitsOnValidEdit(true);
-        colorsCount = new JFormattedTextField(formatter);
+        colorsCount = new JFormattedTextField(QuantizationDialog.getFormatter());
 
         add(colorsCount);
 
@@ -199,13 +199,13 @@ class MedianCutPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = 0;
             try {
-                colorsCount = Integer.parseInt(this.colorsCount.getText());
-            } catch (NumberFormatException numberFormatException) {
+                colorsCount = (int) QuantizationDialog.getFormatter().stringToValue(this.colorsCount.getText());
+            } catch (NumberFormatException | ParseException numberFormatException) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
                 return;
             }
-            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
-                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size() || colorsCount == 0) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is invalid");
                 return;
             }
             if (rgbButton.isSelected()) {
@@ -295,14 +295,7 @@ class OctreePanel extends JPanel implements ActionListener {
 
         add(new JLabel(ENTER_COLOR_STR));
 
-        NumberFormat format = NumberFormat.getInstance();
-        NumberFormatter formatter = new NumberFormatter(format);
-        formatter.setValueClass(Integer.class);
-        formatter.setMinimum(0);
-        formatter.setMaximum(Integer.MAX_VALUE);
-        formatter.setAllowsInvalid(false);
-        formatter.setCommitsOnValidEdit(true);
-        colorsCount = new JFormattedTextField(formatter);
+        colorsCount = new JFormattedTextField(QuantizationDialog.getFormatter());
 
         add(colorsCount);
 
@@ -331,13 +324,13 @@ class OctreePanel extends JPanel implements ActionListener {
         } else if (e.getSource() == quantizeButton) {
             int colorsCount = 0;
             try {
-                colorsCount = Integer.parseInt(this.colorsCount.getText());
-            } catch (NumberFormatException numberFormatException) {
+                colorsCount = (int) QuantizationDialog.getFormatter().stringToValue(this.colorsCount.getText());
+            } catch (NumberFormatException | ParseException numberFormatException) {
                 JOptionPane.showMessageDialog(quantizationDialog, "Please enter a number of colors");
                 return;
             }
-            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size()) {
-                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is bigger than the current colors");
+            if (colorsCount > quantizationDialog.getImageViewPanel().getColorMap().size() || colorsCount == 0) {
+                JOptionPane.showMessageDialog(quantizationDialog, "Input colors is invalid");
                 return;
             }
             if (rgbButton.isSelected()) {
