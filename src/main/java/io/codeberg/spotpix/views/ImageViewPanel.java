@@ -31,16 +31,18 @@ public class ImageViewPanel extends JPanel {
             int imgWidth = imageCtrlr.getWidth();
             float aspectRatio = (float) imgWidth / (float) imgHeight;
             int x = 0, y = 0;
-            if (imgHeight > imgWidth) {
-                imgHeight = height;
-                imgWidth = (int) (height * aspectRatio);
-                x = width / 2 - imgWidth / 2;
-            } else {
-                imgWidth = width;
-                imgHeight = (int) (width / aspectRatio);
-                y = height / 2 - imgHeight / 2;
-            }
 
+            if (imgWidth > width) {
+                imgWidth = width;
+                imgHeight = (int) ((float) width / aspectRatio);
+            }
+            if (imgHeight > height) {
+                imgHeight = height;
+                imgWidth = (int) ((float) height * aspectRatio);
+            }
+            y = (int) ((float) height / 2.0f - (float) imgHeight / 2.0f);
+            x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
+            
             g.drawImage(imageCtrlr.getBufferedImage(), x, y, imgWidth, imgHeight, null);
         }
     }
@@ -54,8 +56,8 @@ public class ImageViewPanel extends JPanel {
         repaint();
     }
 
-    public void openImage(Image image){
-        imageCtrlr=new ImageCtrlr(image);
+    public void openImage(Image image) {
+        imageCtrlr = new ImageCtrlr(image);
         repaint();
     }
 
@@ -112,7 +114,8 @@ public class ImageViewPanel extends JPanel {
             return null;
         return imageCtrlr.getBlueChannel();
     }
-    public boolean hasImage(){
-        return imageCtrlr!=null;
+
+    public boolean hasImage() {
+        return imageCtrlr != null;
     }
 }
