@@ -32,17 +32,16 @@ public class ImageViewPanel extends JPanel {
             float aspectRatio = (float) imgWidth / (float) imgHeight;
             int x = 0, y = 0;
 
-            if (imgWidth > width) {
-                imgWidth = width;
-                imgHeight = (int) ((float) width / aspectRatio);
-            }
+            imgWidth = width;
+            imgHeight = (int) ((float) width / aspectRatio);
+
             if (imgHeight > height) {
                 imgHeight = height;
                 imgWidth = (int) ((float) height * aspectRatio);
             }
             y = (int) ((float) height / 2.0f - (float) imgHeight / 2.0f);
             x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
-            
+
             g.drawImage(imageCtrlr.getBufferedImage(), x, y, imgWidth, imgHeight, null);
         }
     }
