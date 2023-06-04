@@ -10,7 +10,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -79,10 +81,13 @@ public class SearchDialog extends JDialog implements ActionListener {
 
 class ColorPanel extends JPanel implements ItemListener {
     private JComboBox<Color> comboBox;
+    private JList<Color> colorsList;
+    private HashSet<Color> selectedColors;
     private boolean firstSelection = true;
 
     public ColorPanel(ImageViewPanel imageViewPanel) {
         super();
+        selectedColors=new HashSet<>();
         comboBox = new JComboBox<Color>();
         comboBox.addItemListener(this);
         comboBox.setRenderer(new ColorRenderer());
@@ -92,6 +97,12 @@ class ColorPanel extends JPanel implements ItemListener {
         }
         comboBox.setSelectedItem(null);
         add(comboBox);
+
+        colorsList=new JList<Color>();
+        colorsList.setCellRenderer(new ColorRenderer());
+        colorsList.setSelectionModel(new DisabledItemSelectionModel());
+        add(colorsList);
+
     }
 
     @Override
@@ -104,7 +115,8 @@ class ColorPanel extends JPanel implements ItemListener {
             }
 
             Color color = (Color) e.getItem();
-            System.out.println(color.toString());
+            selectedColors.add(color);
+            colorsList.setListData(selectedColors.toArray(new Color[0]));
         }
     }
 }
@@ -124,5 +136,13 @@ class ColorRenderer extends BasicComboBoxRenderer {
             setIcon(new ImageIcon(img));
         }
         return this;
+    }
+}
+
+class DisabledItemSelectionModel extends DefaultListSelectionModel {
+
+    @Override
+    public void setSelectionInterval(int index0, int index1) {
+        super.setSelectionInterval(-1, -1);
     }
 }
