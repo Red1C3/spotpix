@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -87,7 +90,13 @@ class ColorPanel extends JPanel implements ItemListener {
 
     public ColorPanel(ImageViewPanel imageViewPanel) {
         super();
-        selectedColors=new HashSet<>();
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets=new Insets(10, 10, 10, 10);
+        selectedColors = new HashSet<>();
         comboBox = new JComboBox<Color>();
         comboBox.addItemListener(this);
         comboBox.setRenderer(new ColorRenderer());
@@ -96,12 +105,13 @@ class ColorPanel extends JPanel implements ItemListener {
             comboBox.addItem(colorMap.get(i));
         }
         comboBox.setSelectedItem(null);
-        add(comboBox);
+        add(comboBox, constraints);
+        constraints.gridy = 1;
 
-        colorsList=new JList<Color>();
+        colorsList = new JList<Color>();
         colorsList.setCellRenderer(new ColorRenderer());
         colorsList.setSelectionModel(new DisabledItemSelectionModel());
-        add(colorsList);
+        add(colorsList, constraints);
 
     }
 
