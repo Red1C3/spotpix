@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -34,7 +36,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     public SearchDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Search", ModalityType.APPLICATION_MODAL);
-        this.viewerRoot=viewerRoot;
+        this.viewerRoot = viewerRoot;
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
@@ -75,18 +77,35 @@ public class SearchDialog extends JDialog implements ActionListener {
 
 }
 
-class ColorPanel extends JPanel {
+class ColorPanel extends JPanel implements ItemListener {
     private JComboBox<Color> comboBox;
+    private boolean firstSelection = true;
 
     public ColorPanel(ImageViewPanel imageViewPanel) {
         super();
-        comboBox = new JComboBox<Color>(); // find out how to render labels in combobox
+        comboBox = new JComboBox<Color>();
+        comboBox.addItemListener(this);
         comboBox.setRenderer(new ColorRenderer());
-        ArrayList<Color> colorMap=imageViewPanel.getColorMap();
-        for(int i=0;i<colorMap.size();i++){
+        ArrayList<Color> colorMap = imageViewPanel.getColorMap();
+        for (int i = 0; i < colorMap.size(); i++) {
             comboBox.addItem(colorMap.get(i));
-        }       
+        }
+        comboBox.setSelectedItem(null);
         add(comboBox);
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+
+            if (firstSelection) {
+                firstSelection = false;
+                return;
+            }
+
+            Color color = (Color) e.getItem();
+            System.out.println(color.toString());
+        }
     }
 }
 
