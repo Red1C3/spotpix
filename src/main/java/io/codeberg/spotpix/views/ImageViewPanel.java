@@ -1,9 +1,9 @@
 package io.codeberg.spotpix.views;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.text.html.ImageView;
 
@@ -13,20 +13,13 @@ import io.codeberg.spotpix.controllers.ImageFormat;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
+import io.codeberg.spotpix.model.images.Image;
 
 public class ImageViewPanel extends JPanel {
-    private static ImageViewPanel imageViewPanel;
-
     private ImageCtrlr imageCtrlr;
 
-    private ImageViewPanel() {
+    public ImageViewPanel() {
         super();
-    }
-
-    public static ImageViewPanel instance() {
-        if (imageViewPanel == null)
-            imageViewPanel = new ImageViewPanel();
-        return imageViewPanel;
     }
 
     @Override
@@ -38,22 +31,32 @@ public class ImageViewPanel extends JPanel {
             int imgWidth = imageCtrlr.getWidth();
             float aspectRatio = (float) imgWidth / (float) imgHeight;
             int x = 0, y = 0;
-            if (imgHeight > imgWidth) {
+
+            imgWidth = width;
+            imgHeight = (int) ((float) width / aspectRatio);
+
+            if (imgHeight > height) {
                 imgHeight = height;
-                imgWidth = (int) (height * aspectRatio);
-                x = width / 2 - imgWidth / 2;
-            } else {
-                imgWidth = width;
-                imgHeight = (int) (width / aspectRatio);
-                y = height / 2 - imgHeight / 2;
+                imgWidth = (int) ((float) height * aspectRatio);
             }
+            y = (int) ((float) height / 2.0f - (float) imgHeight / 2.0f);
+            x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
 
             g.drawImage(imageCtrlr.getBufferedImage(), x, y, imgWidth, imgHeight, null);
         }
     }
 
     public void openImage(String path) {
-        imageCtrlr = new ImageCtrlr(path);
+        try {
+            imageCtrlr = new ImageCtrlr(path);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        repaint();
+    }
+
+    public void openImage(Image image) {
+        imageCtrlr = new ImageCtrlr(image);
         repaint();
     }
 
@@ -109,5 +112,9 @@ public class ImageViewPanel extends JPanel {
         if (imageCtrlr == null)
             return null;
         return imageCtrlr.getBlueChannel();
+    }
+
+    public boolean hasImage() {
+        return imageCtrlr != null;
     }
 }

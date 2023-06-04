@@ -1,6 +1,8 @@
 package io.codeberg.spotpix.model.quantizers.MedianCut;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Distances;
@@ -13,12 +15,14 @@ import io.codeberg.spotpix.model.images.IndexedImage;
 import io.codeberg.spotpix.model.quantizers.Quantizer;
 
 public abstract class MedianCutQuantizer implements Quantizer {
-    int K;
+    int K,tureK;
     public ArrayList<Color> colorMap = new ArrayList<>();
+    ArrayList<KColor> fakeColorMap = new ArrayList<>();
     ArrayList<KColor> allColors = new ArrayList<>();
 
     public MedianCutQuantizer(int k) {
-        K = (int) Math.ceil(Math.log10(k) / Math.log10(2));
+        K = (int) Math.ceil(Math.log10(k) / Math.log10(2))+1;
+        tureK=k;
     }
 
     @Override
@@ -35,6 +39,7 @@ public abstract class MedianCutQuantizer implements Quantizer {
         }
 
         splitIntoBuckets(allColors, K);
+        calColorMap();
 
         int[][] indices = new int[width][height];
         int[] quantizationMap = new int[colorMap.size()];
@@ -66,7 +71,6 @@ public abstract class MedianCutQuantizer implements Quantizer {
             sumG += color.getGreen();
             sumB += color.getBlue();
             sumA += color.getAlpha();
-            color.clusterIndex = colorMap.size();
         }
 
         sumR /= colors.size();
@@ -74,7 +78,27 @@ public abstract class MedianCutQuantizer implements Quantizer {
         sumB /= colors.size();
         sumA /= colors.size();
 
-        colorMap.add(new Color(sumA, sumR, sumG, sumB));
+        KColor temp = new KColor(sumA, sumR, sumG, sumB);
+        temp.clusterIndex=colors.size();
+
+        fakeColorMap.add(temp);
+    }
+
+    private void calColorMap(){
+        Collections.sort(fakeColorMap, new colorMapComparator());
+        for (int i = 0; i < tureK; i++) {
+            KColor c = fakeColorMap.get(i);
+            Color curr = new Color(c.getARGB());
+            if (!colorMap.contains(curr))
+                colorMap.add(curr);
+        }
+    }
+
+    private static class colorMapComparator implements Comparator<KColor> {
+        @Override
+        public int compare(KColor c1, KColor c2) {
+            return (c1.clusterIndex > c2.clusterIndex) ? -1 : (c1.clusterIndex < c2.clusterIndex) ? 1 : 0;
+        }
     }
 
     protected abstract void splitIntoBuckets(ArrayList<KColor> colors, int depth);

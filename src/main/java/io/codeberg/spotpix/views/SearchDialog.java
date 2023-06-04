@@ -20,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.model.Color;
 
@@ -29,10 +30,11 @@ public class SearchDialog extends JDialog implements ActionListener {
     private ColorPanel colorPanel;
     private JTextField pathField;
     private JButton pathButton, searchButton;
+    private ViewerRoot viewerRoot;
 
-    public SearchDialog() {
-        super(ViewerRoot.instance(), "Search", ModalityType.APPLICATION_MODAL);
-
+    public SearchDialog(ViewerRoot viewerRoot) {
+        super(viewerRoot, "Search", ModalityType.APPLICATION_MODAL);
+        this.viewerRoot=viewerRoot;
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
@@ -62,7 +64,7 @@ public class SearchDialog extends JDialog implements ActionListener {
     }
 
     private void setupPanels() {
-        colorPanel = new ColorPanel();
+        colorPanel = new ColorPanel(viewerRoot.getImageViewPanel());
     }
 
     @Override
@@ -76,11 +78,11 @@ public class SearchDialog extends JDialog implements ActionListener {
 class ColorPanel extends JPanel {
     private JComboBox<Color> comboBox;
 
-    public ColorPanel() {
+    public ColorPanel(ImageViewPanel imageViewPanel) {
         super();
         comboBox = new JComboBox<Color>(); // find out how to render labels in combobox
         comboBox.setRenderer(new ColorRenderer());
-        ArrayList<Color> colorMap=ImageViewPanel.instance().getColorMap();
+        ArrayList<Color> colorMap=imageViewPanel.getColorMap();
         for(int i=0;i<colorMap.size();i++){
             comboBox.addItem(colorMap.get(i));
         }       

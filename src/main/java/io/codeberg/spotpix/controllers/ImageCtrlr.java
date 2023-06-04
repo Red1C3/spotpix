@@ -3,10 +3,12 @@ package io.codeberg.spotpix.controllers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 
+import io.codeberg.spotpix.App;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;
 import io.codeberg.spotpix.model.comparators.EqComparator;
@@ -28,7 +30,7 @@ import io.codeberg.spotpix.model.quantizers.Octree.OctreeQuantizerRGB;
 public class ImageCtrlr {
     private Image image;
 
-    public ImageCtrlr(String path) {
+    public ImageCtrlr(String path) throws Exception {
         byte[] bytes = null;
         FileTime creationDate=null;
         try {
@@ -46,6 +48,10 @@ public class ImageCtrlr {
         }
     }
 
+    public ImageCtrlr(Image image) {
+        this.image = image;
+    }
+
     public BufferedImage getBufferedImage() {
         return image.toBufferedImage();
     }
@@ -59,41 +65,49 @@ public class ImageCtrlr {
     }
 
     public void kMeanQuantize(int colorsCount, ColorSystem colorSystem) {
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new KMeanQuantizerRGB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         } else if (colorSystem == ColorSystem.LAB) {
             Quantizer quantizer = new KMeanQuantizerLAB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         }
+        App.main(quantizedImage);
     }
 
     public void medianCutQuantize(int colorsCount, ColorSystem colorSystem) {
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new MedianCutQuantizerRGB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         } else if (colorSystem == ColorSystem.LAB) {
             Quantizer quantizer = new MedianCutQuantizerLAB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         }
+        App.main(quantizedImage);
     }
 
     public void avgQuantize(ColorSystem colorSystem, EqComparator comparator, ColorOp colorOp) {
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new AvgRGBQuantizer();
-            image = quantizer.quantize(image, comparator, colorOp);
+            quantizedImage = quantizer.quantize(image, comparator, colorOp);
         }
+        App.main(quantizedImage);
         // No other systems are supported yet
     }
 
     public void octreeQuantize(int colorsCount, ColorSystem colorSystem) {
+        Image quantizedImage = null;
         if (colorSystem == ColorSystem.RGB) {
             Quantizer quantizer = new OctreeQuantizerRGB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         } else if (colorSystem == ColorSystem.LAB) {
             Quantizer quantizer = new OctreeQuantizerLAB(colorsCount);
-            image = quantizer.quantize(image, null, null);
+            quantizedImage = quantizer.quantize(image, null, null);
         }
+        App.main(quantizedImage);
     }
 
     public void saveImage(String path, ImageFormat format) {
@@ -115,43 +129,35 @@ public class ImageCtrlr {
     }
 
     public ArrayList<Color> getColorMap() {
-        if (image instanceof IndexedImage) {
-            return ((IndexedImage) image).getColorMap();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
+        return indexedImage.getColorMap();
     }
 
     public int[] getQuantizationMap() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            if (indexedImage.isQuantized()) {
-                return indexedImage.getQuantizedMap();
-            }
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        if(!indexedImage.isQuantized()){
+            indexedImage.calculateQuantizationMap();
         }
-        return null;
+        return indexedImage.getQuantizedMap();
     }
 
     public int[] getRedChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getRedChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getRedChannel();
     }
 
     public int[] getGreenChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getGreenChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getGreenChannel();
     }
 
     public int[] getBlueChannel() {
-        if (image instanceof IndexedImage) {
-            IndexedImage indexedImage = (IndexedImage) image;
-            return indexedImage.getBlueChannel();
-        }
-        return null;
+        image=image.toIndexedImage();
+        IndexedImage indexedImage=(IndexedImage) image;
+        return indexedImage.getBlueChannel();
     }
 }

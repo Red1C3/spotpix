@@ -49,6 +49,7 @@ public class HistogramPanel extends ChartPanel {
         chart.getCategoryPlot().setRenderer(0, itemRenderer);
         HistogramPanel histogramPanel=new HistogramPanel(chart);
         histogramFrame.add(histogramPanel);
+        histogramFrame.setLocationRelativeTo(null);
         histogramFrame.setVisible(true);
     }
 

@@ -15,7 +15,7 @@ import io.codeberg.spotpix.model.images.Image;
 public class JDecoder implements Decoder {
 
     @Override
-    public Image decode(byte[] bytes,FileTime fileTime) {
+    public Image decode(byte[] bytes,FileTime fileTime) throws Exception {
         InputStream byteStream = new ByteArrayInputStream(bytes);
         BufferedImage bufferedImage = null;
         try {
@@ -23,6 +23,9 @@ public class JDecoder implements Decoder {
             byteStream.close();
         } catch (IOException e) {
             // Not even IOing
+        }
+        if(bufferedImage==null){
+            throw new Exception("Failed to read image file");
         }
         int width = bufferedImage.getWidth();
         int height = bufferedImage.getHeight();

@@ -13,10 +13,11 @@ public class PalletView extends JPanel {
     private BufferedImage bufferedImage;
 
     private PalletView() {
+        super();
     }
 
     public static void createPallet(ArrayList<Color> colorMap) {
-        JFrame palletFrame=new JFrame("Color Pallet");
+        JFrame palletFrame=new JFrame("Color Palette");
         palletFrame.setSize(100, 500);
         PalletView palletView=new PalletView();
         palletView.bufferedImage = new BufferedImage(1, colorMap.size(), BufferedImage.TYPE_INT_ARGB);
@@ -24,6 +25,7 @@ public class PalletView extends JPanel {
             palletView.bufferedImage.setRGB(0, i, colorMap.get(i).getARGB());
         }
         palletFrame.add(palletView);
+        palletFrame.setLocationRelativeTo(null);
         palletFrame.setVisible(true);
     }
 

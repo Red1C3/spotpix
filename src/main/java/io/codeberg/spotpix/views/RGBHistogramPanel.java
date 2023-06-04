@@ -1,5 +1,6 @@
 package io.codeberg.spotpix.views;
 
+import java.awt.GridLayout;
 import java.awt.Paint;
 
 import javax.swing.JFrame;
@@ -21,9 +22,7 @@ public class RGBHistogramPanel extends ChartPanel {
         super(chart);
     }
 
-    public static void createRGBHistogramPanel(final String channelName, int[] channel) {
-        JFrame rgbFrame=new JFrame("RGB Histogram");
-        rgbFrame.setSize(500, 200);
+    public static RGBHistogramPanel createRGBHistogramPanel(final String channelName, int[] channel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < channel.length; i++) {
             dataset.addValue(channel[i], "", Integer.toString(i));
@@ -33,7 +32,7 @@ public class RGBHistogramPanel extends ChartPanel {
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         CategoryAxis axis = plot.getDomainAxis();
         axis.setTickLabelsVisible(false);
-        CategoryItemRenderer renderer = new LineAndShapeRenderer(true,false) {
+        CategoryItemRenderer renderer = new LineAndShapeRenderer(true, false) {
             @Override
             public Paint getItemPaint(final int row, final int column) {
                 switch (channelName.toLowerCase()) {
@@ -49,8 +48,17 @@ public class RGBHistogramPanel extends ChartPanel {
         };
         chart.getCategoryPlot().setRenderer(0, renderer);
 
-        RGBHistogramPanel panel=new RGBHistogramPanel(chart);
-        rgbFrame.add(panel);
+        return new RGBHistogramPanel(chart);
+    }
+
+    public static void createRGBPanel(RGBHistogramPanel r, RGBHistogramPanel g, RGBHistogramPanel b) {
+        JFrame rgbFrame = new JFrame("RGB Histograms");
+        rgbFrame.setSize(500, 600);
+        rgbFrame.setLayout(new GridLayout(3,1));
+        rgbFrame.add(r);
+        rgbFrame.add(g);
+        rgbFrame.add(b);
+        rgbFrame.setLocationRelativeTo(null);
         rgbFrame.setVisible(true);
     }
 

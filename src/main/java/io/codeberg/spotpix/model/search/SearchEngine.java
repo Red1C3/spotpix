@@ -35,7 +35,11 @@ public class SearchEngine {
                             f.toString().toLowerCase().endsWith(PNG_FMT)) {
                         FileTime fileTime = (FileTime) Files.getAttribute(f, "creationTime");
                         byte[] bytes = Files.readAllBytes(f);
-                        imagesInPath.add((new JDecoder().decode(bytes, fileTime)));
+                        try {
+                            imagesInPath.add((new JDecoder().decode(bytes, fileTime)));
+                        } catch (Exception e) {
+                            // No need ig
+                        }
                     }
                 } catch (IOException e) {
                     System.out.println("Error while reading a file in searching path");

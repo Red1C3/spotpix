@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.controllers.ImageFormat;
@@ -27,8 +28,8 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String SAVE_STR = "Save as";
     private static final String VIEW_STR = "View";
     private static final String ALL_CLR_HISTO_STR = "All Colors Histogram";
-    private static final String RGB_HISTO_STR = "RGB Channel Histogram";
-    private static final String PALLET_STRING = "Color Pallet";
+    private static final String RGB_HISTO_STR = "RGB Channels Histograms";
+    private static final String PALLET_STRING = "Color Palette";
     private static final String PNG_FMT = "png";
     private static final String FLT_FMT = "flt";
 
@@ -38,7 +39,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
-        imageViewPanel = ImageViewPanel.instance();
+        imageViewPanel = viewerRoot.getImageViewPanel();
         JMenu file = new JMenu(FILE_STR);
         JMenu edit = new JMenu(EDIT_STR);
         JMenu view = new JMenu(VIEW_STR);
@@ -84,13 +85,13 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if (e.getSource() == save) {
             saveAction();
         }
-        if(e.getSource()==allColorHistogram){
+        if (e.getSource() == allColorHistogram) {
             viewAllColorsHistogram();
         }
-        if(e.getSource()==rgbHistogram){
+        if (e.getSource() == rgbHistogram) {
             viewRGBHistogram();
         }
-        if(e.getSource()==palletView){
+        if (e.getSource() == palletView) {
             viewColorPallet();
         }
         if(e.getSource()==search){
@@ -98,22 +99,37 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         }
     }
     private void searchAction(){
-        new SearchDialog();
+        new SearchDialog(viewerRoot);
     }
 
     private void viewColorPallet() {
-        PalletView.createPallet(ImageViewPanel.instance().getColorMap());
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        PalletView.createPallet(imageViewPanel.getColorMap());
     }
 
     private void viewRGBHistogram() {
-        RGBHistogramPanel.createRGBHistogramPanel("Red", ImageViewPanel.instance().getRedChannel());
-        RGBHistogramPanel.createRGBHistogramPanel("Green", ImageViewPanel.instance().getGreenChannel());
-        RGBHistogramPanel.createRGBHistogramPanel("Blue", ImageViewPanel.instance().getBlueChannel());
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        RGBHistogramPanel redPanel = RGBHistogramPanel.createRGBHistogramPanel("Red", imageViewPanel.getRedChannel());
+        RGBHistogramPanel greenPanel = RGBHistogramPanel.createRGBHistogramPanel("Green",
+                imageViewPanel.getGreenChannel());
+        RGBHistogramPanel bluePanel = RGBHistogramPanel.createRGBHistogramPanel("Blue",
+                imageViewPanel.getBlueChannel());
+        RGBHistogramPanel.createRGBPanel(redPanel, greenPanel, bluePanel);
     }
 
     private void viewAllColorsHistogram() {
-        int[] quantizationMap=ImageViewPanel.instance().getQuantizationMap();
-        ArrayList<Color> colorMap=ImageViewPanel.instance().getColorMap();
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        int[] quantizationMap = imageViewPanel.getQuantizationMap();
+        ArrayList<Color> colorMap = imageViewPanel.getColorMap();
         HistogramPanel.createHistogram(quantizationMap, colorMap);
     }
 
@@ -140,10 +156,18 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     }
 
     private void quantizeAction() {
-        QuantizationDialog quantizationDialog = new QuantizationDialog(viewerRoot);
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
+        new QuantizationDialog(viewerRoot);
     }
 
     private void saveAction() {
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
         JFileChooser fileChooser = new ImageSaver();
         int response = fileChooser.showSaveDialog(this);
         if (response == ImageChooser.APPROVE_OPTION) {
@@ -153,6 +177,8 @@ public class ViewerMenuBar extends JMenuBar implements Action {
                 imageViewPanel.saveImage(path, ImageFormat.PNG);
             } else if (ext.equals(FLT_FMT)) {
                 imageViewPanel.saveImage(path, ImageFormat.FLT);
+            } else {
+                JOptionPane.showMessageDialog(viewerRoot, "Unsupported format, aborting...");
             }
         }
     }
