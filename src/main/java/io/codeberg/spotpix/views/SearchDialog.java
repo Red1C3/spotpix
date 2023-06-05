@@ -2,10 +2,12 @@ package io.codeberg.spotpix.views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -184,14 +186,46 @@ class DisabledItemSelectionModel extends DefaultListSelectionModel {
 }
 
 class DatePanel extends JPanel {
+    private static String START_DATE = "Start Date:";
+    private static String END_DATE = "End Date:";
+    private JComboBox<Integer> startYear, startMonth, startDay,
+            endYear, endMonth, endDay;
 
     public DatePanel() {
         super();
-        JComboBox<Integer> yearBox=new JComboBox<Integer>();
-        for(int i=LocalDate.now().getYear();i>1969;i--){
-            yearBox.addItem(i);
+
+        setLayout(new GridLayout(2, 4,10,100));
+        add(new JLabel(START_DATE));
+        startYear = new JComboBox<>();
+        endYear = new JComboBox<>();
+        for (int i = LocalDate.now().getYear(); i > 1969; i--) {
+            endYear.addItem(i);
+            startYear.addItem(i);
         }
-        add(yearBox);
+        add(startYear);
+
+        startMonth = new JComboBox<>();
+        endMonth = new JComboBox<>();
+        for (int i = 1; i < 13; i++) {
+            startMonth.addItem(i);
+            endMonth.addItem(i);
+        }
+
+        add(startMonth);
+
+        startDay = new JComboBox<>();
+        endDay = new JComboBox<>();
+        for (int i = 1; i < 32; i++) {
+            startDay.addItem(i);
+            endDay.addItem(i);
+        }
+        add(startDay);
+
+        add(new JLabel(END_DATE));
+
+        add(endYear);
+        add(endMonth);
+        add(endDay);
 
     }
 }
