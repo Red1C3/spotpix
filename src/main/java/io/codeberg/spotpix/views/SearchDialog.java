@@ -76,8 +76,10 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+        if(e.getSource()==searchButton){
+            Color[] searchColors=colorPanel.getSelectedColors();
+            //Apply search algorithm
+        }
     }
 
 }
@@ -128,6 +130,9 @@ class ColorPanel extends JPanel implements ItemListener {
             selectedColors.add(color);
             colorsList.setListData(selectedColors.toArray(new Color[0]));
         }
+    }
+    public Color[] getSelectedColors(){
+        return selectedColors.toArray(new Color[0]);
     }
 }
 
