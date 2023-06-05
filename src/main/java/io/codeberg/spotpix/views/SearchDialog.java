@@ -7,11 +7,16 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -20,24 +25,35 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.model.Color;
 
 public class SearchDialog extends JDialog implements ActionListener {
     private final static String COLOR_SRCH_STR = "Color Search";
-
+    private final static String DATE_SRCH_STR = "Date Search";
     private ColorPanel colorPanel;
+    private DatePanel datePanel;
     private JTextField pathField;
     private JButton pathButton, searchButton;
     private ViewerRoot viewerRoot;
+    private JTabbedPane tabbedPane;
 
     public SearchDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Search", ModalityType.APPLICATION_MODAL);
@@ -45,7 +61,7 @@ public class SearchDialog extends JDialog implements ActionListener {
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
         pathField = new JTextField();
         pathButton = new JButton("Navigate");
@@ -63,6 +79,7 @@ public class SearchDialog extends JDialog implements ActionListener {
         setupPanels();
 
         tabbedPane.add(colorPanel, COLOR_SRCH_STR);
+        tabbedPane.add(datePanel, DATE_SRCH_STR);
         add(tabbedPane, BorderLayout.CENTER);
         add(pathPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
@@ -72,13 +89,16 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     private void setupPanels() {
         colorPanel = new ColorPanel(viewerRoot.getImageViewPanel());
+        datePanel = new DatePanel();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==searchButton){
-            Color[] searchColors=colorPanel.getSelectedColors();
-            //Apply search algorithm
+        if (e.getSource() == searchButton) {
+            if (tabbedPane.getSelectedIndex() == 0) {
+                Color[] searchColors = colorPanel.getSelectedColors();
+                // Apply search algorithm
+            }
         }
     }
 
@@ -97,7 +117,7 @@ class ColorPanel extends JPanel implements ItemListener {
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets=new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(10, 10, 10, 10);
         selectedColors = new HashSet<>();
         comboBox = new JComboBox<Color>();
         comboBox.addItemListener(this);
@@ -131,7 +151,8 @@ class ColorPanel extends JPanel implements ItemListener {
             colorsList.setListData(selectedColors.toArray(new Color[0]));
         }
     }
-    public Color[] getSelectedColors(){
+
+    public Color[] getSelectedColors() {
         return selectedColors.toArray(new Color[0]);
     }
 }
@@ -159,5 +180,18 @@ class DisabledItemSelectionModel extends DefaultListSelectionModel {
     @Override
     public void setSelectionInterval(int index0, int index1) {
         super.setSelectionInterval(-1, -1);
+    }
+}
+
+class DatePanel extends JPanel {
+
+    public DatePanel() {
+        super();
+        JComboBox<Integer> yearBox=new JComboBox<Integer>();
+        for(int i=LocalDate.now().getYear();i>1969;i--){
+            yearBox.addItem(i);
+        }
+        add(yearBox);
+
     }
 }
