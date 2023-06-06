@@ -16,6 +16,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -96,6 +98,16 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==pathButton){
+            JFileChooser directoryChooser=new JFileChooser();
+            directoryChooser.setCurrentDirectory(Paths.get(System.getProperty("user.dir")).toFile());
+            directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            directoryChooser.setApproveButtonText("Select Directory");
+            int response=directoryChooser.showOpenDialog(this);
+            if(response==JFileChooser.APPROVE_OPTION){
+                pathField.setText(directoryChooser.getSelectedFile().getAbsolutePath());
+            }
+        }
         if (e.getSource() == searchButton) {
             if (tabbedPane.getSelectedIndex() == 0) {
                 Color[] searchColors = colorPanel.getSelectedColors();
