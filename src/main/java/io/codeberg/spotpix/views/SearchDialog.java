@@ -213,8 +213,8 @@ class DisabledItemSelectionModel extends DefaultListSelectionModel {
 }
 
 class DatePanel extends JPanel {
-    private static String START_DATE = "Start Date:";
-    private static String END_DATE = "End Date:";
+    private final static String START_DATE = "Start Date:";
+    private final static String END_DATE = "End Date:";
     private JComboBox<Integer> startYear, startMonth, startDay,
             endYear, endMonth, endDay;
 
@@ -270,5 +270,17 @@ class DatePanel extends JPanel {
         int day = (int) endDay.getSelectedItem();
 
         return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+}
+
+class DimPanel extends JPanel{
+    private static final String WIDTH_LIMITS="Width Limits";
+    private static final String HEIGHT_LIMITS="Height Limits";
+
+    private int widthLimits,heightLimits;
+
+    public DimPanel(){
+        super();
+
     }
 }
