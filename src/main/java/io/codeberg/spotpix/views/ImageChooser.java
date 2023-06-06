@@ -1,5 +1,7 @@
 package io.codeberg.spotpix.views;
 
+import java.nio.file.Paths;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -10,6 +12,6 @@ public class ImageChooser extends JFileChooser {
                 "Images (jpg, png, flt)",
                 "jpg", "png", "flt");
         setFileFilter(filter);
-        setCurrentDirectory(getCurrentDirectory());
+        setCurrentDirectory(Paths.get(System.getProperty("user.dir")).toFile());
     }
 }
