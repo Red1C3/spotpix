@@ -20,7 +20,9 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 import javax.swing.DefaultListSelectionModel;
@@ -47,7 +49,11 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.html.ImageView;
 
+import io.codeberg.spotpix.App;
 import io.codeberg.spotpix.model.Color;
+import io.codeberg.spotpix.model.images.Image;
+import io.codeberg.spotpix.model.search.SearchEngine;
+import io.codeberg.spotpix.model.search.algorithms.DateSearch;
 
 public class SearchDialog extends JDialog implements ActionListener {
     private final static String COLOR_SRCH_STR = "Color Search";
@@ -98,13 +104,13 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==pathButton){
-            JFileChooser directoryChooser=new JFileChooser();
+        if (e.getSource() == pathButton) {
+            JFileChooser directoryChooser = new JFileChooser();
             directoryChooser.setCurrentDirectory(Paths.get(System.getProperty("user.dir")).toFile());
             directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             directoryChooser.setApproveButtonText("Select Directory");
-            int response=directoryChooser.showOpenDialog(this);
-            if(response==JFileChooser.APPROVE_OPTION){
+            int response = directoryChooser.showOpenDialog(this);
+            if (response == JFileChooser.APPROVE_OPTION) {
                 pathField.setText(directoryChooser.getSelectedFile().getAbsolutePath());
             }
         }
@@ -112,7 +118,16 @@ public class SearchDialog extends JDialog implements ActionListener {
             if (tabbedPane.getSelectedIndex() == 0) {
                 Color[] searchColors = colorPanel.getSelectedColors();
                 // Apply search algorithm
+            } else if (tabbedPane.getSelectedIndex() == 1) {
+                Date startDate = datePanel.getStartDate();
+                Date endDate = datePanel.getEndDate();
+                SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
+                ArrayList<Image> res = engine.search(new DateSearch(startDate, endDate));
+                for (Image image : res) {
+                    App.main(image);
+                }
             }
+            dispose();
         }
     }
 
@@ -206,7 +221,7 @@ class DatePanel extends JPanel {
     public DatePanel() {
         super();
 
-        setLayout(new GridLayout(2, 4,10,100));
+        setLayout(new GridLayout(2, 4, 10, 100));
         add(new JLabel(START_DATE));
         startYear = new JComboBox<>();
         endYear = new JComboBox<>();
@@ -239,5 +254,21 @@ class DatePanel extends JPanel {
         add(endMonth);
         add(endDay);
 
+    }
+
+    public Date getStartDate() {
+        int year = (int) startYear.getSelectedItem();
+        int month = (int) startMonth.getSelectedItem();
+        int day = (int) startDay.getSelectedItem();
+
+        return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public Date getEndDate() {
+        int year = (int) endYear.getSelectedItem();
+        int month = (int) endMonth.getSelectedItem();
+        int day = (int) endDay.getSelectedItem();
+
+        return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
