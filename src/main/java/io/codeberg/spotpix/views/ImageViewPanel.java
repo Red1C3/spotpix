@@ -117,4 +117,10 @@ public class ImageViewPanel extends JPanel {
     public boolean hasImage() {
         return imageCtrlr != null;
     }
+    public int getImgHeight(){
+        return imageCtrlr.getHeight();
+    }
+    public int getImgWidth(){
+        return imageCtrlr.getWidth();
+    }
 }

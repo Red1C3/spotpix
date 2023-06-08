@@ -18,6 +18,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -46,6 +48,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.NumberFormatter;
 import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.html.ImageView;
 
@@ -54,20 +57,34 @@ import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.search.SearchEngine;
 import io.codeberg.spotpix.model.search.algorithms.DateSearch;
+import io.codeberg.spotpix.model.search.algorithms.DimSearch;
 
 public class SearchDialog extends JDialog implements ActionListener {
     private final static String COLOR_SRCH_STR = "Color Search";
     private final static String DATE_SRCH_STR = "Date Search";
+    private final static String DIM_SRCH_STR = "Dimensions Search";
     private ColorPanel colorPanel;
     private DatePanel datePanel;
+    private DimPanel dimPanel;
     private JTextField pathField;
     private JButton pathButton, searchButton;
     private ViewerRoot viewerRoot;
     private JTabbedPane tabbedPane;
 
+    private static NumberFormatter numberFormatter;
+
     public SearchDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Search", ModalityType.APPLICATION_MODAL);
         this.viewerRoot = viewerRoot;
+
+        NumberFormat format = NumberFormat.getInstance();
+        numberFormatter = new NumberFormatter(format);
+        numberFormatter.setValueClass(Integer.class);
+        numberFormatter.setMinimum(0);
+        numberFormatter.setMaximum(Integer.MAX_VALUE);
+        numberFormatter.setAllowsInvalid(false);
+        numberFormatter.setCommitsOnValidEdit(true);
+
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
@@ -90,6 +107,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 
         tabbedPane.add(colorPanel, COLOR_SRCH_STR);
         tabbedPane.add(datePanel, DATE_SRCH_STR);
+        tabbedPane.add(dimPanel, DIM_SRCH_STR);
         add(tabbedPane, BorderLayout.CENTER);
         add(pathPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
@@ -100,6 +118,12 @@ public class SearchDialog extends JDialog implements ActionListener {
     private void setupPanels() {
         colorPanel = new ColorPanel(viewerRoot.getImageViewPanel());
         datePanel = new DatePanel();
+        if (viewerRoot.getImageViewPanel().hasImage()) {
+            dimPanel = new DimPanel(viewerRoot.getImageViewPanel().getImgWidth(),
+                    viewerRoot.getImageViewPanel().getImgHeight());
+        } else {
+            dimPanel = new DimPanel(0, 0);
+        }
     }
 
     @Override
@@ -123,14 +147,30 @@ public class SearchDialog extends JDialog implements ActionListener {
                 Date endDate = datePanel.getEndDate();
                 SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
                 ArrayList<Image> res = engine.search(new DateSearch(startDate, endDate));
-                for (Image image : res) {
-                    App.main(image);
-                }
+                displayResults(res);
+            } else if (tabbedPane.getSelectedIndex() == 2) {
+                int width = dimPanel.getInputWidth();
+                int height = dimPanel.getInputHeight();
+                int widthLim = dimPanel.getInputWidthLim();
+                int heightLim = dimPanel.getInputHeightLim();
+
+                SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
+                ArrayList<Image> res = engine.search(new DimSearch(width, height, widthLim, heightLim));
+                displayResults(res);
             }
             dispose();
         }
     }
 
+    public void displayResults(ArrayList<Image> images) {
+        for (Image image : images) {
+            App.main(image);
+        }
+    }
+
+    public static NumberFormatter getFormatter() {
+        return numberFormatter;
+    }
 }
 
 class ColorPanel extends JPanel implements ItemListener {
@@ -273,14 +313,76 @@ class DatePanel extends JPanel {
     }
 }
 
-class DimPanel extends JPanel{
-    private static final String WIDTH_LIMITS="Width Limits";
-    private static final String HEIGHT_LIMITS="Height Limits";
+class DimPanel extends JPanel {
+    private static final String WIDTH_LIMITS_STR = "Width Limits:";
+    private static final String HEIGHT_LIMITS_STR = "Height Limits:";
+    private static final String WIDTH_STR = "Width:";
+    private static final String HEIGHT_STR = "Height:";
 
-    private int widthLimits,heightLimits;
+    private JFormattedTextField width, height, widthLim, heightLim;
 
-    public DimPanel(){
+    public DimPanel(int imgWidth, int imgHeight) {
         super();
+        setLayout(new GridLayout(4, 2, 0, 20));
 
+        add(new JLabel(WIDTH_STR));
+        width = new JFormattedTextField(SearchDialog.getFormatter());
+        width.setText(Integer.valueOf(imgWidth).toString());
+        add(width);
+
+        add(new JLabel(HEIGHT_STR));
+        height = new JFormattedTextField(SearchDialog.getFormatter());
+        height.setText(Integer.valueOf(imgHeight).toString());
+        add(height);
+
+        add(new JLabel(WIDTH_LIMITS_STR));
+        widthLim = new JFormattedTextField(SearchDialog.getFormatter());
+        widthLim.setText("0");
+        add(widthLim);
+
+        add(new JLabel(HEIGHT_LIMITS_STR));
+        heightLim = new JFormattedTextField(SearchDialog.getFormatter());
+        heightLim.setText("0");
+        add(heightLim);
+    }
+
+    public int getInputWidth() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(width.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getInputHeight() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(height.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getInputWidthLim() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(widthLim.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getInputHeightLim() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(heightLim.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
