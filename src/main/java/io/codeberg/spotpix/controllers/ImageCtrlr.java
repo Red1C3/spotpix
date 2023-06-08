@@ -160,4 +160,7 @@ public class ImageCtrlr {
         IndexedImage indexedImage=(IndexedImage) image;
         return indexedImage.getBlueChannel();
     }
+    public int getFileSize(){
+        return image.getFileSize();
+    }
 }

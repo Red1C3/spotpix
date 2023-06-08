@@ -58,14 +58,17 @@ import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.search.SearchEngine;
 import io.codeberg.spotpix.model.search.algorithms.DateSearch;
 import io.codeberg.spotpix.model.search.algorithms.DimSearch;
+import io.codeberg.spotpix.model.search.algorithms.SizeSearch;
 
 public class SearchDialog extends JDialog implements ActionListener {
     private final static String COLOR_SRCH_STR = "Color Search";
     private final static String DATE_SRCH_STR = "Date Search";
     private final static String DIM_SRCH_STR = "Dimensions Search";
+    private final static String SIZE_SRCH_STR = "Size Search";
     private ColorPanel colorPanel;
     private DatePanel datePanel;
     private DimPanel dimPanel;
+    private SizePanel sizePanel;
     private JTextField pathField;
     private JButton pathButton, searchButton;
     private ViewerRoot viewerRoot;
@@ -108,6 +111,7 @@ public class SearchDialog extends JDialog implements ActionListener {
         tabbedPane.add(colorPanel, COLOR_SRCH_STR);
         tabbedPane.add(datePanel, DATE_SRCH_STR);
         tabbedPane.add(dimPanel, DIM_SRCH_STR);
+        tabbedPane.add(sizePanel,SIZE_SRCH_STR);
         add(tabbedPane, BorderLayout.CENTER);
         add(pathPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
@@ -121,8 +125,10 @@ public class SearchDialog extends JDialog implements ActionListener {
         if (viewerRoot.getImageViewPanel().hasImage()) {
             dimPanel = new DimPanel(viewerRoot.getImageViewPanel().getImgWidth(),
                     viewerRoot.getImageViewPanel().getImgHeight());
+            sizePanel = new SizePanel(viewerRoot.getImageViewPanel().getFileSize());
         } else {
             dimPanel = new DimPanel(0, 0);
+            sizePanel = new SizePanel(0);
         }
     }
 
@@ -156,6 +162,13 @@ public class SearchDialog extends JDialog implements ActionListener {
 
                 SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
                 ArrayList<Image> res = engine.search(new DimSearch(width, height, widthLim, heightLim));
+                displayResults(res);
+            }else if (tabbedPane.getSelectedIndex()==3){
+                int size=sizePanel.getInputSize();
+                int threshold=sizePanel.getInputThreshold();
+
+                SearchEngine engine=new SearchEngine(Paths.get(pathField.getText()),null);
+                ArrayList<Image> res=engine.search(new SizeSearch(size, threshold));
                 displayResults(res);
             }
             dispose();
@@ -385,4 +398,47 @@ class DimPanel extends JPanel {
         }
         return 0;
     }
+}
+
+class SizePanel extends JPanel {
+    private static final String SIZE_STR = "Size (bytes):";
+    private static final String THRESHOLD_STR = "Threshold (bytes):";
+
+    private JFormattedTextField size, threshold;
+
+    public SizePanel(int imgSize) {
+        super();
+        setLayout(new GridLayout(2, 2,0,100));
+
+        add(new JLabel(SIZE_STR));
+        size = new JFormattedTextField(SearchDialog.getFormatter());
+        size.setText(Integer.valueOf(imgSize).toString());
+        add(size);
+
+        add(new JLabel(THRESHOLD_STR));
+        threshold = new JFormattedTextField(SearchDialog.getFormatter());
+        threshold.setText("0");
+        add(threshold);
+    }
+
+    public int getInputSize() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(size.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getInputThreshold() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(threshold.getText());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

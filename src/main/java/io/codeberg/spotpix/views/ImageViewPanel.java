@@ -123,4 +123,7 @@ public class ImageViewPanel extends JPanel {
     public int getImgWidth(){
         return imageCtrlr.getWidth();
     }
+    public int getFileSize(){
+        return imageCtrlr.getFileSize();
+    }
 }
