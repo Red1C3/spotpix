@@ -25,6 +25,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String OPEN_STR = "Open";
     private static final String EDIT_STR = "Edit";
     private static final String QUANTIZE_STR = "Quantize";
+    private static final String CROP_STR="Crop";
     private static final String SAVE_STR = "Save as";
     private static final String VIEW_STR = "View";
     private static final String ALL_CLR_HISTO_STR = "All Colors Histogram";
@@ -35,7 +36,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open, quantize, save, allColorHistogram, rgbHistogram, palletView,search;
+    private JMenuItem open, quantize,crop, save, allColorHistogram, rgbHistogram, palletView,search;
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
@@ -51,6 +52,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         rgbHistogram = new JMenuItem(RGB_HISTO_STR);
         palletView = new JMenuItem(PALLET_STRING);
         search=new JMenuItem(SEARCH_STR);
+        crop=new JMenuItem(CROP_STR);
 
         open.addActionListener(this);
         quantize.addActionListener(this);
@@ -59,6 +61,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         rgbHistogram.addActionListener(this);
         palletView.addActionListener(this);
         search.addActionListener(this);
+        crop.addActionListener(this);
 
         file.add(open);
         file.add(save);
@@ -66,6 +69,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         add(file);
 
         edit.add(quantize);
+        edit.add(crop);
         add(edit);
 
         view.add(allColorHistogram);
@@ -97,6 +101,12 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if(e.getSource()==search){
             searchAction();
         }
+        if(e.getSource()==crop){
+            cropAction();
+        }
+    }
+    private void cropAction(){
+        new CropDialog(viewerRoot);
     }
     private void searchAction(){
         new SearchDialog(viewerRoot);
