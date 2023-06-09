@@ -144,7 +144,7 @@ public abstract class Image {
             }
         }
 
-        return new ByteImage(pixels, height, width, fileSize, fileTime); //TODO test me
+        return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
     public void setRegion(Pixel[] region) {
