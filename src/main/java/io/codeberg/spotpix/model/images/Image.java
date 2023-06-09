@@ -147,6 +147,24 @@ public abstract class Image {
         return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
+    // ratio is contained in [0-1]
+    public Image nearestDownsample(float ratio) {
+        int width = Math.round(this.width * ratio);
+        int height = Math.round(this.height * ratio);
+
+        Color[][] pixels = new Color[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int x = Math.round(((float) i / (float) width) * (float) this.width);
+                int y = Math.round(((float) j / (float) height) * (float) this.height);
+                pixels[i][j] = getPixel(x, y).getColor();
+            }
+        }
+
+        return new ByteImage(pixels, height, width, fileSize, fileTime);
+    }
+
     public void setRegion(Pixel[] region) {
         for (Pixel pixel : region) {
             setPixel(pixel);
