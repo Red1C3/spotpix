@@ -133,8 +133,8 @@ public abstract class Image {
     }
 
     public Image crop(int[] min, int[] max) {
-        int width = max[0] - min[0] + 1;
-        int height = max[1] - min[1] + 1;
+        int width = max[0] - min[0];
+        int height = max[1] - min[1];
 
         Color[][] pixels = new Color[width][height];
 
