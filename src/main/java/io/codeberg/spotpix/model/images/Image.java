@@ -132,6 +132,21 @@ public abstract class Image {
         return region.toArray(new Pixel[0]);
     }
 
+    public Image crop(int[] min, int[] max) {
+        int width = max[0] - min[0] + 1;
+        int height = max[1] - min[1] + 1;
+
+        Color[][] pixels = new Color[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                pixels[i][j] = getPixel(min[0] + i, min[1] + j).getColor();
+            }
+        }
+
+        return new ByteImage(pixels, height, width, fileSize, fileTime); //TODO test me
+    }
+
     public void setRegion(Pixel[] region) {
         for (Pixel pixel : region) {
             setPixel(pixel);
@@ -145,10 +160,12 @@ public abstract class Image {
     public int getWidth() {
         return width;
     }
-    public int getFileSize(){
+
+    public int getFileSize() {
         return fileSize;
     }
-    public FileTime getFileTime(){
+
+    public FileTime getFileTime() {
         return fileTime;
     }
 }
