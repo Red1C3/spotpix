@@ -148,4 +148,7 @@ public class ImageViewPanel extends JPanel {
     public int getFileSize() {
         return imageCtrlr.getFileSize();
     }
+    public void crop(int[] min, int[] max){
+        imageCtrlr.crop(min, max);
+    }
 }

@@ -1,25 +1,60 @@
 package io.codeberg.spotpix.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.text.html.ImageView;
 
-public class CropDialog extends JDialog {
+public class CropDialog extends JDialog implements ActionListener {
+    private static final String CROP_STR="Crop";
+    private static final String CANCEL_STR="Cancel";
     private ImagePanel imagePanel;
+    private JButton cropButton,cancelButton;
+    private ImageViewPanel imageViewPanel;
+    private ViewerRoot viewerRoot;
+
 
     public CropDialog(ViewerRoot viewerRoot) {
         super(viewerRoot, "Crop", ModalityType.APPLICATION_MODAL);
+        this.viewerRoot=viewerRoot;
+        this.imageViewPanel=viewerRoot.getImageViewPanel();
+        setLayout(new BorderLayout());
 
         imagePanel = new ImagePanel(viewerRoot.getImageViewPanel());
-        add(imagePanel);
+        add(imagePanel,BorderLayout.CENTER);
+
+        cropButton=new JButton(CROP_STR);
+        cancelButton=new JButton(CANCEL_STR);
+        cropButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+
+        add(cropButton,BorderLayout.SOUTH);
+        //add(cancelButton);
 
         setSize(400, 400);
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==cropButton){
+            int[] min=imagePanel.getMin();
+            int[] max=imagePanel.getMax();
+            imageViewPanel.crop(min, max);
+            viewerRoot.repaint();
+            dispose();
+        }else if (e.getSource()==cancelButton){
+            dispose();
+        }
     }
 }
 
@@ -104,5 +139,11 @@ class ImagePanel extends JPanel implements MouseListener {
         scaledPoint[1] = Math.round(((float) point[1] / (float) ogHeight) * (float) height);
 
         return scaledPoint;
+    }
+    public int[] getMin(){
+        return min;
+    }
+    public int[] getMax(){
+        return max;
     }
 }

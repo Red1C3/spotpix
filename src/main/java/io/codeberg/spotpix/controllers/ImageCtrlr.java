@@ -32,7 +32,7 @@ public class ImageCtrlr {
 
     public ImageCtrlr(String path) throws Exception {
         byte[] bytes = null;
-        FileTime creationDate=null;
+        FileTime creationDate = null;
         try {
             bytes = Files.readAllBytes(Paths.get(path));
             creationDate = (FileTime) Files.getAttribute(Paths.get(path), "creationTime");
@@ -129,38 +129,43 @@ public class ImageCtrlr {
     }
 
     public ArrayList<Color> getColorMap() {
-        image=image.toIndexedImage();
+        image = image.toIndexedImage();
         IndexedImage indexedImage = (IndexedImage) image;
         return indexedImage.getColorMap();
     }
 
     public int[] getQuantizationMap() {
-        image=image.toIndexedImage();
-        IndexedImage indexedImage=(IndexedImage) image;
-        if(!indexedImage.isQuantized()){
+        image = image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
+        if (!indexedImage.isQuantized()) {
             indexedImage.calculateQuantizationMap();
         }
         return indexedImage.getQuantizedMap();
     }
 
     public int[] getRedChannel() {
-        image=image.toIndexedImage();
-        IndexedImage indexedImage=(IndexedImage) image;
+        image = image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
         return indexedImage.getRedChannel();
     }
 
     public int[] getGreenChannel() {
-        image=image.toIndexedImage();
-        IndexedImage indexedImage=(IndexedImage) image;
+        image = image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
         return indexedImage.getGreenChannel();
     }
 
     public int[] getBlueChannel() {
-        image=image.toIndexedImage();
-        IndexedImage indexedImage=(IndexedImage) image;
+        image = image.toIndexedImage();
+        IndexedImage indexedImage = (IndexedImage) image;
         return indexedImage.getBlueChannel();
     }
-    public int getFileSize(){
+
+    public int getFileSize() {
         return image.getFileSize();
+    }
+
+    public void crop(int[] min, int[] max) {
+        image = image.crop(min, max);
     }
 }
