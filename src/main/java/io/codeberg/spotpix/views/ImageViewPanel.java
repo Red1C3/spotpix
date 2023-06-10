@@ -46,6 +46,25 @@ public class ImageViewPanel extends JPanel {
         }
     }
 
+    public void paint(Graphics g, int height, int width) {
+        int imgHeight = imageCtrlr.getHeight();
+        int imgWidth = imageCtrlr.getWidth();
+        float aspectRatio = (float) imgWidth / (float) imgHeight;
+        int x = 0, y = 0;
+
+        imgWidth = width;
+        imgHeight = (int) ((float) width / aspectRatio);
+
+        if (imgHeight > height) {
+            imgHeight = height;
+            imgWidth = (int) ((float) height * aspectRatio);
+        }
+        y = (int) ((float) height / 2.0f - (float) imgHeight / 2.0f);
+        x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
+
+        g.drawImage(imageCtrlr.getBufferedImage(), x, y, imgWidth, imgHeight, null);
+    }
+
     public void openImage(String path) {
         try {
             imageCtrlr = new ImageCtrlr(path);
@@ -117,13 +136,16 @@ public class ImageViewPanel extends JPanel {
     public boolean hasImage() {
         return imageCtrlr != null;
     }
-    public int getImgHeight(){
+
+    public int getImgHeight() {
         return imageCtrlr.getHeight();
     }
-    public int getImgWidth(){
+
+    public int getImgWidth() {
         return imageCtrlr.getWidth();
     }
-    public int getFileSize(){
+
+    public int getFileSize() {
         return imageCtrlr.getFileSize();
     }
 }
