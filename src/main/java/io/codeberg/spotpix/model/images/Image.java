@@ -176,19 +176,24 @@ public abstract class Image {
                 float x = ((float) i / (float) width) * (float) this.width;
                 float y = ((float) j / (float) height) * (float) this.height;
 
+                if (x >= this.width-1)
+                    x = this.width - 2;
+                if (y >= this.height-1)
+                    y = this.height - 2;
+
                 float xWeight = (float) (x - Math.floor(x));
 
-                Color A = Color.ARGBAdd(
+                Color A = Color.ARGBAvg(
                         getPixel((int) Math.floor(x), (int) Math.floor(y)).getColor().multply(1 - xWeight),
-                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y)).getColor().multply(xWeight))
-                        .multply(0.5f);
+                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y)).getColor().multply(xWeight)).multply(2);
 
-                Color B = Color.ARGBAdd(
+                Color B = Color.ARGBAvg(
                         getPixel((int) Math.floor(x), (int) Math.floor(y) + 1).getColor().multply(1 - xWeight),
-                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y) + 1).getColor().multply(xWeight))
-                        .multply(0.5f);
+                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y) + 1).getColor().multply(xWeight)).multply(2);
 
-                // TODO vertical interpolation between A and B
+                float yWeight = (float) (y - Math.floor(y));
+
+                pixels[i][j] = Color.ARGBAvg(A.multply(1 - yWeight), B.multply(yWeight)).multply(2);
 
             }
         }

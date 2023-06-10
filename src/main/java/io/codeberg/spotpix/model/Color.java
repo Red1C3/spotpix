@@ -81,6 +81,15 @@ public class Color {
         return new Color(alpha, red, green, blue);
     }
 
+    public static Color ARGBAvg(Color color0, Color color1) {
+        int alpha = Math.round((color0.getAlpha() + color1.getAlpha()) / 2.0f);
+        int red = Math.round((color0.getRed() + color1.getRed()) / 2.0f);
+        int green = Math.round((color0.getGreen() + color1.getGreen()) / 2.0f);
+        int blue = Math.round((color0.getBlue() + color1.getBlue()) / 2.0f);
+
+        return new Color(alpha, red, green, blue);
+    }
+
     public static double[] RGB2XYZ(int ir, int ig, int ib) {
         double r = ((double) ir) / 255.0;
         double g = ((double) ig) / 255.0;
@@ -214,7 +223,7 @@ public class Color {
     }
 
     public Color multply(float x) {
-        return new Color(getAlpha(), Math.round(getRed() * x), Math.round(getGreen() * x), Math.round(getBlue() * x));
+        return new Color(getAlpha(), Math.round((float)getRed() * x), Math.round((float)getGreen() * x), Math.round((float)getBlue() * x));
     }
 
     @Override
