@@ -105,8 +105,11 @@ class ImagePanel extends JPanel implements MouseListener {
         point[0] = e.getX();
         point[1] = e.getY();
 
+        point[0] -= dims[2];
+        point[1] -= dims[3];
+
         int[] localPoint = getScaledPoint(imgWidth, imgHeight,
-                getSize().width, getSize().height, point);
+                dims[0], dims[1], point);
 
         double disToMin = Math.sqrt(Math.pow(localPoint[0] - min[0], 2) +
                 Math.pow(localPoint[1] - min[1], 2));
