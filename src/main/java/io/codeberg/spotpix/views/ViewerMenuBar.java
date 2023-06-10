@@ -26,6 +26,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String EDIT_STR = "Edit";
     private static final String QUANTIZE_STR = "Quantize";
     private static final String CROP_STR="Crop";
+    private static final String RESAMPLE_STR="Resample";
     private static final String SAVE_STR = "Save as";
     private static final String VIEW_STR = "View";
     private static final String ALL_CLR_HISTO_STR = "All Colors Histogram";
@@ -36,7 +37,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     private ViewerRoot viewerRoot;
     private ImageViewPanel imageViewPanel;
-    private JMenuItem open, quantize,crop, save, allColorHistogram, rgbHistogram, palletView,search;
+    private JMenuItem open, quantize,crop,resample, save, allColorHistogram, rgbHistogram, palletView,search;
 
     public ViewerMenuBar(ViewerRoot viewerRoot) {
         this.viewerRoot = viewerRoot;
@@ -53,6 +54,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         palletView = new JMenuItem(PALLET_STRING);
         search=new JMenuItem(SEARCH_STR);
         crop=new JMenuItem(CROP_STR);
+        resample=new JMenuItem(RESAMPLE_STR);
 
         open.addActionListener(this);
         quantize.addActionListener(this);
@@ -62,6 +64,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         palletView.addActionListener(this);
         search.addActionListener(this);
         crop.addActionListener(this);
+        resample.addActionListener(this);
 
         file.add(open);
         file.add(save);
@@ -70,6 +73,7 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
         edit.add(quantize);
         edit.add(crop);
+        edit.add(resample);
         add(edit);
 
         view.add(allColorHistogram);
@@ -104,6 +108,12 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         if(e.getSource()==crop){
             cropAction();
         }
+        if(e.getSource()==resample){
+            resampleAction();
+        }
+    }
+    private void resampleAction(){
+        new ResampleDialog(viewerRoot);
     }
     private void cropAction(){
         new CropDialog(viewerRoot);
