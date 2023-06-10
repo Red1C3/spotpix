@@ -50,14 +50,36 @@ class ImagePanel extends JPanel implements MouseListener {
     public void paint(Graphics g) {
         imageViewPanel.paint(g, getSize().height, getSize().width);
         g.setColor(new Color(0, 0, 0, 100));
-        int[] scaledMinMax = getScaledMinMax(getSize().width, getSize().height);
-        g.fillRect(scaledMinMax[0], scaledMinMax[1],
-                scaledMinMax[2] - scaledMinMax[0],
-                scaledMinMax[3] - scaledMinMax[1]);
+        int[] scaledMin = getScaledPoint(getSize().width, getSize().height,
+                imgWidth, imgHeight, min);
+        int[] scaledMax = getScaledPoint(getSize().width, getSize().height,
+                imgWidth, imgHeight, max);
+        g.fillRect(scaledMin[0], scaledMin[1],
+                scaledMax[0] - scaledMin[0],
+                scaledMax[1] - scaledMin[1]);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        int[] point = new int[2];
+        point[0] = e.getX();
+        point[1] = e.getY();
+
+        int[] localPoint = getScaledPoint(imgWidth, imgHeight,
+                getSize().width, getSize().height, point);
+
+        double disToMin = Math.sqrt(Math.pow(localPoint[0] - min[0], 2) +
+                Math.pow(localPoint[1] - min[1], 2));
+        double disToMax = Math.sqrt(Math.pow(localPoint[0] - max[0], 2) +
+                Math.pow(localPoint[1] - max[1], 2));
+
+        if (disToMax < disToMin) {
+            max = localPoint;
+        } else {
+            min = localPoint;
+        }
+
+        repaint();
     }
 
     @Override
@@ -76,13 +98,11 @@ class ImagePanel extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    private int[] getScaledMinMax(int width, int height) {
-        int[] scaledMinMax = new int[4];
-        scaledMinMax[0] = Math.round(((float) min[0] / (float) imgWidth) * (float) width);
-        scaledMinMax[1] = Math.round(((float) min[1] / (float) imgHeight) * (float) height);
-        scaledMinMax[2] = Math.round(((float) max[0] / (float) imgWidth) * (float) width);
-        scaledMinMax[3] = Math.round(((float) max[1] / (float) imgHeight) * (float) height);
+    private int[] getScaledPoint(int width, int height, int ogWidth, int ogHeight, int[] point) {
+        int[] scaledPoint = new int[2];
+        scaledPoint[0] = Math.round(((float) point[0] / (float) ogWidth) * (float) width);
+        scaledPoint[1] = Math.round(((float) point[1] / (float) ogHeight) * (float) height);
 
-        return scaledMinMax;
+        return scaledPoint;
     }
 }
