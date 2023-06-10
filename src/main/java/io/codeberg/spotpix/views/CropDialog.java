@@ -9,16 +9,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.text.html.ImageView;
 
 public class CropDialog extends JDialog implements ActionListener {
     private static final String CROP_STR = "Crop";
-    private static final String CANCEL_STR = "Cancel";
     private ImagePanel imagePanel;
-    private JButton cropButton, cancelButton;
+    private JButton cropButton;
     private ImageViewPanel imageViewPanel;
     private ViewerRoot viewerRoot;
 
@@ -32,12 +33,13 @@ public class CropDialog extends JDialog implements ActionListener {
         add(imagePanel, BorderLayout.CENTER);
 
         cropButton = new JButton(CROP_STR);
-        cancelButton = new JButton(CANCEL_STR);
         cropButton.addActionListener(this);
-        cancelButton.addActionListener(this);
 
-        add(cropButton, BorderLayout.SOUTH);
-        // add(cancelButton);
+        JPanel southPanel=new JPanel();
+        southPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        southPanel.add(cropButton);
+        add(southPanel, BorderLayout.SOUTH);
+        
 
         setSize(400, 400);
         setVisible(true);
@@ -50,8 +52,6 @@ public class CropDialog extends JDialog implements ActionListener {
             int[] max = imagePanel.getMax();
             imageViewPanel.crop(min, max);
             viewerRoot.repaint();
-            dispose();
-        } else if (e.getSource() == cancelButton) {
             dispose();
         }
     }
@@ -72,16 +72,11 @@ class ImagePanel extends JPanel implements MouseListener {
         imgHeight = imageViewPanel.getImgHeight();
         imgWidth = imageViewPanel.getImgWidth();
 
-        // min[0] = (int) (imgWidth / 2 - imgWidth * 0.1f);
-        // min[1] = (int) (imgHeight / 2 - imgHeight * 0.1f);
         min[0] = 0;
         min[1] = 0;
 
         max[0] = imgWidth;
         max[1] = imgHeight;
-
-        // max[0] = (int) (imgWidth / 2 + imgWidth * 0.1f);
-        // max[1] = (int) (imgHeight / 2 + imgHeight * 0.1f);
 
         addMouseListener(this);
     }
