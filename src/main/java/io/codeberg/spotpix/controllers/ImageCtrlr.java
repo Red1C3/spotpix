@@ -168,4 +168,12 @@ public class ImageCtrlr {
     public void crop(int[] min, int[] max) {
         image = image.crop(min, max);
     }
+
+    public void nearestScale(float ratio) {
+        image = image.nearestFilter(ratio);
+    }
+
+    public void linearScale(float ratio) {
+        image = image.linearFilter(ratio);
+    }
 }

@@ -63,11 +63,11 @@ public class ImageViewPanel extends JPanel {
         x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
 
         g.drawImage(imageCtrlr.getBufferedImage(), x, y, imgWidth, imgHeight, null);
-        int[] dims=new int[4];
-        dims[0]=imgWidth;
-        dims[1]=imgHeight;
-        dims[2]=x;
-        dims[3]=y;
+        int[] dims = new int[4];
+        dims[0] = imgWidth;
+        dims[1] = imgHeight;
+        dims[2] = x;
+        dims[3] = y;
         return dims;
     }
 
@@ -154,7 +154,16 @@ public class ImageViewPanel extends JPanel {
     public int getFileSize() {
         return imageCtrlr.getFileSize();
     }
-    public void crop(int[] min, int[] max){
+
+    public void crop(int[] min, int[] max) {
         imageCtrlr.crop(min, max);
+    }
+
+    public void nearestScale(float ratio) {
+        imageCtrlr.nearestScale(ratio);
+    }
+
+    public void linearScale(float ratio) {
+        imageCtrlr.linearScale(ratio);
     }
 }

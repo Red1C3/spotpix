@@ -28,7 +28,6 @@ public class ResampleDialog extends JDialog implements ActionListener {
         super(viewerRoot, RESAMPLE_STR, ModalityType.APPLICATION_MODAL);
         this.viewerRoot = viewerRoot;
 
-
         setLayout(new GridLayout(3, 2, 5, 5));
         add(new JLabel(SCALE_STR));
 
@@ -57,15 +56,33 @@ public class ResampleDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+        if (e.getSource() == scaleButton) {
+            float ratio = 1.0f;
+            try {
+                ratio = Float.parseFloat(getMaskFormatter("##.##").stringToValue(scaleField.getText()).toString());
+            } catch (ParseException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            if (linearButton.isSelected()) {
+                viewerRoot.getImageViewPanel().linearScale(ratio);
+            } else if (nearestButton.isSelected()) {
+                viewerRoot.getImageViewPanel().nearestScale(ratio);
+            }
+            viewerRoot.repaint();
+            dispose();
+        }
+        if (e.getSource() == cancelButton) {
+            dispose();
+        }
     }
+
     private MaskFormatter getMaskFormatter(String format) {
         MaskFormatter mask = null;
         try {
             mask = new MaskFormatter(format);
             mask.setPlaceholderCharacter('0');
-        }catch (ParseException ex) {
+        } catch (ParseException ex) {
             ex.printStackTrace();
         }
         return mask;
