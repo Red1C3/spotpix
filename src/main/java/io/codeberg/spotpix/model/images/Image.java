@@ -165,7 +165,7 @@ public abstract class Image {
         return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
-    public Image linearDownsample(float ratio) {
+    public Image linearFilter(float ratio) {
         int width = Math.round(this.width * ratio);
         int height = Math.round(this.height * ratio);
 
