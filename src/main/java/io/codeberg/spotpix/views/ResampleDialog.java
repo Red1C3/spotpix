@@ -6,19 +6,20 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class ResampleDialog extends JDialog implements ActionListener {
     private static final String RESAMPLE_STR = "Resample";
     private static final String SCALE_STR = "Scale";
     private static final String CANCEL_STR = "Cancel";
     private ViewerRoot viewerRoot;
-    private static NumberFormatter numberFormatter;
     private JFormattedTextField scaleField;
     private JRadioButton linearButton, nearestButton;
     private JButton scaleButton, cancelButton;
@@ -27,18 +28,11 @@ public class ResampleDialog extends JDialog implements ActionListener {
         super(viewerRoot, RESAMPLE_STR, ModalityType.APPLICATION_MODAL);
         this.viewerRoot = viewerRoot;
 
-        NumberFormat format = NumberFormat.getInstance();
-        numberFormatter = new NumberFormatter(format);
-        numberFormatter.setValueClass(Integer.class);
-        numberFormatter.setMinimum(0);
-        numberFormatter.setMaximum(Integer.MAX_VALUE);
-        numberFormatter.setAllowsInvalid(false);
-        numberFormatter.setCommitsOnValidEdit(true);
 
         setLayout(new GridLayout(3, 2, 5, 5));
         add(new JLabel(SCALE_STR));
 
-        scaleField = new JFormattedTextField(numberFormatter);
+        scaleField = new JFormattedTextField(getMaskFormatter("##.##"));
         add(scaleField);
 
         linearButton = new JRadioButton("Linear Filter");
@@ -65,5 +59,15 @@ public class ResampleDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+    }
+    private MaskFormatter getMaskFormatter(String format) {
+        MaskFormatter mask = null;
+        try {
+            mask = new MaskFormatter(format);
+            mask.setPlaceholderCharacter('0');
+        }catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        return mask;
     }
 }
