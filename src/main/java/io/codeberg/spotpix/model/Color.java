@@ -213,6 +213,10 @@ public class Color {
         return rgb;
     }
 
+    public Color multply(float x) {
+        return new Color(getAlpha(), Math.round(getRed() * x), Math.round(getGreen() * x), Math.round(getBlue() * x));
+    }
+
     @Override
     public String toString() {
         return "(" + getRed() + "," + getGreen() + "," + getBlue() + ")";

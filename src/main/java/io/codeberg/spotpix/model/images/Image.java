@@ -165,6 +165,37 @@ public abstract class Image {
         return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
+    public Image linearDownsample(float ratio) {
+        int width = Math.round(this.width * ratio);
+        int height = Math.round(this.height * ratio);
+
+        Color[][] pixels = new Color[width][height];
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                float x = ((float) i / (float) width) * (float) this.width;
+                float y = ((float) j / (float) height) * (float) this.height;
+
+                float xWeight = (float) (x - Math.floor(x));
+
+                Color A = Color.ARGBAdd(
+                        getPixel((int) Math.floor(x), (int) Math.floor(y)).getColor().multply(1 - xWeight),
+                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y)).getColor().multply(xWeight))
+                        .multply(0.5f);
+
+                Color B = Color.ARGBAdd(
+                        getPixel((int) Math.floor(x), (int) Math.floor(y) + 1).getColor().multply(1 - xWeight),
+                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y) + 1).getColor().multply(xWeight))
+                        .multply(0.5f);
+
+                // TODO vertical interpolation between A and B
+
+            }
+        }
+
+        return new ByteImage(pixels, height, width, fileSize, fileTime);
+    }
+
     public void setRegion(Pixel[] region) {
         for (Pixel pixel : region) {
             setPixel(pixel);
