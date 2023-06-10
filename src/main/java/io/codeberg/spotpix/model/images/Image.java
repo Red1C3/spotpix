@@ -147,8 +147,8 @@ public abstract class Image {
         return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
-    // ratio is contained in [0-1]
-    public Image nearestDownsample(float ratio) {
+    
+    public Image nearestFilter(float ratio) {
         int width = Math.round(this.width * ratio);
         int height = Math.round(this.height * ratio);
 
@@ -158,6 +158,13 @@ public abstract class Image {
             for (int j = 0; j < height; j++) {
                 int x = Math.round(((float) i / (float) width) * (float) this.width);
                 int y = Math.round(((float) j / (float) height) * (float) this.height);
+
+
+                if (x >= this.width)
+                    x = this.width - 1;
+                if (y >= this.height)
+                    y = this.height - 1;
+
                 pixels[i][j] = getPixel(x, y).getColor();
             }
         }
