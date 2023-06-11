@@ -36,7 +36,7 @@ public class SearchResultsDialog extends JDialog {
         }
 
         add(new JScrollPane(grid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        setSize(600, 600);
+        setSize(600, 100*(int) Math.ceil(images.size() / 6.0f));
         setVisible(true);
     }
 }
@@ -45,6 +45,7 @@ class ImageItem extends JPanel implements MouseListener {
     private ImageViewPanel imageViewPanel;
     private Image image;
     private SearchResultsDialog searchResultsDialog;
+    private boolean hovered = false;
 
     public ImageItem(ImageViewPanel imageViewPanel, Image image, SearchResultsDialog searchResultsDialog) {
         this.imageViewPanel = imageViewPanel;
@@ -57,6 +58,10 @@ class ImageItem extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         imageViewPanel.paint(g, getHeight(), getWidth(), image);
+        if (hovered) {
+            g.setColor(new Color(0, 0, 255, 50));
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
         paintBorder(g);
     }
 
@@ -76,9 +81,13 @@ class ImageItem extends JPanel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        hovered = true;
+        searchResultsDialog.repaint();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        hovered = false;
+        searchResultsDialog.repaint();
     }
 }
