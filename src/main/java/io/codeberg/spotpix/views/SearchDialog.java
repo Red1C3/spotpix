@@ -161,21 +161,25 @@ public class SearchDialog extends JDialog implements ActionListener {
         if (e.getSource() == searchButton) {
             ArrayList<Image> imagesToSearchIn = SearchCtrlr.getImagesToSearch(pathField.getText());
 
-            if (tabbedPane.getSelectedIndex() == 0) {
+            if (colorBox.isSelected()) {
                 Color[] searchColors = colorPanel.getSelectedColors();
                 // Apply search algorithm
-            } else if (tabbedPane.getSelectedIndex() == 1) {
+            }
+            if (dateBox.isSelected()) {
                 Date startDate = datePanel.getStartDate();
                 Date endDate = datePanel.getEndDate();
+                
                 imagesToSearchIn = SearchCtrlr.dateSearch(imagesToSearchIn, startDate, endDate);
-            } else if (tabbedPane.getSelectedIndex() == 2) {
+            }
+            if (dimBox.isSelected()) {
                 int width = dimPanel.getInputWidth();
                 int height = dimPanel.getInputHeight();
                 int widthLim = dimPanel.getInputWidthLim();
                 int heightLim = dimPanel.getInputHeightLim();
 
                 imagesToSearchIn = SearchCtrlr.dimSearch(imagesToSearchIn, width, height, widthLim, heightLim);
-            } else if (tabbedPane.getSelectedIndex() == 3) {
+            }
+            if (sizeBox.isSelected()) {
                 int size = sizePanel.getInputSize();
                 int threshold = sizePanel.getInputThreshold();
 
