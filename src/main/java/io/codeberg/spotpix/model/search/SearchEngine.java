@@ -52,6 +52,11 @@ public class SearchEngine {
         }
     }
 
+    public SearchEngine(ArrayList<Image> images,Image image){
+        this.image=image;
+        imagesInPath=images;
+    }
+
     public ArrayList<Image> search(SearchAlgorithm algorithm) {
         ArrayList<Image> matched = new ArrayList<>();
         for (Image imageInPath : imagesInPath) {
@@ -64,5 +69,8 @@ public class SearchEngine {
 
     public Image getSearchingImage() {
         return image;
+    }
+    public ArrayList<Image> getImagesInPath(){
+        return imagesInPath;
     }
 }

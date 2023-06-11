@@ -53,6 +53,7 @@ import javax.swing.text.DocumentFilter.FilterBypass;
 import javax.swing.text.html.ImageView;
 
 import io.codeberg.spotpix.App;
+import io.codeberg.spotpix.controllers.SearchCtrlr;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.search.SearchEngine;
@@ -111,7 +112,7 @@ public class SearchDialog extends JDialog implements ActionListener {
         tabbedPane.add(colorPanel, COLOR_SRCH_STR);
         tabbedPane.add(datePanel, DATE_SRCH_STR);
         tabbedPane.add(dimPanel, DIM_SRCH_STR);
-        tabbedPane.add(sizePanel,SIZE_SRCH_STR);
+        tabbedPane.add(sizePanel, SIZE_SRCH_STR);
         add(tabbedPane, BorderLayout.CENTER);
         add(pathPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
@@ -145,32 +146,29 @@ public class SearchDialog extends JDialog implements ActionListener {
             }
         }
         if (e.getSource() == searchButton) {
+            ArrayList<Image> imagesToSearchIn = SearchCtrlr.getImagesToSearch(pathField.getText());
+
             if (tabbedPane.getSelectedIndex() == 0) {
                 Color[] searchColors = colorPanel.getSelectedColors();
                 // Apply search algorithm
             } else if (tabbedPane.getSelectedIndex() == 1) {
                 Date startDate = datePanel.getStartDate();
                 Date endDate = datePanel.getEndDate();
-                SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
-                ArrayList<Image> res = engine.search(new DateSearch(startDate, endDate));
-                displayResults(res);
+                imagesToSearchIn = SearchCtrlr.dateSearch(imagesToSearchIn, startDate, endDate);
             } else if (tabbedPane.getSelectedIndex() == 2) {
                 int width = dimPanel.getInputWidth();
                 int height = dimPanel.getInputHeight();
                 int widthLim = dimPanel.getInputWidthLim();
                 int heightLim = dimPanel.getInputHeightLim();
 
-                SearchEngine engine = new SearchEngine(Paths.get(pathField.getText()), null);
-                ArrayList<Image> res = engine.search(new DimSearch(width, height, widthLim, heightLim));
-                displayResults(res);
-            }else if (tabbedPane.getSelectedIndex()==3){
-                int size=sizePanel.getInputSize();
-                int threshold=sizePanel.getInputThreshold();
+                imagesToSearchIn = SearchCtrlr.dimSearch(imagesToSearchIn, width, height, widthLim, heightLim);
+            } else if (tabbedPane.getSelectedIndex() == 3) {
+                int size = sizePanel.getInputSize();
+                int threshold = sizePanel.getInputThreshold();
 
-                SearchEngine engine=new SearchEngine(Paths.get(pathField.getText()),null);
-                ArrayList<Image> res=engine.search(new SizeSearch(size, threshold));
-                displayResults(res);
+                imagesToSearchIn = SearchCtrlr.sizeSearch(imagesToSearchIn, size, threshold);
             }
+            displayResults(imagesToSearchIn);
             dispose();
         }
     }
@@ -408,7 +406,7 @@ class SizePanel extends JPanel {
 
     public SizePanel(int imgSize) {
         super();
-        setLayout(new GridLayout(2, 2,0,100));
+        setLayout(new GridLayout(2, 2, 0, 100));
 
         add(new JLabel(SIZE_STR));
         size = new JFormattedTextField(SearchDialog.getFormatter());
