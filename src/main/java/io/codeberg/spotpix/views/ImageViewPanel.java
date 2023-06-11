@@ -71,6 +71,25 @@ public class ImageViewPanel extends JPanel {
         return dims;
     }
 
+    public void paint(Graphics g, int height, int width,Image image){
+        int imgHeight = imageCtrlr.getHeight();
+        int imgWidth = imageCtrlr.getWidth();
+        float aspectRatio = (float) imgWidth / (float) imgHeight;
+        int x = 0, y = 0;
+
+        imgWidth = width;
+        imgHeight = (int) ((float) width / aspectRatio);
+
+        if (imgHeight > height) {
+            imgHeight = height;
+            imgWidth = (int) ((float) height * aspectRatio);
+        }
+        y = (int) ((float) height / 2.0f - (float) imgHeight / 2.0f);
+        x = (int) ((float) width / 2.0f - (float) imgWidth / 2.0f);
+
+        g.drawImage(image.toBufferedImage(), x, y, imgWidth, imgHeight, null);
+    }
+
     public void openImage(String path) {
         try {
             imageCtrlr = new ImageCtrlr(path);
