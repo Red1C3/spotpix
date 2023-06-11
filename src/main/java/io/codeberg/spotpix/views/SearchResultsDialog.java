@@ -26,14 +26,14 @@ public class SearchResultsDialog extends JDialog {
         this.viewerRoot = viewerRoot;
         this.images = images;
         JPanel grid = new JPanel();
-        grid.setLayout(new GridLayout(Math.max((int) Math.floor(images.size() / 7.0f), 7), 7, 5, 5));
+        grid.setLayout(new GridLayout((int) Math.ceil(images.size() / 6.0f), 6, 5, 5));
 
         for (Image image : images) {
             grid.add(new ImageItem(viewerRoot.getImageViewPanel(), image));
         }
 
-        add(grid);
-        setSize(700, 700);
+        add(new JScrollPane(grid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        setSize(600, 600);
         setVisible(true);
     }
 }
