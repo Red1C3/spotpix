@@ -185,15 +185,13 @@ public class SearchDialog extends JDialog implements ActionListener {
 
                 imagesToSearchIn = SearchCtrlr.sizeSearch(imagesToSearchIn, size, threshold);
             }
-            displayResults(imagesToSearchIn);
             dispose();
+            displayResults(imagesToSearchIn);
         }
     }
 
     public void displayResults(ArrayList<Image> images) {
-        for (Image image : images) {
-            App.main(image);
-        }
+        new SearchResultsDialog(viewerRoot, images);
     }
 
     public static NumberFormatter getFormatter() {
