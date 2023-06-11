@@ -30,6 +30,7 @@ import java.util.HashSet;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -74,6 +75,7 @@ public class SearchDialog extends JDialog implements ActionListener {
     private JButton pathButton, searchButton;
     private ViewerRoot viewerRoot;
     private JTabbedPane tabbedPane;
+    private JCheckBox colorBox, dateBox, dimBox, sizeBox;
 
     private static NumberFormatter numberFormatter;
 
@@ -105,6 +107,17 @@ public class SearchDialog extends JDialog implements ActionListener {
         searchButton = new JButton("Search");
         searchButton.addActionListener(this);
         JPanel southPanel = new JPanel();
+        JPanel checkBoxesPanel = new JPanel();
+        colorBox = new JCheckBox("Color", false);
+        dateBox = new JCheckBox("Date", false);
+        dimBox = new JCheckBox("Dimensions", false);
+        sizeBox = new JCheckBox("Size", false);
+        checkBoxesPanel.setLayout(new GridLayout(2, 2));
+        checkBoxesPanel.add(colorBox);
+        checkBoxesPanel.add(dateBox);
+        checkBoxesPanel.add(dimBox);
+        checkBoxesPanel.add(sizeBox);
+        southPanel.add(checkBoxesPanel);
         southPanel.add(searchButton);
 
         setupPanels();
