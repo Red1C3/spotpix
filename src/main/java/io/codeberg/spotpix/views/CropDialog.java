@@ -41,7 +41,7 @@ public class CropDialog extends JDialog implements ActionListener {
         southPanel.add(cropButton);
         add(southPanel, BorderLayout.SOUTH);
         
-
+        setLocationRelativeTo(null);
         setSize(400, 400);
         setVisible(true);
     }
