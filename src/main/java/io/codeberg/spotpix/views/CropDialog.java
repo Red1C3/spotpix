@@ -127,6 +127,11 @@ class ImagePanel extends JPanel implements MouseListener {
             max[1]=temp;
         }
 
+        min[0]=Math.min(imgWidth,Math.max(0,min[0]));
+        max[0]=Math.min(imgWidth,Math.max(0,max[0]));
+        min[1]=Math.min(imgHeight,Math.max(0,min[1]));
+        max[1]=Math.min(imgHeight,Math.max(0,max[1]));
+
         repaint();
     }
 
