@@ -72,8 +72,8 @@ public class ImageViewPanel extends JPanel {
     }
 
     public void paint(Graphics g, int height, int width,Image image){
-        int imgHeight = imageCtrlr.getHeight();
-        int imgWidth = imageCtrlr.getWidth();
+        int imgHeight = image.getHeight();
+        int imgWidth = image.getWidth();
         float aspectRatio = (float) imgWidth / (float) imgHeight;
         int x = 0, y = 0;
 
