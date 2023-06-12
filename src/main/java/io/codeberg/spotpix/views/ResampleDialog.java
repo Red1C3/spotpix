@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
@@ -32,6 +33,7 @@ public class ResampleDialog extends JDialog implements ActionListener {
         add(new JLabel(SCALE_STR));
 
         scaleField = new JFormattedTextField(getMaskFormatter("##.##"));
+        scaleField.setText("01.00");
         add(scaleField);
 
         linearButton = new JRadioButton("Linear Filter");
@@ -50,6 +52,7 @@ public class ResampleDialog extends JDialog implements ActionListener {
         add(scaleButton);
         add(cancelButton);
 
+        setLocationRelativeTo(null);
         setSize(220, 100);
         setVisible(true);
     }
@@ -61,8 +64,11 @@ public class ResampleDialog extends JDialog implements ActionListener {
             try {
                 ratio = Float.parseFloat(getMaskFormatter("##.##").stringToValue(scaleField.getText()).toString());
             } catch (ParseException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                e1.printStackTrace(); // Probably would never trigger
+            }
+            if (ratio == 0) {
+                JOptionPane.showMessageDialog(this, "Scale ratio must be larger than 0");
+                return;
             }
             if (linearButton.isSelected()) {
                 viewerRoot.getImageViewPanel().linearScale(ratio);
