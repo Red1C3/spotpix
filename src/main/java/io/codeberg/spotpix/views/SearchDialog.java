@@ -96,7 +96,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
-        pathField = new JTextField();
+        pathField = new JTextField(System.getProperty("user.dir"));
         pathButton = new JButton("Navigate");
         pathButton.addActionListener(this);
         JPanel pathPanel = new JPanel();
