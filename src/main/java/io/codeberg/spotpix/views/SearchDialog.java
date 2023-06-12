@@ -135,14 +135,16 @@ public class SearchDialog extends JDialog implements ActionListener {
 
     private void setupPanels() {
         colorPanel = new ColorPanel(viewerRoot.getImageViewPanel());
-        datePanel = new DatePanel();
+
         if (viewerRoot.getImageViewPanel().hasImage()) {
             dimPanel = new DimPanel(viewerRoot.getImageViewPanel().getImgWidth(),
                     viewerRoot.getImageViewPanel().getImgHeight());
             sizePanel = new SizePanel(viewerRoot.getImageViewPanel().getFileSize());
+            datePanel = new DatePanel(new Date(viewerRoot.getImageViewPanel().getFileTime().toMillis()));
         } else {
             dimPanel = new DimPanel(0, 0);
             sizePanel = new SizePanel(0);
+            datePanel = new DatePanel(null);
         }
     }
 
@@ -191,8 +193,8 @@ public class SearchDialog extends JDialog implements ActionListener {
     }
 
     public void displayResults(ArrayList<Image> images) {
-        if(images.size()==0){
-            JOptionPane.showMessageDialog(this,"No image was found");
+        if (images.size() == 0) {
+            JOptionPane.showMessageDialog(this, "No image was found");
             return;
         }
         new SearchResultsDialog(viewerRoot, images);
@@ -290,7 +292,7 @@ class DatePanel extends JPanel {
     private JComboBox<Integer> startYear, startMonth, startDay,
             endYear, endMonth, endDay;
 
-    public DatePanel() {
+    public DatePanel(Date imageDate) {
         super();
 
         setLayout(new GridLayout(2, 4, 10, 100));
@@ -325,6 +327,16 @@ class DatePanel extends JPanel {
         add(endYear);
         add(endMonth);
         add(endDay);
+
+        endMonth.setSelectedItem(LocalDate.now().getMonthValue());
+        endDay.setSelectedItem(LocalDate.now().getDayOfMonth());
+
+        if (imageDate != null) {
+            LocalDate localDate = imageDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            startYear.setSelectedItem(localDate.getYear());
+            startMonth.setSelectedItem(localDate.getMonthValue());
+            startDay.setSelectedItem(localDate.getDayOfMonth());
+        }
 
     }
 

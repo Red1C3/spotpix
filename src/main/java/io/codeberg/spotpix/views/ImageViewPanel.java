@@ -1,6 +1,7 @@
 package io.codeberg.spotpix.views;
 
 import java.awt.Graphics;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -184,5 +185,8 @@ public class ImageViewPanel extends JPanel {
 
     public void linearScale(float ratio) {
         imageCtrlr.linearScale(ratio);
+    }
+    public FileTime getFileTime(){
+        return imageCtrlr.getFileTime();
     }
 }
