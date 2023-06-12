@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.text.html.ImageView;
@@ -50,6 +51,10 @@ public class CropDialog extends JDialog implements ActionListener {
         if (e.getSource() == cropButton) {
             int[] min = imagePanel.getMin();
             int[] max = imagePanel.getMax();
+            if(min[0]==max[0] || min[1]==max[1]){
+                JOptionPane.showMessageDialog(this, "Invalid selection area");
+                return;
+            }
             imageViewPanel.crop(min, max);
             viewerRoot.repaint();
             dispose();
