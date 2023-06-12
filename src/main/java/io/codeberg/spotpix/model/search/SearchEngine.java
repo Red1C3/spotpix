@@ -47,8 +47,8 @@ public class SearchEngine {
                 }
             });
         } catch (IOException e) {
-            System.out.println("Error while searching");
-            e.printStackTrace();
+            // System.out.println("Error while searching");
+            // e.printStackTrace();
         }
     }
 
