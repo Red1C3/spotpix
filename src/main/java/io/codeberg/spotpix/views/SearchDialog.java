@@ -191,6 +191,10 @@ public class SearchDialog extends JDialog implements ActionListener {
     }
 
     public void displayResults(ArrayList<Image> images) {
+        if(images.size()==0){
+            JOptionPane.showMessageDialog(this,"No image was found");
+            return;
+        }
         new SearchResultsDialog(viewerRoot, images);
     }
 
