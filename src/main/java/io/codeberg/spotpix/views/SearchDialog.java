@@ -168,7 +168,7 @@ public class SearchDialog extends JDialog implements ActionListener {
             if (dateBox.isSelected()) {
                 Date startDate = datePanel.getStartDate();
                 Date endDate = datePanel.getEndDate();
-                
+
                 imagesToSearchIn = SearchCtrlr.dateSearch(imagesToSearchIn, startDate, endDate);
             }
             if (dimBox.isSelected()) {
@@ -217,9 +217,11 @@ class ColorPanel extends JPanel implements ItemListener {
         comboBox = new JComboBox<Color>();
         comboBox.addItemListener(this);
         comboBox.setRenderer(new ColorRenderer());
-        ArrayList<Color> colorMap = imageViewPanel.getColorMap();
-        for (int i = 0; i < colorMap.size(); i++) {
-            comboBox.addItem(colorMap.get(i));
+        if (imageViewPanel.hasImage()) {
+            ArrayList<Color> colorMap = imageViewPanel.getColorMap();
+            for (int i = 0; i < colorMap.size(); i++) {
+                comboBox.addItem(colorMap.get(i));
+            }
         }
         comboBox.setSelectedItem(null);
         add(comboBox, constraints);
