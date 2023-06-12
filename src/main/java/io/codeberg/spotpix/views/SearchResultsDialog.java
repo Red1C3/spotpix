@@ -36,6 +36,7 @@ public class SearchResultsDialog extends JDialog {
         }
 
         add(new JScrollPane(grid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        setLocationRelativeTo(null);
         setSize(600, 100*(int) Math.ceil(images.size() / 6.0f));
         setVisible(true);
     }

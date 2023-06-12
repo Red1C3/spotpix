@@ -129,6 +129,7 @@ public class SearchDialog extends JDialog implements ActionListener {
         add(tabbedPane, BorderLayout.CENTER);
         add(pathPanel, BorderLayout.NORTH);
         add(southPanel, BorderLayout.SOUTH);
+        setLocationRelativeTo(null);
         setSize(300, 300);
         setVisible(true);
     }
