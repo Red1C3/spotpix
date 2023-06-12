@@ -113,9 +113,17 @@ public class ViewerMenuBar extends JMenuBar implements Action {
         }
     }
     private void resampleAction(){
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
         new ResampleDialog(viewerRoot);
     }
     private void cropAction(){
+        if (!imageViewPanel.hasImage()) {
+            JOptionPane.showMessageDialog(viewerRoot, "No image is opened");
+            return;
+        }
         new CropDialog(viewerRoot);
     }
     private void searchAction(){
