@@ -116,6 +116,16 @@ class ImagePanel extends JPanel implements MouseListener {
         } else {
             min = localPoint;
         }
+        if(min[0]>max[0]){
+            int temp=min[0];
+            min[0]=max[0];
+            max[0]=temp;
+        }
+        if(min[1]>max[1]){
+            int temp=min[1];
+            min[1]=max[1];
+            max[1]=temp;
+        }
 
         repaint();
     }
