@@ -3,9 +3,12 @@ package io.codeberg.spotpix.controllers;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
+import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.search.SearchEngine;
+import io.codeberg.spotpix.model.search.algorithms.ColorSearch;
 import io.codeberg.spotpix.model.search.algorithms.DateSearch;
 import io.codeberg.spotpix.model.search.algorithms.DimSearch;
 import io.codeberg.spotpix.model.search.algorithms.SizeSearch;
@@ -29,5 +32,8 @@ public class SearchCtrlr {
 
     public static ArrayList<Image> sizeSearch(ArrayList<Image> images, int size, int sizeThreshold) {
         return (new SearchEngine(images, null)).search(new SizeSearch(size, sizeThreshold));
+    }
+    public static ArrayList<Image> colorSearch(ArrayList<Image> images,HashSet<Color> colors,ImageCtrlr imageCtrlr,float threshold){
+        return (new SearchEngine(images,imageCtrlr.getImage()).search(new ColorSearch(colors, imageCtrlr.getImage(), threshold)));
     }
 }

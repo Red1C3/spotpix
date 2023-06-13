@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import io.codeberg.spotpix.model.Color;
+import io.codeberg.spotpix.model.Distances;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.images.IndexedImage;
 
 public class ColorSearch implements SearchAlgorithm {
-    private static final float labThreshold = 5.0f;
+    private static final double labThreshold = 5.0;
     private ArrayList<Color> searchColorMap;
     private ArrayList<Float> searchPercentageMap;
     private float repeatationThreshold;
@@ -33,6 +34,34 @@ public class ColorSearch implements SearchAlgorithm {
 
     @Override
     public boolean match(Image img) {
-        return false;
+        IndexedImage indexedImage = img.toIndexedImage();
+
+        int imgPixelsCount = img.getHeight() * img.getWidth();
+
+        ArrayList<Color> imgColorMap = indexedImage.getColorMap();
+        int[] imgQuantizationMap = indexedImage.getQuantizedMap();
+
+        for (int i = 0; i < searchColorMap.size(); i++) {
+            Color color = searchColorMap.get(i);
+            float percentage = searchPercentageMap.get(i);
+            float sum = 0;
+
+            for (int j = 0; j < imgColorMap.size(); j++) {
+                Color imgColor = imgColorMap.get(i);
+                float imgPercentage = (float) imgQuantizationMap[i] / (float) imgPixelsCount;
+
+                double distance = Distances.calcDistanceLAB(color, imgColor);
+                if (distance <= labThreshold) {
+                    sum += imgPercentage;
+                }
+            }
+
+            if (Math.abs(sum - percentage) > repeatationThreshold) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 }

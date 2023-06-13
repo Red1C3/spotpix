@@ -189,4 +189,7 @@ public class ImageViewPanel extends JPanel {
     public FileTime getFileTime(){
         return imageCtrlr.getFileTime();
     }
+    public ImageCtrlr getImageCtrlr(){
+        return imageCtrlr;
+    }
 }

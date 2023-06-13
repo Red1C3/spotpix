@@ -177,7 +177,12 @@ public class ImageCtrlr {
     public void linearScale(float ratio) {
         image = image.linearFilter(ratio);
     }
-    public FileTime getFileTime(){
+
+    public FileTime getFileTime() {
         return image.getFileTime();
+    }
+
+    public Image getImage() {
+        return image;
     }
 }

@@ -111,6 +111,9 @@ public class IndexedImage extends Image {
     }
 
     public int[] getQuantizedMap() {
+        if(quantizationMap==null){
+            calculateQuantizationMap();
+        }
         return quantizationMap;
     }
 
