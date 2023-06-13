@@ -57,6 +57,7 @@ import io.codeberg.spotpix.App;
 import io.codeberg.spotpix.controllers.SearchCtrlr;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
+import io.codeberg.spotpix.model.search.SearchColor;
 import io.codeberg.spotpix.model.search.SearchEngine;
 import io.codeberg.spotpix.model.search.algorithms.DateSearch;
 import io.codeberg.spotpix.model.search.algorithms.DimSearch;
@@ -226,9 +227,15 @@ class ColorPanel extends JPanel implements ItemListener {
         comboBox.addItemListener(this);
         comboBox.setRenderer(new ColorRenderer());
         if (imageViewPanel.hasImage()) {
+            int width = imageViewPanel.getImgWidth();
+            int height = imageViewPanel.getImgHeight();
             ArrayList<Color> colorMap = imageViewPanel.getColorMap();
+            int[] quantizationMap = imageViewPanel.getQuantizationMap();
+            int pixelsCount = height * width;
             for (int i = 0; i < colorMap.size(); i++) {
-                comboBox.addItem(colorMap.get(i));
+                comboBox.addItem(
+                        new SearchColor(colorMap.get(i).getARGB(),
+                                (float) quantizationMap[i] / (float) pixelsCount));
             }
         }
         comboBox.setSelectedItem(null);
