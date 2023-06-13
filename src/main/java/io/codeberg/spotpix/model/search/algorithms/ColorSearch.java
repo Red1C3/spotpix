@@ -41,8 +41,8 @@ public class ColorSearch implements SearchAlgorithm {
             float sum = 0;
 
             for (int j = 0; j < imgColorMap.size(); j++) {
-                Color imgColor = imgColorMap.get(i);
-                float imgPercentage = (float) imgQuantizationMap[i] / (float) imgPixelsCount;
+                Color imgColor = imgColorMap.get(j);
+                float imgPercentage = (float) imgQuantizationMap[j] / (float) imgPixelsCount;
 
                 double distance = Distances.calcDistanceLAB(color, imgColor);
                 if (distance <= labThreshold) {
