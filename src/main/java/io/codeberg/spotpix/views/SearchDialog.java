@@ -168,7 +168,7 @@ public class SearchDialog extends JDialog implements ActionListener {
             if (colorBox.isSelected()) {
                 HashSet<Color> searchColors = colorPanel.getSelectedColors();
                 imagesToSearchIn = SearchCtrlr.colorSearch(imagesToSearchIn, searchColors,
-                        viewerRoot.getImageViewPanel().getImageCtrlr(), 0.05f);
+                        viewerRoot.getImageViewPanel().getImageCtrlr(), 10);
             }
             if (dateBox.isSelected()) {
                 Date startDate = datePanel.getStartDate();
