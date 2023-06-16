@@ -39,7 +39,7 @@ public class SearchCtrlr {
         int maxIterations = 20;
         SearchEngine engine = new SearchEngine(images, imageCtrlr.getImage());
         ArrayList<Image> res;
-        double min = 0, max = 1.5;
+        double min = 0, max = 1;
         int iterations=0;
         while (true) {
             iterations++;
