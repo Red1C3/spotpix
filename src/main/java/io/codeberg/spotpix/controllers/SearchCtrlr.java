@@ -36,7 +36,7 @@ public class SearchCtrlr {
 
     public static ArrayList<Image> colorSearch(ArrayList<Image> images, HashSet<Color> colors, ImageCtrlr imageCtrlr,
             int targetCount) {
-        if(images.size()<=targetCount){
+        if(images.size()<=targetCount || targetCount<0){
             return images;
         }
         int maxIterations = 20;

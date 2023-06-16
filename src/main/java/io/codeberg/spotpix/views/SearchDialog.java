@@ -280,9 +280,8 @@ class ColorPanel extends JPanel implements ItemListener {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(targetImagesCount.getText());
         } catch (Exception e) {
-            e.printStackTrace();
         }
-        return 1;
+        return -1;
     }
 }
 
