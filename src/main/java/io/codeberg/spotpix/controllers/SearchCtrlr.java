@@ -36,23 +36,24 @@ public class SearchCtrlr {
 
     public static ArrayList<Image> colorSearch(ArrayList<Image> images, HashSet<Color> colors, ImageCtrlr imageCtrlr,
             int targetCount) {
-        // return (new SearchEngine(images,imageCtrlr.getImage()).search(new
-        // ColorSearch(colors, imageCtrlr.getImage(), threshold)));
+        int maxIterations = 20;
         SearchEngine engine = new SearchEngine(images, imageCtrlr.getImage());
         ArrayList<Image> res;
-        float min = 0, max = 100;
+        double min = 0, max = 1.5;
+        int iterations=0;
         while (true) {
-            System.out.println("min="+min);
-            System.out.println("max="+max);
-            float mid = (min + max) / 2.0f;
+            iterations++;
+            double mid = (min + max) / 2.0;
             res = engine.search(new ColorSearch(colors, imageCtrlr.getImage(), mid));
-            System.out.println("size="+res.size());
             if (res.size() > targetCount) {
                 max = mid;
             } else if (res.size() < targetCount) {
                 min = mid;
             } else {
                 break;
+            }
+            if(iterations==maxIterations) {
+                return engine.search(new ColorSearch(colors, imageCtrlr.getImage(), min));
             }
         }
         return res;

@@ -14,9 +14,9 @@ import io.codeberg.spotpix.model.search.SearchColor;
 public class ColorSearch implements SearchAlgorithm {
     private static final double labThreshold = 5.0;
     private ArrayList<SearchColor> searchColorMap;
-    private float repeatationThreshold;
+    private double repeatationThreshold;
 
-    public ColorSearch(HashSet<Color> colors, Image searchImage, float threshold) {
+    public ColorSearch(HashSet<Color> colors, Image searchImage, double threshold) {
         searchColorMap = new ArrayList<>(colors.size());
         this.repeatationThreshold = threshold;
         java.util.Iterator<Color> iterator = colors.iterator();
@@ -37,8 +37,8 @@ public class ColorSearch implements SearchAlgorithm {
 
         for (int i = 0; i < searchColorMap.size(); i++) {
             SearchColor color = searchColorMap.get(i);
-            float percentage = color.getPercentage();
-            float sum = 0;
+            double percentage = color.getPercentage();
+            double sum = 0;
 
             for (int j = 0; j < imgColorMap.size(); j++) {
                 Color imgColor = imgColorMap.get(j);
