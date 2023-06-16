@@ -168,7 +168,7 @@ public class SearchDialog extends JDialog implements ActionListener {
             if (colorBox.isSelected()) {
                 HashSet<Color> searchColors = colorPanel.getSelectedColors();
                 imagesToSearchIn = SearchCtrlr.colorSearch(imagesToSearchIn, searchColors,
-                        viewerRoot.getImageViewPanel().getImageCtrlr(), 10);
+                        viewerRoot.getImageViewPanel().getImageCtrlr(), colorPanel.getTargetImagesCount());
             }
             if (dateBox.isSelected()) {
                 Date startDate = datePanel.getStartDate();
@@ -213,6 +213,7 @@ class ColorPanel extends JPanel implements ItemListener {
     private JList<Color> colorsList;
     private HashSet<Color> selectedColors;
     private boolean firstSelection = true;
+    private JFormattedTextField targetImagesCount;
 
     public ColorPanel(ImageViewPanel imageViewPanel) {
         super();
@@ -247,6 +248,13 @@ class ColorPanel extends JPanel implements ItemListener {
         colorsList.setSelectionModel(new DisabledItemSelectionModel());
         add(colorsList, constraints);
 
+        constraints.gridy = 2;
+        JPanel colorCountPanel = new JPanel();
+        colorCountPanel.setLayout(new GridLayout(1, 2));
+        colorCountPanel.add(new JLabel("Approx. Images Count: "));
+        targetImagesCount = new JFormattedTextField(SearchDialog.getFormatter());
+        colorCountPanel.add(targetImagesCount);
+        add(colorCountPanel, constraints);
     }
 
     @Override
@@ -266,6 +274,15 @@ class ColorPanel extends JPanel implements ItemListener {
 
     public HashSet<Color> getSelectedColors() {
         return selectedColors;
+    }
+
+    public int getTargetImagesCount() {
+        try {
+            return (int) SearchDialog.getFormatter().stringToValue(targetImagesCount.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }
 

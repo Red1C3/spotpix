@@ -36,6 +36,9 @@ public class SearchCtrlr {
 
     public static ArrayList<Image> colorSearch(ArrayList<Image> images, HashSet<Color> colors, ImageCtrlr imageCtrlr,
             int targetCount) {
+        if(images.size()<=targetCount){
+            return images;
+        }
         int maxIterations = 20;
         SearchEngine engine = new SearchEngine(images, imageCtrlr.getImage());
         ArrayList<Image> res;
