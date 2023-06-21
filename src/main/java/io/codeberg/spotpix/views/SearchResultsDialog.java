@@ -25,7 +25,7 @@ public class SearchResultsDialog extends JDialog {
     private ArrayList<Image> images;
 
     public SearchResultsDialog(ViewerRoot viewerRoot, ArrayList<Image> images) {
-        super(viewerRoot, SEARCH_RES_STR, ModalityType.APPLICATION_MODAL);
+        super(viewerRoot, SEARCH_RES_STR, ModalityType.MODELESS);
         this.viewerRoot = viewerRoot;
         this.images = images;
         JPanel grid = new JPanel();
@@ -68,7 +68,6 @@ class ImageItem extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        searchResultsDialog.dispose();
         App.main(image);
     }
 
