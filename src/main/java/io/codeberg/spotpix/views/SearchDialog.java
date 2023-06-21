@@ -24,8 +24,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
@@ -234,10 +236,22 @@ class ColorPanel extends JPanel implements ItemListener {
             ArrayList<Color> colorMap = imageViewPanel.getColorMap();
             int[] quantizationMap = imageViewPanel.getQuantizationMap();
             int pixelsCount = height * width;
+            List<SearchColor> sortedColors = new ArrayList<SearchColor>(colorMap.size());
+            for (int i = 0; i < colorMap.size(); i++) {
+                sortedColors.add(new SearchColor(colorMap.get(i).getARGB(),
+                        (float) quantizationMap[i] / (float) pixelsCount));
+            }
+            sortedColors.sort(new Comparator<SearchColor>() {
+
+                @Override
+                public int compare(SearchColor o1, SearchColor o2) {
+                    return (int) Math.signum(o2.getPercentage() - o1.getPercentage());
+                }
+
+            });
             for (int i = 0; i < colorMap.size(); i++) {
                 comboBox.addItem(
-                        new SearchColor(colorMap.get(i).getARGB(),
-                                (float) quantizationMap[i] / (float) pixelsCount));
+                        sortedColors.get(i));
             }
         }
         comboBox.setSelectedItem(null);
