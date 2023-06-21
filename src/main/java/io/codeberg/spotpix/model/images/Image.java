@@ -147,7 +147,6 @@ public abstract class Image {
         return new ByteImage(pixels, height, width, fileSize, fileTime);
     }
 
-    
     public Image nearestFilter(float ratio) {
         int width = Math.round(this.width * ratio);
         int height = Math.round(this.height * ratio);
@@ -158,7 +157,6 @@ public abstract class Image {
             for (int j = 0; j < height; j++) {
                 int x = Math.round(((float) i / (float) width) * (float) this.width);
                 int y = Math.round(((float) j / (float) height) * (float) this.height);
-
 
                 if (x >= this.width)
                     x = this.width - 1;
@@ -183,24 +181,26 @@ public abstract class Image {
                 float x = ((float) i / (float) width) * (float) this.width;
                 float y = ((float) j / (float) height) * (float) this.height;
 
-                if (x >= this.width-1)
-                    x = this.width - 2;
-                if (y >= this.height-1)
-                    y = this.height - 2;
+                int xAdd = 1;
+                int yAdd = 1;
+                if (x >= this.width - 1)
+                    xAdd = 0;
+                if (y >= this.height - 1)
+                    yAdd = 0;
 
                 float xWeight = (float) (x - Math.floor(x));
 
-                Color A = Color.ARGBAvg(
+                Color A = Color.ARGBAdd(
                         getPixel((int) Math.floor(x), (int) Math.floor(y)).getColor().multply(1 - xWeight),
-                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y)).getColor().multply(xWeight)).multply(2);
+                        getPixel((int) Math.floor(x) + xAdd, (int) Math.floor(y)).getColor().multply(xWeight));
 
-                Color B = Color.ARGBAvg(
-                        getPixel((int) Math.floor(x), (int) Math.floor(y) + 1).getColor().multply(1 - xWeight),
-                        getPixel((int) Math.floor(x) + 1, (int) Math.floor(y) + 1).getColor().multply(xWeight)).multply(2);
+                Color B = Color.ARGBAdd(
+                        getPixel((int) Math.floor(x), (int) Math.floor(y) + yAdd).getColor().multply(1 - xWeight),
+                        getPixel((int) Math.floor(x) + xAdd, (int) Math.floor(y) + yAdd).getColor().multply(xWeight));
 
                 float yWeight = (float) (y - Math.floor(y));
 
-                pixels[i][j] = Color.ARGBAvg(A.multply(1 - yWeight), B.multply(yWeight)).multply(2);
+                pixels[i][j] = Color.ARGBAdd(A.multply(1 - yWeight), B.multply(yWeight));
 
             }
         }

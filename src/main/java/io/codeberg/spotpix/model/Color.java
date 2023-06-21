@@ -73,10 +73,15 @@ public class Color {
     }
 
     public static Color ARGBAdd(Color color0, Color color1) {
-        int alpha = Math.max(color0.getAlpha() + color1.getAlpha(), 255);
-        int red = Math.max(color0.getRed() + color1.getRed(), 255);
-        int green = Math.max(color0.getGreen() + color1.getGreen(), 255);
-        int blue = Math.max(color0.getBlue() + color1.getBlue(), 255);
+        int alpha = (color0.getAlpha() + color1.getAlpha());
+        int red = (color0.getRed() + color1.getRed());
+        int green = (color0.getGreen() + color1.getGreen());
+        int blue = (color0.getBlue() + color1.getBlue());
+
+        alpha = clamp(alpha, 0, 255);
+        red = clamp(red, 0, 255);
+        blue = clamp(blue, 0, 255);
+        green = clamp(green, 0, 255);
 
         return new Color(alpha, red, green, blue);
     }
@@ -88,6 +93,10 @@ public class Color {
         int blue = Math.round((color0.getBlue() + color1.getBlue()) / 2.0f);
 
         return new Color(alpha, red, green, blue);
+    }
+
+    private static int clamp(int val, int min, int max) {
+        return Math.max(Math.min(val, max), min);
     }
 
     public static double[] RGB2XYZ(int ir, int ig, int ib) {
@@ -223,7 +232,8 @@ public class Color {
     }
 
     public Color multply(float x) {
-        return new Color(getAlpha(), Math.round((float)getRed() * x), Math.round((float)getGreen() * x), Math.round((float)getBlue() * x));
+        return new Color(getAlpha(), Math.round((float) getRed() * x), Math.round((float) getGreen() * x),
+                Math.round((float) getBlue() * x));
     }
 
     @Override
