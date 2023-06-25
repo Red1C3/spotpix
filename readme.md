@@ -2,12 +2,12 @@
 An image quantization application written in plain Java.
 
 ## Downloads
-- TODO
+[Releases are available on Codeberg](https://codeberg.org/Red1C3/spotpix/releases)
 
 ## Features
 ### Quantization
 - Quantize using K-Means algorithm.
-- Quantize using Median-Cut algoritm.
+- Quantize using Median-Cut algorithm.
 - Quantize using Octree algorithm.
 - Quantize using RGB collapse algorithm.
 ### Misc.
