@@ -3,8 +3,6 @@ package io.codeberg.spotpix.model.search.algorithms;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.Distances;
 import io.codeberg.spotpix.model.images.Image;

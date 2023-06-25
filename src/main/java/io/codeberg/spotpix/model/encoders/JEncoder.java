@@ -14,7 +14,6 @@ public class JEncoder implements Encoder {
         ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
 
         try {
-            //TODO make sure it's saving an indexed image or force it to or write your own encoder
             ImageIO.write(image.toBufferedImage(), "png", outputStream);
             outputStream.close();
         } catch (IOException e) {

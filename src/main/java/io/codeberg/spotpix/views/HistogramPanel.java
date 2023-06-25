@@ -4,21 +4,15 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import java.awt.Graphics;
 import java.awt.Paint;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.statistics.HistogramDataset;
-import org.jfree.data.statistics.SimpleHistogramBin;
-import org.jfree.data.statistics.SimpleHistogramDataset;
-
 import io.codeberg.spotpix.model.Color;
 
 public class HistogramPanel extends ChartPanel {

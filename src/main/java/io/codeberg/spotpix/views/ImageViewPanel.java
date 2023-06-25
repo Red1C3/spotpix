@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.text.html.ImageView;
-
 import io.codeberg.spotpix.controllers.ColorSystem;
 import io.codeberg.spotpix.controllers.ImageCtrlr;
 import io.codeberg.spotpix.controllers.ImageFormat;

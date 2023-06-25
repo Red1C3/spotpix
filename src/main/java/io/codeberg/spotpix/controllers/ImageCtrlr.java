@@ -3,12 +3,9 @@ package io.codeberg.spotpix.controllers;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
-import java.util.Date;
-
 import io.codeberg.spotpix.App;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.colorOps.ColorOp;

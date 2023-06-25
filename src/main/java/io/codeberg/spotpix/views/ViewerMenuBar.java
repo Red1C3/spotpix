@@ -1,23 +1,17 @@
 package io.codeberg.spotpix.views;
 
-import java.awt.Container;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.Action;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.text.html.ImageView;
-
 import io.codeberg.spotpix.controllers.ImageFormat;
 import io.codeberg.spotpix.model.Color;
-import io.codeberg.spotpix.model.images.Image;
 
 public class ViewerMenuBar extends JMenuBar implements Action {
     private static final String FILE_STR = "File";
@@ -163,13 +157,11 @@ public class ViewerMenuBar extends JMenuBar implements Action {
 
     @Override
     public Object getValue(String key) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getValue'");
     }
 
     @Override
     public void putValue(String key, Object value) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'putValue'");
     }
 

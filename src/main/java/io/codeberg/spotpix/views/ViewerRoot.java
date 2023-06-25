@@ -1,12 +1,6 @@
 package io.codeberg.spotpix.views;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.text.html.ImageView;
 
 public class ViewerRoot extends JFrame {
     private final static int INITIAL_WIDTH = 640;

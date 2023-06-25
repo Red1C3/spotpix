@@ -6,10 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.text.html.ImageView;
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -21,13 +18,8 @@ import io.codeberg.spotpix.model.images.Image;
 public class SearchResultsDialog extends JDialog {
     private static final String SEARCH_RES_STR = "Search Results";
     public static final int imagePanelSize = 100;
-    private ViewerRoot viewerRoot;
-    private ArrayList<Image> images;
-
     public SearchResultsDialog(ViewerRoot viewerRoot, ArrayList<Image> images) {
         super(viewerRoot, SEARCH_RES_STR, ModalityType.MODELESS);
-        this.viewerRoot = viewerRoot;
-        this.images = images;
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout((int) Math.ceil(images.size() / 6.0f), 6, 5, 5));
 

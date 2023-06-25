@@ -1,18 +1,11 @@
 package io.codeberg.spotpix.views;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,14 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
-import javax.swing.text.html.ImageView;
-
 import io.codeberg.spotpix.controllers.ColorSystem;
-import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.comparators.ManRGBComparator;
 
 public class QuantizationDialog extends JDialog {

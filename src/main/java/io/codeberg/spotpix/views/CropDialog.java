@@ -3,7 +3,6 @@ package io.codeberg.spotpix.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,8 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.text.html.ImageView;
 
 public class CropDialog extends JDialog implements ActionListener {
     private static final String CROP_STR = "Crop";

@@ -2,25 +2,19 @@ package io.codeberg.spotpix.views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -43,27 +37,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
 import javax.swing.text.NumberFormatter;
-import javax.swing.text.DocumentFilter.FilterBypass;
-import javax.swing.text.html.ImageView;
-
-import io.codeberg.spotpix.App;
 import io.codeberg.spotpix.controllers.SearchCtrlr;
 import io.codeberg.spotpix.model.Color;
 import io.codeberg.spotpix.model.images.Image;
 import io.codeberg.spotpix.model.search.SearchColor;
-import io.codeberg.spotpix.model.search.SearchEngine;
-import io.codeberg.spotpix.model.search.algorithms.DateSearch;
-import io.codeberg.spotpix.model.search.algorithms.DimSearch;
-import io.codeberg.spotpix.model.search.algorithms.SizeSearch;
 
 public class SearchDialog extends JDialog implements ActionListener {
     private final static String COLOR_SRCH_STR = "Color Search";
@@ -434,7 +413,6 @@ class DimPanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(width.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -444,7 +422,6 @@ class DimPanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(height.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -454,7 +431,6 @@ class DimPanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(widthLim.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -464,7 +440,6 @@ class DimPanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(heightLim.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -496,7 +471,6 @@ class SizePanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(size.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
@@ -506,7 +480,6 @@ class SizePanel extends JPanel {
         try {
             return (int) SearchDialog.getFormatter().stringToValue(threshold.getText());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;

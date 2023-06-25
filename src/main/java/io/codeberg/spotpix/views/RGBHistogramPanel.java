@@ -14,8 +14,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
 
 public class RGBHistogramPanel extends ChartPanel {
     private RGBHistogramPanel(JFreeChart chart) {
